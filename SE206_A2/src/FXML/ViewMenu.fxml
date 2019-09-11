@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewMenuController">
+   <children>
+      <ListView id="listView" fx:id="listView" prefHeight="301.0" prefWidth="600.0" />
+      <HBox alignment="CENTER" prefHeight="103.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="49.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/playButton.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="playButton" mnemonicParsing="false" onAction="#playCreation" prefHeight="25.0" prefWidth="67.0" text="Play">
+               <HBox.margin>
+                  <Insets left="20.0" right="100.0" />
+               </HBox.margin>
+            </Button>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/bin.png" />
+               </image>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </ImageView>
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteCreation" prefHeight="25.0" prefWidth="66.0" text="Delete">
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin></Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#returnToMainMenu" text="Back">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>
+
+
+
