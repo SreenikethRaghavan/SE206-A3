@@ -32,7 +32,7 @@ public class SelectImagesController {
 	private void initialize() throws IOException {
 
 		slider.setMin(1);
-		slider.setMax(12);
+		slider.setMax(10);
 	}
 
 	@FXML
@@ -55,7 +55,7 @@ public class SelectImagesController {
 
 		int imageNum = (int)slider.getValue();
 		//place holder value. TODO: get the length of the audio file, this value should be imageNum/audioLength
-		int imageDuration = imageNum/5;
+		Double imageDuration = ((double)imageNum)/5;
 
 
 		BashProcess selectSentences = new BashProcess();
@@ -73,22 +73,24 @@ public class SelectImagesController {
 
 				BashProcess creationProcess = new BashProcess();
 				
-				//line 1: download the images IF THIS HAS ISSUES ITS BECAUSE OF \ ISSUES
-				//line 2: place holder value. TODO: get the length of the audio file, this value should be imageNum/audioLength
-				//line 3: create slide show video, no word overlay yet.
-				//line 4: add text to video.
-//				String command = "index=1; wget -q \"https://flickr.com/search/?text="+AssociationClass.getInstance().getSearchTerm()+"\" -O-|tr '\"' '\\n' | grep \"_b.jpg\" | sed 's/\\\\//g' | grep 'live.staticflickr' | grep \"^//\" | sort -u | head -n "+imageNum+" | while read url; do wget -q -O ./creation_files/temporary_files/image_files/img$(printf \"%02d\" $index).jpg -P ./creation_files/temporary_files/image_files \"http:$url\";index=$((index+1));done &>/dev/null"
-//						+ "echo 'debugTHis' > debugMe.txt;" 
-//						+ "imageDuration="+imageDuration+";" 
-//						+ "ffmpeg -r $imageDuration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -vf \"scale=trunc(iw/4)*2:trunc(ih/4)*2\" -c:v libx264 -r 30 -pix_fmt yuv420p ./creation_files/temporary_files/video_files/outputishere.mp4; wait;"
-//						+ "ffmpeg -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.ttf:fontsize=60:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4; wait;";
-//				
-				String command = "index_num=1; wget -q \"https://flickr.com/search/?text="+AssociationClass.getInstance().getSearchTerm()+"\" -O-|tr '\"' '\\n' | grep \"_b.jpg\" | sed 's/\\\\//g' | grep 'live.staticflickr' | sort -u | head -n "+imageNum+" | while read url; do wget -q -O ./creation_files/temporary_files/image_files/img$(printf \"%02d\" $index_num).jpg -P ./creation_files/temporary_files/image_files \"http:$url\";index_num=$((index_num+1));done"
-						+ "echo 'dsdfsfds' > debugMe.txt;";
-				
-				command = "index_num=1;"
+	
+				//TODO: All of this will likely ultimately be moved to the CreationNameController in the end. It is here for now so it doesn't step on anyones toes.
+				//line 1: set up index variable. was causing bugs (not recognizing it as a variable) when it didnt have a _ as part of it. Be sure to keep this naming format
+				//line 2: download the images (# specified by the slider) to the temporary images folder
+				//line 3: this currently has a placeholder value while I don't know the length of the audio.
+				//line 4: This creates the initial slideshow video (no text). It is possible that we will run into some issues with the sizing of this, 
+				//		  as ffmpeg is very judgey about the dimensions of the input, and currently to placate it its using integer rounding to achieve
+				//		  even numbers. This may be leading to inconsistent sizing, but its hard to tell because of the scale. Its possible the size
+				//	      is consistent as all images are sourced from the _b.jpgs on twitter (corresponds to the size of the image) Hoping that is the
+				//		  case atm lol.
+				//line 5: (-y -> force override) adds text to the slideshow video. This has to be done in a separate rendering as ffmpeg apparently doesn't like doing lots of things at once.
+				//line 6: cleaning up the extra files, deleting images and extra video now we are done with them 
+				String command = "index_num=1;"
 						+ "wget -q \"https://flickr.com/search/?text="+AssociationClass.getInstance().getSearchTerm()+"\" -O-|tr '\"' '\\n' | grep \"_b.jpg\" | sed 's/\\\\//g' | grep 'live.staticflickr' | sort -u | head -n "+imageNum+" | while read url; do wget -q -O ./creation_files/temporary_files/image_files/img$(printf \"%02d\" $index_num).jpg -P ./creation_files/temporary_files/image_files \"http:$url\";index_num=$((index_num+1));done;"
-						+ "";
+						+ "image_Duration="+imageDuration+";"
+						+ " ffmpeg -r $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -vf \"scale=trunc(iw/4)*2:trunc(ih/4)*2\" -c:v libx264 -r 30 -pix_fmt yuv420p ./creation_files/temporary_files/video_files/outputishere.mp4 > /dev/null; wait;"
+						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize=60:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
+						+ " rm -f ./creation_files/temporary_files/image_files/*; rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;";
 				
 				creationProcess.runCommand(command);
 
