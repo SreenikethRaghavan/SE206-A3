@@ -15,6 +15,8 @@ public class AssociationClass {
 
 	private String searchTerm;
 
+	private String selectedText;
+
 	private AssociationClass() { 
 
 	}
@@ -36,6 +38,15 @@ public class AssociationClass {
 
 	public void storeSearchTerm(String searchTerm) {
 		this.searchTerm = searchTerm;
+	}
+
+	public String getSelectedText() {
+		return selectedText;
+	}
+
+
+	public void storeSelectedText(String selectedText) {
+		this.selectedText = selectedText;
 	}
 
 }

@@ -91,12 +91,7 @@ public class CreationNameController {
 						@Override protected Void call() throws Exception {
 
 							BashProcess creationProcess = new BashProcess();
-							String command = "cat ./creation_files/temporary_files/text_files/wikipedia_output.txt | text2wave -o \"./creation_files/temporary_files/audio_files/" + userInput + ".wav\";"
-									+ "temp_audio_length=$(soxi -D \"./creation_files/temporary_files/audio_files/" + userInput +".wav\");" 
-									+ "audio_length=${temp_audio_length/.*};"
-									+ "audio_length=$((audio_length+1));"
-									+ "ffmpeg -y -f lavfi -i color=c=orange:s=500x500:d=$audio_length -vf \"drawtext=fontfile=:fontsize=30: fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text="+ AssociationClass.getInstance().getSearchTerm() + "\" \"./creation_files/temporary_files/video_files/" +userInput+".mp4\" -v quiet;"
-									+ "ffmpeg -y -i \"./creation_files/temporary_files/video_files/" + userInput+".mp4\" -i \"./creation_files/temporary_files/audio_files/" + userInput + ".wav\" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet";
+							String command = "ffmpeg -y -i \"./creation_files/temporary_files/video_files/" + userInput+".mp4\" -i \"./creation_files/temporary_files/audio_files/" + userInput + ".wav\" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet";
 
 							creationProcess.runCommand(command);
 
@@ -156,12 +151,11 @@ public class CreationNameController {
 
 					BashProcess creationProcess = new BashProcess();
 
-					String command = "cat ./creation_files/temporary_files/text_files/wikipedia_output.txt | text2wave -o \"./creation_files/temporary_files/audio_files/" + userInput +".wav\";"
-							+ "temp_audio_length=$(soxi -D \"./creation_files/temporary_files/audio_files/" + userInput +".wav\");" 
-							+ "audio_length=${temp_audio_length/.*};"
-							+ "audio_length=$((audio_length+1));"
-							+ "ffmpeg -f lavfi -i color=c=orange:s=500x500:d=$audio_length -vf \"drawtext=fontfile=:fontsize=30: fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text="+ AssociationClass.getInstance().getSearchTerm() + "\" \"./creation_files/temporary_files/video_files/" +userInput+".mp4\" -v quiet;"
-							+ "ffmpeg -y -i \"./creation_files/temporary_files/video_files/" + userInput+".mp4\" -i \"./creation_files/temporary_files/audio_files/"+userInput+".wav\" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet";
+					String command = "ffmpeg -y -f lavfi -i color=c=orange:s=500x500:d=$audio_length -vf \"drawtext=fontfile=:fontsize=30: fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text="
+							+ AssociationClass.getInstance().getSearchTerm() +
+							"\" \"./creation_files/temporary_files/video_files/"
+							+userInput+".mp4\" -v quiet;" +
+							"ffmpeg -y -i \"./creation_files/temporary_files/video_files/" + userInput+".mp4\" -i \"./creation_files/temporary_files/audio_files/"+userInput+".wav\" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet";
 
 					creationProcess.runCommand(command);
 

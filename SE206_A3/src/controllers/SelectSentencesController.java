@@ -8,6 +8,7 @@ import java.util.List;
 import FXML.AppWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import wikispeak.BashProcess;
@@ -39,28 +40,23 @@ public class SelectSentencesController {
 	@FXML
 	private void initialize() throws IOException {
 
-		sentenceDisplay.setEditable(false);
-
 		BufferedReader reader = new BufferedReader(new FileReader("./creation_files/temporary_files/text_files/wikipedia_output.txt"));
 
 		List<String> lines = new ArrayList<String>();
 		String sentence;
 
-		int numLines = 0;
+
 		while ((sentence = reader.readLine()) != null) {
 			lines.add(sentence);
-			numLines++;
 		}
 
 		reader.close();
 
 		List<String> searchResult = new ArrayList<String>();
 
-		int index = 1;
 		for (String line : lines) {
-			sentence  = index +". " + line + "\n";
+			sentence  = line + "\n";
 			searchResult.add(sentence);
-			index++;
 		}
 
 
@@ -71,8 +67,6 @@ public class SelectSentencesController {
 
 		sentenceDisplay.setText(result);
 
-		slider.setMin(1);
-		slider.setMax((double)numLines);
 	}
 
 	@FXML
@@ -89,21 +83,49 @@ public class SelectSentencesController {
 	 * 
 	 */
 	@FXML
-	private void readSlider(ActionEvent e) throws IOException {
+	private void createAudio(ActionEvent e) throws IOException {
 
-		int sentenceNum = (int)slider.getValue();
+		String selectedText = sentenceDisplay.getSelectedText();
 
+		String[] words = selectedText.split("\\s+");
 
-		BashProcess selectSentences = new BashProcess();
+		if (words.length > 40) {
+			Alert invalidWordCount = new Alert(Alert.AlertType.ERROR);
+			invalidWordCount.setTitle("Word Count Exceeded");
+			invalidWordCount.setHeaderText("The text you wish to play cannot exceed 40 words!");
+			invalidWordCount.setContentText("Kindly select a smaller chunk of text.");
+			invalidWordCount.showAndWait();
 
-		String command = "echo \"`head -n " + sentenceNum + " ./creation_files/temporary_files/text_files/wikipedia_output.txt`\" > ./creation_files/temporary_files/text_files/wikipedia_output.txt";
+			return;
+		}
 
+		AssociationClass.getInstance().storeSelectedText(selectedText);
 
-		selectSentences.runCommand(command); 
-
-		AppWindow.valueOf("CreationName").setScene(e);
+		AppWindow.valueOf("AudioName").setScene(e);
 		return;
+	}
 
+	@FXML
+	private void testAudio(ActionEvent e) throws IOException {
+
+		String selectedText = sentenceDisplay.getSelectedText();
+
+		String[] words = selectedText.split("\\s+");
+
+		if (words.length > 40) {
+			Alert invalidWordCount = new Alert(Alert.AlertType.ERROR);
+			invalidWordCount.setTitle("Word Count Exceeded");
+			invalidWordCount.setHeaderText("The text you wish to play cannot exceed 40 words!");
+			invalidWordCount.setContentText("Kindly select a smaller chunk of text.");
+			invalidWordCount.showAndWait();
+
+			return;
+		}
+
+		String command = "echo -e \" " + selectedText + "\" | festival --tts";
+		BashProcess testAudio = new BashProcess();
+		testAudio.runCommand(command);
+		return;
 
 	}
 
