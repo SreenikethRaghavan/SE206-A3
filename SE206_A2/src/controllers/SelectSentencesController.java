@@ -101,7 +101,7 @@ public class SelectSentencesController {
 
 		selectSentences.runCommand(command); 
 
-		AppWindow.valueOf("CreationName").setScene(e);
+		AppWindow.valueOf("SelectImages").setScene(e);
 		return;
 
 
