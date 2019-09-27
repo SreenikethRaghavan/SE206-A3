@@ -9,6 +9,7 @@ import FXML.AppWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import wikispeak.BashProcess;
@@ -26,7 +27,15 @@ import wikispeak.BashProcess;
 public class SelectSentencesController {
 
 	@FXML
-	private Slider slider;
+	private RadioButton defaultVoice;
+
+	@FXML
+	private RadioButton aucklandVoice1;
+
+	@FXML
+	private RadioButton aucklandVoice2;
+
+
 
 	@FXML
 	private TextArea sentenceDisplay;

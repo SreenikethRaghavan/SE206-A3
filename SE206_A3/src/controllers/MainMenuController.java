@@ -35,7 +35,7 @@ public class MainMenuController {
 		BashProcess process = new BashProcess();
 
 		String command = "mkdir -p ./creation_files/temporary_files/audio_files; mkdir -p ./creation_files/temporary_files/video_files; "
-				+ "mkdir -p ./creation_files/temporary_files/text_files; mkdir -p ./creation_files/creations";
+				+ "mkdir -p ./creation_files/temporary_files/text_files; mkdir -p ./creation_files/creations; mkdir -p ./creation_files/temporary_files/image_files; mkdir -p ./creation_files/temporary_files/audio_files/merged_audio;";
 
 		process.runCommand(command);
 	}
