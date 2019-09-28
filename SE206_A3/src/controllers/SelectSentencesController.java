@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
+import wikispeak.BashProcess;
 
 
 /**
@@ -119,7 +120,11 @@ public class SelectSentencesController {
 			return;
 		}
 
-		AssociationClass.getInstance().storeSelectedText(selectedText);
+		BashProcess storeText = new BashProcess();
+
+		String command = "echo -e \"" + selectedText + "\" | tee ./creation_files/temporary_files/text_files/audio_text.txt 1> /dev/null";
+
+		storeText.runCommand(command);
 
 		if (defaultVoiceButton.isSelected()) {
 			AssociationClass.getInstance().storeSelectedVoice("kal_diphone");

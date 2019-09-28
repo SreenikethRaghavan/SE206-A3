@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import FXML.AppWindow;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import wikispeak.BashProcess;
@@ -17,9 +20,19 @@ public class AudioNameController {
 	private TextField textBar;
 
 	@FXML
+	private Button enterButton;
+
+	@FXML
+	private Button backButton;
+
+	private String userInput;
+
+	private String fileName;
+
+	@FXML
 	private void createAudioFile(ActionEvent e) throws IOException {
 
-		String userInput = textBar.getText();
+		userInput = textBar.getText();
 
 		if(userInput == null || userInput.equals("")){
 			AppWindow.valueOf("AudioName").setScene(e);
@@ -43,7 +56,7 @@ public class AudioNameController {
 		}
 
 
-		String fileName = "./creation_files/temporary_files/audio_files/"+ userInput +".wav";
+		fileName = "./creation_files/temporary_files/audio_files/"+ userInput +".wav";
 
 		File file = new File(fileName);
 
@@ -56,28 +69,9 @@ public class AudioNameController {
 			fileExists.setContentText("Would you like to override the existing file?");
 			fileExists.showAndWait().ifPresent(selection -> {
 
-				if(selection == ButtonType.OK) {
+				if(selection == ButtonType.OK) {					
 
-
-					BashProcess selectSentences = new BashProcess();
-
-					String command = "echo -e " + AssociationClass.getInstance().getSelectedText() + " | text2wave -o \"" + fileName + "\" -val \"(voice_"
-							+ AssociationClass.getInstance().getSelectedVoice() + ")\"";
-
-					selectSentences.runCommand(command);
-
-					Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-					created.setTitle("Audio File Created");
-					created.setHeaderText("Audio File with the name '" + userInput + "' has been successfully created!");
-					created.setContentText("You can now listen to the audio file you have created and can merge multiple audio file together.");
-					created.showAndWait();
-
-					try {
-						AppWindow.valueOf("AudioFiles").setScene(e);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+					generateWavFile(e);
 				}
 
 				else {
@@ -91,27 +85,61 @@ public class AudioNameController {
 
 				}
 			});
+
 		}
+
 
 
 		else {
-			BashProcess selectSentences = new BashProcess();
 
-			String command = "echo -e " + AssociationClass.getInstance().getSelectedText() + " | text2wave -o \"" + fileName + "\" -val \"(voice_"
-					+ AssociationClass.getInstance().getSelectedVoice() + ")\"";
+			generateWavFile(e);
 
-			selectSentences.runCommand(command);
-
-			Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-			created.setTitle("Audio File Created");
-			created.setHeaderText("Audio File with the name '" + userInput + "' has been successfully created!");
-			created.setContentText("You can now listen to the audio file you have created and can merge multiple audio files together.");
-			created.showAndWait();
-
-			AppWindow.valueOf("AudioFiles").setScene(e);
 		}
+	}
 
+	@FXML
+	private void generateWavFile(ActionEvent e) {
+
+		backButton.setDisable(true);
+		enterButton.setDisable(true);
+
+		Task<Void> task = new Task<Void>() {
+			@Override protected Void call() throws Exception {
+
+				BashProcess createAudio = new BashProcess();
+
+				String command = " text2wave -o \"" + fileName + "\" ./creation_files/temporary_files/text_files/audio_text.txt -eval \"(voice_"
+						+ AssociationClass.getInstance().getSelectedVoice() + ")\"";
+
+				createAudio.runCommand(command);
+
+				return null;
+			}
+
+			@Override protected void done() {
+
+				Platform.runLater(() -> {
+					Alert created = new Alert(Alert.AlertType.INFORMATION);
+
+					created.setTitle("Audio File Created");
+					created.setHeaderText("Audio File with the name '" + userInput + "' has been successfully created!");
+					created.setContentText("You can now listen to the audio file you have created and can merge multiple audio file together.");
+					created.showAndWait();
+
+					try {
+						AppWindow.valueOf("AudioFiles").setScene(e);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				});
+			}
+		};
+
+		Thread thread = new Thread(task);
+
+		thread.setDaemon(true);
+
+		thread.start();
 	}
 
 	@FXML

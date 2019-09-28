@@ -176,8 +176,10 @@ public class AudioFilesController {
 
 		if (selection != null && selection != "") {
 
-			mergeList.add(selection.substring(3));
+			if (!mergeList.contains(selection.substring(3))) {
+				mergeList.add(selection.substring(3));
 
+			}
 		}
 
 		filesToMerge.setItems(mergeList);

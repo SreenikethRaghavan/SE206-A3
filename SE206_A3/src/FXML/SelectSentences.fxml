@@ -102,7 +102,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="49.0" prefWidth="428.0" spacing="60.0">
                <children>
-                  <Button id="testAudioButton" fx:id="testAudioButton" mnemonicParsing="false" onAction="#testAudio" prefHeight="25.0" prefWidth="92.0" text="Test Audio">
+                  <Button id="testAudioButton" mnemonicParsing="false" onAction="#testAudio" prefHeight="25.0" prefWidth="92.0" text="Test Audio">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -110,7 +110,7 @@
                         <Font size="11.0" />
                      </font>
                   </Button>
-                  <Button id="createFileButton" fx:id="createFileButton" mnemonicParsing="false" onAction="#createAudio" prefHeight="25.0" prefWidth="115.0" text="Create Audio File">
+                  <Button id="createFileButton" mnemonicParsing="false" onAction="#createAudio" prefHeight="25.0" prefWidth="115.0" text="Create Audio File">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

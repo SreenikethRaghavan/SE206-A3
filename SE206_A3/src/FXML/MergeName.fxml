@@ -24,7 +24,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="105.0" prefWidth="600.0">
          <children>
-            <TextField id="textBar" fx:id="textBar" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="201.0">
+            <TextField id="textBar" fx:id="textBar" alignment="CENTER" prefHeight="30.0" prefWidth="201.0">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>

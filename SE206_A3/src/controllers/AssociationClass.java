@@ -17,8 +17,6 @@ public class AssociationClass {
 
 	private String searchTerm;
 
-	private String selectedText;
-
 	private List<String> filesToMerge;
 
 	private String audioFile; 
@@ -48,14 +46,6 @@ public class AssociationClass {
 		this.searchTerm = searchTerm;
 	}
 
-	public String getSelectedText() {
-		return selectedText;
-	}
-
-
-	public void storeSelectedText(String selectedText) {
-		this.selectedText = selectedText;
-	}
 
 	public List<String> getFilesToMerge() {
 		return filesToMerge;

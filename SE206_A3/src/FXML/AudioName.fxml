@@ -24,7 +24,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <TextField id="textBar" fx:id="textBar" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="201.0">
+            <TextField id="textBar" fx:id="textBar" alignment="CENTER" prefHeight="30.0" prefWidth="201.0">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
@@ -44,7 +44,7 @@
       </HBox>
       <HBox alignment="BOTTOM_LEFT" prefHeight="123.0" prefWidth="600.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#returnToSelectSentences" text="Back">
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#returnToSelectSentences" text="Back">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

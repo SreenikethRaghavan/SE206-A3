@@ -29,7 +29,7 @@ public class WikiSpeak extends Application {
 	public void start(Stage primaryStage) throws IOException {
 
 		Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainMenu.fxml"));		
-		primaryStage.setTitle("Wiki-Speak Authoring Tool");
+		primaryStage.setTitle("VARpedia");
 		primaryStage.sizeToScene();
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();

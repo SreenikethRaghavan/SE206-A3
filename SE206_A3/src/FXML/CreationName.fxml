@@ -24,7 +24,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <TextField id="searchBar" fx:id="searchBar" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="201.0">
+            <TextField id="searchBar" fx:id="searchBar" alignment="CENTER" prefHeight="30.0" prefWidth="201.0">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>

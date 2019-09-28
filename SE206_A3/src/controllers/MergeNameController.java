@@ -17,10 +17,12 @@ public class MergeNameController {
 	@FXML
 	private TextField textBar;
 
+	private String userInput;
+
 	@FXML
 	private void mergeAudioFiles(ActionEvent e) throws IOException {
 
-		String userInput = textBar.getText();
+		userInput = textBar.getText();
 
 		if(userInput == null || userInput.equals("")){
 			AppWindow.valueOf("MergeName").setScene(e);
@@ -59,22 +61,7 @@ public class MergeNameController {
 
 				if(selection == ButtonType.OK) {
 
-					AssociationClass.getInstance().storeAudioFile(userInput);
-
-					BashProcess playAudio = new BashProcess();
-
-					String command = "sox ";
-
-					List<String> mergeList = AssociationClass.getInstance().getFilesToMerge();
-
-					for (String audioFile : mergeList) {
-
-						command += audioFile + ".wav ";
-					}
-
-					command += userInput + ".wav";
-
-					playAudio.runCommand(command);
+					merging();
 
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
 
@@ -109,23 +96,7 @@ public class MergeNameController {
 
 		else {
 
-			AssociationClass.getInstance().storeAudioFile(userInput);
-
-			BashProcess playAudio = new BashProcess();
-
-			String command = "sox ";
-
-			List<String> mergeList = AssociationClass.getInstance().getFilesToMerge();		
-
-
-			for (String audioFile : mergeList) {
-
-				command += audioFile + ".wav ";
-			}
-
-			command += userInput + ".wav";
-
-			playAudio.runCommand(command);
+			merging();
 
 			Alert created = new Alert(Alert.AlertType.INFORMATION);
 
@@ -143,6 +114,29 @@ public class MergeNameController {
 
 		AppWindow.valueOf("AudioFiles").setScene(e);
 		return;
+	}
+
+	private void merging() {
+
+		AssociationClass.getInstance().storeAudioFile(userInput);
+
+		BashProcess playAudio = new BashProcess();
+
+		String path = "\"./creation_files/temporary_files/audio_files/";
+
+		String command = "sox ";
+
+		List<String> mergeList = AssociationClass.getInstance().getFilesToMerge();		
+
+
+		for (String audioFile : mergeList) {
+
+			command += path + audioFile + ".wav\" ";
+		}
+
+		command += path + userInput + ".wav\"";
+
+		playAudio.runCommand(command);
 	}
 
 }
