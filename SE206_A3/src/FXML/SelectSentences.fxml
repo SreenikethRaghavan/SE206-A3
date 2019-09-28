@@ -2,55 +2,146 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SelectSentencesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SelectSentencesController">
    <children>
-      <TextArea id="sentenceDisplay" fx:id="sentenceDisplay" prefHeight="206.0" prefWidth="600.0" />
+      <TextArea id="sentenceDisplay" fx:id="sentenceDisplay" prefHeight="206.0" prefWidth="672.0" />
       <HBox id="slider" alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="How many sentences would you like to include in your creation?" textAlignment="CENTER" textOrigin="CENTER">
+            <VBox alignment="CENTER" prefHeight="150.0" prefWidth="599.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="You may edit the text above" textAlignment="CENTER" underline="true">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Once done editing, kindly select the text (no greater than 40 words) you would like to test/create an audio file from." textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="598.6343994140625">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <children>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <RadioButton id="defaultVoiceButton" fx:id="defaultVoiceButton" mnemonicParsing="false" text="Default Voice">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="voiceSelectionGroup" />
+                     </toggleGroup>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <RadioButton id="maleNZVoiceButton" fx:id="maleNZVoiceButton" mnemonicParsing="false" text="Male New Zealand Voice" toggleGroup="$voiceSelectionGroup">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <RadioButton id="femaleNZVoiceButton" fx:id="femaleNZVoiceButton" mnemonicParsing="false" text="Female New Zealand Voice" toggleGroup="$voiceSelectionGroup">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </RadioButton>
+               </children>
                <HBox.margin>
                   <Insets />
                </HBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Text>
+            </HBox>
          </children>
       </HBox>
-      <Slider id="slider" fx:id="slider" blockIncrement="100.0" majorTickUnit="1.0" max="25.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToPixel="false" snapToTicks="true">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Slider>
-      <HBox alignment="CENTER" prefHeight="23.0" prefWidth="600.0">
+      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="600.0">
          <children>
-            <Button id="enterButton" mnemonicParsing="false" onAction="#readSlider" text="Enter" />
-         </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="600.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Back">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="59.0" text="Back">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="49.0" prefWidth="428.0" spacing="60.0">
+               <children>
+                  <Button id="testAudioButton" fx:id="testAudioButton" mnemonicParsing="false" onAction="#testAudio" prefHeight="25.0" prefWidth="92.0" text="Test Audio">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+                  <Button id="createFileButton" fx:id="createFileButton" mnemonicParsing="false" onAction="#createAudio" prefHeight="25.0" prefWidth="115.0" text="Create Audio File">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <HBox.margin>
-                  <Insets left="20.0" />
+                  <Insets />
                </HBox.margin>
-            </Button>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#goNext" text="Skip Step">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </HBox>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
    </children>
 </VBox>
-
-
-

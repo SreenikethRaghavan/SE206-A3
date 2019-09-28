@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AudioFilesController">
+   <children>
+      <HBox prefHeight="332.0" prefWidth="600.0">
+         <children>
+            <ListView fx:id="existingFiles" prefHeight="200.0" prefWidth="200.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#addToMergeList" prefHeight="25.0" prefWidth="40.0" text=" &gt;&gt;">
+                     <VBox.margin>
+                        <Insets left="30.0" top="80.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#removeFromMergeList" prefHeight="25.0" prefWidth="40.0" text="&lt;&lt;">
+                     <VBox.margin>
+                        <Insets left="30.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="34.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/playButton.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Button id="playButton" fx:id="playButton" mnemonicParsing="false" onAction="#playFile" prefHeight="23.0" prefWidth="46.0" text="Play">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="34.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/bin.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Button id="deleteButton" fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteFile" prefHeight="25.0" prefWidth="66.0" text="Delete">
+                           <HBox.margin>
+                              <Insets right="2.0" top="7.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <ListView fx:id="filesToMerge" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="91.0" prefWidth="600.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#useExistingFile" text="Use Selected File">
+               <HBox.margin>
+                  <Insets right="190.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#mergeFiles" text="Merge Files ">
+               <HBox.margin>
+                  <Insets left="60.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="600.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#returnToSelectSentences" text="Back">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>
