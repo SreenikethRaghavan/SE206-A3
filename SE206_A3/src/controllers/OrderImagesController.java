@@ -56,12 +56,10 @@ public class OrderImagesController {
 	@FXML
 	private ImageView moveDownImageView;
 
-	private int ImageNum=0;
-
 	private ObservableList<String> sorted;
 
 	@FXML
-	private int updateList() {
+	private void updateList() {
 		List<String> images = new ArrayList<String>();
 
 		File[] files = new File("creation_files/temporary_files/image_files/").listFiles();
@@ -83,11 +81,10 @@ public class OrderImagesController {
 
 		sorted = FXCollections.observableArrayList();
 
-		int index = 1;
+		
 
 		for(String image : images) {
 			sorted.add(image);
-			index++;
 
 		}
 		
@@ -95,7 +92,7 @@ public class OrderImagesController {
 
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-		return index-1;
+		//return index-1;
 
 	}
 
@@ -123,8 +120,8 @@ public class OrderImagesController {
 			}
 		});
 		
-		//i dont think saving it is still necessary, but ah well.
-		ImageNum = updateList();
+		
+		updateList();
 
 
 	}
