@@ -3,14 +3,16 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import FXML.AppWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Slider;
+import javafx.scene.control.Alert;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import wikispeak.BashProcess;
 
 
 /**
@@ -25,7 +27,14 @@ import wikispeak.BashProcess;
 public class SelectSentencesController {
 
 	@FXML
-	private Slider slider;
+	private RadioButton defaultVoiceButton;
+
+	@FXML
+	private RadioButton maleNZVoiceButton;
+
+	@FXML
+	private RadioButton femaleNZVoiceButton;
+
 
 	@FXML
 	private TextArea sentenceDisplay;
@@ -39,28 +48,23 @@ public class SelectSentencesController {
 	@FXML
 	private void initialize() throws IOException {
 
-		sentenceDisplay.setEditable(false);
-
 		BufferedReader reader = new BufferedReader(new FileReader("./creation_files/temporary_files/text_files/wikipedia_output.txt"));
 
 		List<String> lines = new ArrayList<String>();
 		String sentence;
 
-		int numLines = 0;
+
 		while ((sentence = reader.readLine()) != null) {
 			lines.add(sentence);
-			numLines++;
 		}
 
 		reader.close();
 
 		List<String> searchResult = new ArrayList<String>();
 
-		int index = 1;
 		for (String line : lines) {
-			sentence  = index +". " + line + "\n";
+			sentence  = line + "\n";
 			searchResult.add(sentence);
-			index++;
 		}
 
 
@@ -71,8 +75,6 @@ public class SelectSentencesController {
 
 		sentenceDisplay.setText(result);
 
-		slider.setMin(1);
-		slider.setMax((double)numLines);
 	}
 
 	@FXML
@@ -82,6 +84,14 @@ public class SelectSentencesController {
 		return;
 	}
 
+	@FXML
+	private void goNext(ActionEvent e) throws IOException {
+
+		AppWindow.valueOf("AudioFiles").setScene(e);
+		return;
+	}
+
+
 
 	/**
 	 * Read the slider value and use it to get the number of 
@@ -89,23 +99,106 @@ public class SelectSentencesController {
 	 * 
 	 */
 	@FXML
-	private void readSlider(ActionEvent e) throws IOException {
+	private void createAudio(ActionEvent e) throws IOException {
 
-		int sentenceNum = (int)slider.getValue();
+		String selectedText = sentenceDisplay.getSelectedText();
 
+		if (selectedText == null || selectedText.equals("")) {
+			return;
+		}
 
-		BashProcess selectSentences = new BashProcess();
+		String[] words = selectedText.split("\\s+");
 
-		String command = "echo \"`head -n " + sentenceNum + " ./creation_files/temporary_files/text_files/wikipedia_output.txt`\" > ./creation_files/temporary_files/text_files/wikipedia_output.txt";
+		if (words.length > 40) {
+			Alert invalidWordCount = new Alert(Alert.AlertType.ERROR);
+			invalidWordCount.setTitle("Word Count Exceeded");
+			invalidWordCount.setHeaderText("The text you wish to play cannot exceed 40 words!");
+			invalidWordCount.setContentText("Kindly select a smaller chunk of text.");
+			invalidWordCount.showAndWait();
 
+			return;
+		}
 
-		selectSentences.runCommand(command); 
+		AssociationClass.getInstance().storeSelectedText(selectedText);
 
-		AppWindow.valueOf("SelectImages").setScene(e);
+		if (defaultVoiceButton.isSelected()) {
+			AssociationClass.getInstance().storeSelectedVoice("kal_diphone");
+		}
+
+		else if (maleNZVoiceButton.isSelected()) {
+			AssociationClass.getInstance().storeSelectedVoice("akl_nz_jdt_diphone");
+		}
+
+		else if (femaleNZVoiceButton.isSelected()) {
+			AssociationClass.getInstance().storeSelectedVoice("akl_nz_cw_cg_cg");
+		}
+
+		else {
+			Alert noVoice = new Alert(Alert.AlertType.ERROR);
+			noVoice.setTitle("No Voice Selected");
+			noVoice.setHeaderText("You have not selected a voice!");
+			noVoice.setContentText("Kindly select a voice to use for the audio file.");
+			noVoice.showAndWait();
+
+			return;
+		}
+
+		AppWindow.valueOf("AudioName").setScene(e);
 		return;
+	}
 
+	@FXML
+	private void testAudio(ActionEvent e) throws IOException {
+
+		String selectedText = sentenceDisplay.getSelectedText();
+
+		if (selectedText == null || selectedText.equals("")) {
+			return;
+		}
+
+		String[] words = selectedText.split("\\s+");
+
+		if (words.length > 40) {
+			Alert invalidWordCount = new Alert(Alert.AlertType.ERROR);
+			invalidWordCount.setTitle("Word Count Exceeded");
+			invalidWordCount.setHeaderText("The text you wish to play cannot exceed 40 words!");
+			invalidWordCount.setContentText("Kindly select a smaller chunk of text.");
+			invalidWordCount.showAndWait();
+
+			return;
+		}
+
+		if (defaultVoiceButton.isSelected()) {
+			sayText(selectedText, "kal_diphone");
+		}
+
+		else if (maleNZVoiceButton.isSelected()) {
+			sayText(selectedText, "akl_nz_jdt_diphone");
+		}
+
+		else if (femaleNZVoiceButton.isSelected()) {
+			sayText(selectedText, "akl_nz_cw_cg_cg");
+		}
+
+		else {
+			Alert noVoice = new Alert(Alert.AlertType.ERROR);
+			noVoice.setTitle("No Voice Selected");
+			noVoice.setHeaderText("You have not selected a voice!");
+			noVoice.setContentText("Kindly select a voice to test the text with.");
+			noVoice.showAndWait();
+		}
 
 	}
 
+	private void sayText(String text, String voice) throws IOException {
+
+		Process process = Runtime.getRuntime().exec("festival");
+		Writer writer = new OutputStreamWriter(process.getOutputStream());
+
+		writer.append("(voice_" + voice + ")");
+		writer.append("(SayText \"" + text + "\")");
+		writer.flush();
+
+	}
 
 }
