@@ -47,6 +47,9 @@ public class SelectImagesController {
 	
 	@FXML
 	private Button enterButton;
+	
+	@FXML
+	private Button backButton;
 
 	/**
 	 * Initialise the scene. Just need to make sure the slider has the correct values.
@@ -59,6 +62,7 @@ public class SelectImagesController {
 		progressBar.setProgress(0.0);
 		
 		enterButton.setDisable(false);
+		backButton.setDisable(false);
 
 		slider.setMin(1);
 		slider.setMax(10);
@@ -103,6 +107,7 @@ public class SelectImagesController {
 		progressBar.setVisible(true);
 		//progressBar.progressProperty().add(1);
 		enterButton.setDisable(true);
+		backButton.setDisable(true);
 		
 		int imageNum = (int)slider.getValue();
 		//place holder value. TODO: get the length of the audio file, this value should be imageNum/audioLength
@@ -174,7 +179,7 @@ public class SelectImagesController {
 			@Override protected void done() {
 				// alert user about creation being created
 				Platform.runLater(() -> {
-
+					
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
 
 					created.setTitle("Images Finished Downloading");

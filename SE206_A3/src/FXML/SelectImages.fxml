@@ -33,7 +33,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="23.0" prefWidth="600.0">
          <children>
-            <Button id="enterButton" fx:id="enterButton" mnemonicParsing="false" onAction="#readImageSlider" text="Enter" />
+            <Button id="enterButton" fx:id="enterButton" mnemonicParsing="false" onAction="#readImageSlider" text="Download Images" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
@@ -59,7 +59,7 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="600.0">
          <children>
-            <Button alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#goBack" text="Back">
+            <Button alignment="BOTTOM_LEFT" fx:id="backButton" mnemonicParsing="false" onAction="#goBack" text="Back">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
