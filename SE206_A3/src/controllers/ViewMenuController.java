@@ -17,7 +17,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import wikispeak.BashProcess;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.scene.media.MediaPlayer.Status;
+//import wikispeak.BashProcess;
 
 
 /**
@@ -25,6 +29,7 @@ import wikispeak.BashProcess;
  * where the user is allowed to play and delete creations. 
  * 
  * @author Sreeniketh Raghavan
+ * @author Hazel Williams
  * 
  */
 public class ViewMenuController {
@@ -35,17 +40,25 @@ public class ViewMenuController {
 
 	@FXML
 	private Button playButton;
+	
+	@FXML
+	private Button pausePlayButton;
+	
+	@FXML
+	private Button stopButton;
 
 	@FXML
 	private Button deleteButton;
 
 	@FXML
-	private void initialize() {
+	private MediaView mediaView;
+	
+	private MediaPlayer player;
+	
 
+	@FXML
+	private void updateList() {
 		List<String> creations = new ArrayList<String>();
-
-		playButton.setDisable(false);
-		deleteButton.setDisable(false);
 
 		File[] files = new File("./creation_files/creations").listFiles();
 
@@ -59,7 +72,6 @@ public class ViewMenuController {
 				}
 			}
 		}
-
 		else {
 			// if no creations exist
 			Alert noCreationsAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -67,9 +79,13 @@ public class ViewMenuController {
 			noCreationsAlert.setHeaderText("There are currently no existing creations to display.");
 			noCreationsAlert.setContentText("Kindly create a new creation to view it on the list. ");
 			noCreationsAlert.showAndWait();
+			
+			creations.add("No creations currently exist.");
+			creations.add("Please create a creation to view it.");
+			playButton.setDisable(true);
+			deleteButton.setDisable(true);
 
 		}
-
 
 		// sort alphabetically
 		Collections.sort(creations);
@@ -78,22 +94,73 @@ public class ViewMenuController {
 		ObservableList<String> sorted = FXCollections.observableArrayList();
 
 		int index = 1;
+		
+		String creationName = "";
 
-		// number the creations
+		// number the creations, if there are creations
 		for(String creation : creations) {
-			String creationName = index + ". " + creation;
+			if (files.length != 0) {
+				//if there are files we want to number them
+				creationName = index + ". " + creation;
+			} else {
+				//else we just want to add them as a message.
+				creationName = creation;
+			}
 			sorted.add(creationName);
 			index++;
-
+	
 		}
+
 
 		listView.setItems(sorted);
 
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 
+
 	}
 
+
+
+
+	@FXML
+	private void initialize() {
+
+		updateList();
+		stopButton.setDisable(true);
+		pausePlayButton.setDisable(true);
+
+		//File fileUrl = new File("creation_files/temporary_files/video_files/output.mp4");
+		File fileUrl = new File("src/images/defaultView.mp4");
+		Media video = new Media(fileUrl.toURI().toString());
+		player = new MediaPlayer(video);
+		player.setAutoPlay(true);
+		mediaView.setMediaPlayer(player);
+
+	}
+	
+	
+	@FXML
+	private void togglePausePlay() {
+		if (player.getStatus() == Status.PLAYING) {
+			player.pause();
+		} else {
+			player.play();
+		}
+	}
+	
+	//resets the video to default view, ie stops the video.
+	@FXML
+	private void stopVideo() {
+		File fileUrl = new File("src/images/defaultView.mp4");
+		Media video = new Media(fileUrl.toURI().toString());
+		player = new MediaPlayer(video);
+		player.setAutoPlay(true);
+		mediaView.setMediaPlayer(player);
+		stopButton.setDisable(true);
+		pausePlayButton.setDisable(true);
+	}
+	
 	@FXML
 	private void deleteCreation() {
 
@@ -120,40 +187,72 @@ public class ViewMenuController {
 
 		}
 		// update view
-		initialize();
+		//initialize();
+		updateList();
 	}
+	
 
-
-
+	/*
+	 * Changed 26/09/2019: No longer use ffmplay to play videos, instead embeds them in the gui
+	 */
 	@FXML
 	private void playCreation() {
 
-		playButton.setDisable(true);
-		deleteButton.setDisable(true);
-
+		//playButton.setDisable(true);
+		//deleteButton.setDisable(true);
+		
 
 		String selected = listView.getSelectionModel().getSelectedItem();
 
-		if (selected != null) {
+		if(selected == null) {
+			playButton.setDisable(false);
+		}
 
+		if (selected != null) {
+			stopButton.setDisable(false);
+			pausePlayButton.setDisable(false);
 
 			String selectedCreation = selected.substring(3);
 
 			Task<Void> task = new Task<Void>() {
 				@Override protected Void call() throws Exception {
 
-					BashProcess playCreation = new BashProcess();
+					//BashProcess playCreation = new BashProcess();
 
 					// play using ffplay on a different thread
-					String command = "ffplay -autoexit \"./creation_files/creations/" + selectedCreation + ".mp4\" &> /dev/null";
+					//String command = "ffplay -autoexit \"./creation_files/creations/" + selectedCreation + ".mp4\" &> /dev/null";
 
-					playCreation.runCommand(command);
+					File fileUrl = new File("creation_files/creations/" + selectedCreation + ".mp4");
+					Media video = new Media(fileUrl.toURI().toString());
+					player = new MediaPlayer(video);
+					player.setAutoPlay(true);
+					mediaView.setMediaPlayer(player);
+					player.setOnEndOfMedia(new Runnable() {
+						@Override
+						public void run() {
+							//System.out.println("Finished my video :)");
+							//resets it back to default view once the video has finished playing
+							//TODO: check that if u start playing a new video part way through another one, the original one doesnt trigger this
+							File fileUrl = new File("src/images/defaultView.mp4");
+							Media video = new Media(fileUrl.toURI().toString());
+							player = new MediaPlayer(video);
+							player.setAutoPlay(true);
+							mediaView.setMediaPlayer(player);
+							stopButton.setDisable(true);
+							pausePlayButton.setDisable(true);
+						}
+					});
+
+					//playCreation.runCommand(command);
+
+
 
 					return null;
 				}
 				@Override protected void done() {
 					Platform.runLater(() -> {
-						initialize();
+						//initialize();
+						//doesnt need to run anything post play?
 
 					});
 
