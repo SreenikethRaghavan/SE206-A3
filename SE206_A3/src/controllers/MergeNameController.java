@@ -63,13 +63,6 @@ public class MergeNameController {
 
 					merging();
 
-					Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-					created.setTitle("Audio File Created");
-					created.setHeaderText("Combined Audio File with the name '" + userInput + "' has been successfully created!");
-					created.showAndWait();
-
-
 					try { 
 						AppWindow.valueOf("SelectImages").setScene(e); 
 					} 
@@ -97,12 +90,6 @@ public class MergeNameController {
 		else {
 
 			merging();
-
-			Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-			created.setTitle("Audio File Created");
-			created.setHeaderText("Combined Audio File with the name '" + userInput + "' has been successfully created!");
-			created.showAndWait();
 
 			AppWindow.valueOf("SelectImages").setScene(e);
 		}
@@ -137,6 +124,13 @@ public class MergeNameController {
 		command += path + userInput + ".wav\"";
 
 		playAudio.runCommand(command);
+
+		Alert created = new Alert(Alert.AlertType.INFORMATION);
+
+		created.setTitle("Audio File Created");
+		created.setHeaderText("Combined Audio File with the name '" + userInput + "' has been successfully created!");
+		created.showAndWait();
+
 	}
 
 }
