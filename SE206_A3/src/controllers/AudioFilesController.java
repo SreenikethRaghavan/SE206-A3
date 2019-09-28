@@ -17,16 +17,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import wikispeak.BashProcess;
 
 public class AudioFilesController {
 
 	@FXML
-	private TableView<String> existingFiles;
+	private ListView<String> existingFiles;
 
 	@FXML
-	private TableView<String> filesToMerge;
+	private ListView<String> filesToMerge;
 
 	@FXML
 	private Button playButton;
@@ -170,7 +170,7 @@ public class AudioFilesController {
 	}
 
 	@FXML
-	private void addToMergeTable() {
+	private void addToMergeList() {
 
 		String selection = existingFiles.getSelectionModel().getSelectedItem();
 
@@ -185,7 +185,7 @@ public class AudioFilesController {
 	}
 
 	@FXML
-	private void removeFromMergeTable() {
+	private void removeFromMergeList() {
 
 		String selection = filesToMerge.getSelectionModel().getSelectedItem();
 

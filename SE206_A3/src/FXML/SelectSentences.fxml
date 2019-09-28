@@ -12,7 +12,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SelectSentencesController">
    <children>
-      <TextArea id="sentenceDisplay" fx:id="sentenceDisplay" prefHeight="206.0" prefWidth="600.0" />
+      <TextArea id="sentenceDisplay" fx:id="sentenceDisplay" prefHeight="206.0" prefWidth="672.0" />
       <HBox id="slider" alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
          <children>
             <VBox alignment="CENTER" prefHeight="150.0" prefWidth="599.0">
@@ -39,43 +39,109 @@
             <Insets />
          </VBox.margin>
          <children>
-            <RadioButton mnemonicParsing="false" text="Voice 1">
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <RadioButton id="defaultVoiceButton" fx:id="defaultVoiceButton" mnemonicParsing="false" text="Default Voice">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="voiceSelectionGroup" />
+                     </toggleGroup>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <RadioButton id="maleNZVoiceButton" fx:id="maleNZVoiceButton" mnemonicParsing="false" text="Male New Zealand Voice" toggleGroup="$voiceSelectionGroup">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <RadioButton id="femaleNZVoiceButton" fx:id="femaleNZVoiceButton" mnemonicParsing="false" text="Female New Zealand Voice" toggleGroup="$voiceSelectionGroup">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </RadioButton>
+               </children>
                <HBox.margin>
-                  <Insets right="100.0" />
+                  <Insets />
                </HBox.margin>
-               <toggleGroup>
-                  <ToggleGroup fx:id="voiceSelectionGroup" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Voice 2" toggleGroup="$voiceSelectionGroup" />
-            <RadioButton mnemonicParsing="false" text="Voice 3" toggleGroup="$voiceSelectionGroup">
-               <HBox.margin>
-                  <Insets left="100.0" />
-               </HBox.margin>
-            </RadioButton>
+            </HBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="53.0" prefWidth="600.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="59.0" text="Back">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="59.0" text="Back">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="49.0" prefWidth="428.0" spacing="60.0">
+               <children>
+                  <Button id="testAudioButton" fx:id="testAudioButton" mnemonicParsing="false" onAction="#testAudio" prefHeight="25.0" prefWidth="92.0" text="Test Audio">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+                  <Button id="createFileButton" fx:id="createFileButton" mnemonicParsing="false" onAction="#createAudio" prefHeight="25.0" prefWidth="115.0" text="Create Audio File">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <HBox.margin>
-                  <Insets right="180.0" />
+                  <Insets />
                </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#testAudio" prefHeight="25.0" prefWidth="92.0" text="Test Audio">
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#goNext" text="Skip Step">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
                <HBox.margin>
                   <Insets />
                </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#createAudio" prefHeight="25.0" prefWidth="115.0" text="Create Audio File">
-               <HBox.margin>
-                  <Insets left="120.0" />
-               </HBox.margin>
-            </Button>
+            </HBox>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
    </children>
 </VBox>

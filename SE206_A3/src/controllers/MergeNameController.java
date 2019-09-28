@@ -82,11 +82,15 @@ public class MergeNameController {
 					created.setHeaderText("Combined Audio File with the name '" + userInput + "' has been successfully created!");
 					created.showAndWait();
 
-					try {
-						AppWindow.valueOf("SelectImages").setScene(e);
-					} catch (IOException e1) {
-						e1.printStackTrace();
+
+					try { 
+						AppWindow.valueOf("SelectImages").setScene(e); 
+					} 
+
+					catch (IOException e1) { 
+						e1.printStackTrace(); 
 					}
+
 				}
 
 				else {
@@ -111,7 +115,8 @@ public class MergeNameController {
 
 			String command = "sox ";
 
-			List<String> mergeList = AssociationClass.getInstance().getFilesToMerge();
+			List<String> mergeList = AssociationClass.getInstance().getFilesToMerge();		
+
 
 			for (String audioFile : mergeList) {
 

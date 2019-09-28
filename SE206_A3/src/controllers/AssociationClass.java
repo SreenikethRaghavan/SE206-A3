@@ -23,6 +23,8 @@ public class AssociationClass {
 
 	private String audioFile; 
 
+	private String selectedVoice;
+
 	private AssociationClass() { 
 
 	}
@@ -73,4 +75,13 @@ public class AssociationClass {
 		this.audioFile = audioFile;
 	}
 
+
+	public String getSelectedVoice() {
+		return selectedVoice;
+	}
+
+
+	public void storeSelectedVoice(String selectedVoice) {
+		this.selectedVoice = selectedVoice;
+	}
 }

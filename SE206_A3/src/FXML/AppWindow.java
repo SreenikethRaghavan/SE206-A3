@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public enum AppWindow {
 
-	MainMenu("MainMenu"), CreateMenu("CreateMenu"), CreationName("CreationName"), SearchError("SearchError"), SelectSentences("SelectSentences"), AudioFiles("AudioFiles"), AudioName("AudioName"), ViewMenu("ViewMenu");
+	MainMenu("MainMenu"), CreateMenu("CreateMenu"), CreationName("CreationName"), SearchError("SearchError"), SelectSentences("SelectSentences"), AudioFiles("AudioFiles"), AudioName("AudioName"), MergeName("MergeName"), SelectImages("SelectImages"), OrderImages("OrderImages"), ViewMenu("ViewMenu");
 
 	private final String fileName;
 

@@ -3,6 +3,8 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import FXML.AppWindow;
@@ -10,9 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
-import wikispeak.BashProcess;
 
 
 /**
@@ -27,14 +27,13 @@ import wikispeak.BashProcess;
 public class SelectSentencesController {
 
 	@FXML
-	private RadioButton defaultVoice;
+	private RadioButton defaultVoiceButton;
 
 	@FXML
-	private RadioButton aucklandVoice1;
+	private RadioButton maleNZVoiceButton;
 
 	@FXML
-	private RadioButton aucklandVoice2;
-
+	private RadioButton femaleNZVoiceButton;
 
 
 	@FXML
@@ -85,6 +84,14 @@ public class SelectSentencesController {
 		return;
 	}
 
+	@FXML
+	private void goNext(ActionEvent e) throws IOException {
+
+		AppWindow.valueOf("AudioFiles").setScene(e);
+		return;
+	}
+
+
 
 	/**
 	 * Read the slider value and use it to get the number of 
@@ -95,6 +102,10 @@ public class SelectSentencesController {
 	private void createAudio(ActionEvent e) throws IOException {
 
 		String selectedText = sentenceDisplay.getSelectedText();
+
+		if (selectedText == null || selectedText.equals("")) {
+			return;
+		}
 
 		String[] words = selectedText.split("\\s+");
 
@@ -110,6 +121,28 @@ public class SelectSentencesController {
 
 		AssociationClass.getInstance().storeSelectedText(selectedText);
 
+		if (defaultVoiceButton.isSelected()) {
+			AssociationClass.getInstance().storeSelectedVoice("kal_diphone");
+		}
+
+		else if (maleNZVoiceButton.isSelected()) {
+			AssociationClass.getInstance().storeSelectedVoice("akl_nz_jdt_diphone");
+		}
+
+		else if (femaleNZVoiceButton.isSelected()) {
+			AssociationClass.getInstance().storeSelectedVoice("akl_nz_cw_cg_cg");
+		}
+
+		else {
+			Alert noVoice = new Alert(Alert.AlertType.ERROR);
+			noVoice.setTitle("No Voice Selected");
+			noVoice.setHeaderText("You have not selected a voice!");
+			noVoice.setContentText("Kindly select a voice to use for the audio file.");
+			noVoice.showAndWait();
+
+			return;
+		}
+
 		AppWindow.valueOf("AudioName").setScene(e);
 		return;
 	}
@@ -118,6 +151,10 @@ public class SelectSentencesController {
 	private void testAudio(ActionEvent e) throws IOException {
 
 		String selectedText = sentenceDisplay.getSelectedText();
+
+		if (selectedText == null || selectedText.equals("")) {
+			return;
+		}
 
 		String[] words = selectedText.split("\\s+");
 
@@ -131,12 +168,37 @@ public class SelectSentencesController {
 			return;
 		}
 
-		String command = "echo -e \" " + selectedText + "\" | festival --tts";
-		BashProcess testAudio = new BashProcess();
-		testAudio.runCommand(command);
-		return;
+		if (defaultVoiceButton.isSelected()) {
+			sayText(selectedText, "kal_diphone");
+		}
+
+		else if (maleNZVoiceButton.isSelected()) {
+			sayText(selectedText, "akl_nz_jdt_diphone");
+		}
+
+		else if (femaleNZVoiceButton.isSelected()) {
+			sayText(selectedText, "akl_nz_cw_cg_cg");
+		}
+
+		else {
+			Alert noVoice = new Alert(Alert.AlertType.ERROR);
+			noVoice.setTitle("No Voice Selected");
+			noVoice.setHeaderText("You have not selected a voice!");
+			noVoice.setContentText("Kindly select a voice to test the text with.");
+			noVoice.showAndWait();
+		}
 
 	}
 
+	private void sayText(String text, String voice) throws IOException {
+
+		Process process = Runtime.getRuntime().exec("festival");
+		Writer writer = new OutputStreamWriter(process.getOutputStream());
+
+		writer.append("(voice_" + voice + ")");
+		writer.append("(SayText \"" + text + "\")");
+		writer.flush();
+
+	}
 
 }

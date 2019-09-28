@@ -61,8 +61,8 @@ public class AudioNameController {
 
 					BashProcess selectSentences = new BashProcess();
 
-					String command = "echo -e " + AssociationClass.getInstance().getSelectedText() + " | text2wave -o \"./creation_files/temporary_files/audio_files/"
-							+ userInput + ".wav\"";
+					String command = "echo -e " + AssociationClass.getInstance().getSelectedText() + " | text2wave -o \"" + fileName + "\" -val \"(voice_"
+							+ AssociationClass.getInstance().getSelectedVoice() + ")\"";
 
 					selectSentences.runCommand(command);
 
@@ -97,8 +97,8 @@ public class AudioNameController {
 		else {
 			BashProcess selectSentences = new BashProcess();
 
-			String command = "echo -e " + AssociationClass.getInstance().getSelectedText() + " | text2wave -o \"./creation_files/temporary_files/audio_files/"
-					+ userInput + ".wav\"";
+			String command = "echo -e " + AssociationClass.getInstance().getSelectedText() + " | text2wave -o \"" + fileName + "\" -val \"(voice_"
+					+ AssociationClass.getInstance().getSelectedVoice() + ")\"";
 
 			selectSentences.runCommand(command);
 
@@ -106,11 +106,16 @@ public class AudioNameController {
 
 			created.setTitle("Audio File Created");
 			created.setHeaderText("Audio File with the name '" + userInput + "' has been successfully created!");
-			created.setContentText("You can now listen to the audio file you have created and can merge multiple audio file together.");
+			created.setContentText("You can now listen to the audio file you have created and can merge multiple audio files together.");
 			created.showAndWait();
 
 			AppWindow.valueOf("AudioFiles").setScene(e);
 		}
 
+	}
+
+	@FXML
+	private void returnToSelectSentences(ActionEvent e) throws IOException {
+		AppWindow.valueOf("SelectSentences").setScene(e);
 	}
 }
