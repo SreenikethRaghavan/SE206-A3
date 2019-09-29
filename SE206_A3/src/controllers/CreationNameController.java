@@ -29,6 +29,7 @@ import wikispeak.BashProcess;
  * class. 
  * 
  * @author Sreeniketh Raghavan
+ * @author Hazel Williams
  * 
  */
 public class CreationNameController {
@@ -48,15 +49,24 @@ public class CreationNameController {
 		
 	}
 	
-	
+	/**
+	 * createCreation is triggered by clicking the enter button.
+	 * It first checks whether the provided potential file name is valid. If it isn't the user will be prompted to try again.
+	 * Then it checks whether a file by that name already exists, asking the user if they wish to overwrite if so.
+	 * Finally, if it has made it past all of those hurdles, it will create the creation. It uses audio and images generated
+	 * and labelled from previous steps, so all that really happens in this task is the final putting it all together.
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void createCreation(ActionEvent e) throws IOException {
-
+		//want to disable the enter button so they can't spam a lot of file creations, avoids them causing overwrite issues.
 		enterButton.setDisable(true);
 		
-
+		
 		userInput = searchBar.getText();
-
+		
+		//if they havent written anything yet but they tried to submit it, dont make a file yet.
 		if(userInput == null || userInput.equals("")){
 			AppWindow.valueOf("CreationName").setScene(e);
 			return;
@@ -101,8 +111,10 @@ public class CreationNameController {
 					} catch (IOException e1) {
 					}
 				}
+				//if they want to override it, continue on.
 			});
 		}
+		
 
 		
 
@@ -112,17 +124,16 @@ public class CreationNameController {
 
 				BashProcess creationProcess = new BashProcess();
 
-
+				//storing the names of the file in advance for code readability reasons
 				String audioFileName = "creation_files/temporary_files/audio_files/" + AssociationClass.getInstance().getAudioFile() + ".wav";
 				String videoFileName = "creation_files/temporary_files/video_files/output.mp4";
 
 				//get the audio length
+				//soxi wasnt behaving, so I have gone with a java based approach.
 				File audioFile = new File(audioFileName);
 				
-
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);					
 				AudioFormat format = audioInputStream.getFormat();							
-
 				
 				long audioFileLength = audioFile.length();
 				
@@ -133,11 +144,20 @@ public class CreationNameController {
 				float durationInSeconds = (audioFileLength / (frameSize * audioframeRate));
 				
 
-				//calculate the image duration
+				//calculate the image duration and round it to something ffmpeg will tolerate. 3dp accuracy is sufficient for matching the audio length to the slideshow length.
 				double frameRate = AssociationClass.getInstance().getNumImages()/durationInSeconds;
 				frameRate = Math.round(frameRate*1000.0)/1000.0;
 
-
+				//This command is where both the slideshow and the final creation is generated
+				//line 1: establish the image_Duration variable. As this variable is only used in one place in the following code, this could be refactored out. 
+				//		  However its working atm so no point breaking it.
+				//line 2: Create the initial slide show by reading in the images, which were previously renamed and numbered in order in OrderImagesController. 
+				//		  This output will be deleted after it is used.
+				//line 3: Add the text to the previously generated slideshow. This is saved to the videoFileName location, and is used in the final creation. 
+				//		  There is potential for customisation here with font and/or colours.
+				//line 4, 5: Removing the extra files. This is important in case the user makes multiple creations in one session, as leaving these files will 
+				//			 cause duplicate images in the slideshow and risk breaching Flickrs 30 image maximum user condition.
+				//line 6: Combine the audio file and the video file to make the final creation video.
 				String command = "image_Duration="+frameRate+";"
 						+ " ffmpeg -y -framerate $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -c:v libx264 -r 24 ./creation_files/temporary_files/video_files/outputishere.mp4  > /dev/null; wait;"
 						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize=60:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
@@ -161,7 +181,8 @@ public class CreationNameController {
 					created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
 					created.setContentText("Select the 'View Existing Creations' option from the main menu to manage and play your creations.");
 					created.showAndWait();
-
+					
+					//currently the user relies on this message to navigate away from the creation screen, in future we will revamp this so that the user can go and perform other tasks while the creation is being generated.
 					try {
 						AppWindow.valueOf("MainMenu").setScene(e);
 						return;

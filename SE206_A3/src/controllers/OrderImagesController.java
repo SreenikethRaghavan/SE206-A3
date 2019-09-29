@@ -25,7 +25,7 @@ import javafx.scene.input.MouseEvent;
 
 /**
  * Controller for the order images scene,
- * where the user can reorder the images in the slideshow before they go into a video
+ * where the user can reorder and delete images in the slideshow before they go into a video
  * 
  * @author Hazel Williams
  * 
@@ -53,13 +53,20 @@ public class OrderImagesController {
 	private ImageView moveDownImageView;
 
 	private ObservableList<String> sorted;
-
+	
+	/**
+	 * updateList is used to initialize and reset the listView of the images that have been downloaded for the slideshow.
+	 * calling it will reset the order of the images, as it creates a new array and fills it directly from the directory,
+	 * not taking into account any order changes the user has made. This is useful for initalizing, but changing the list
+	 * view is actually done with individual actions on an existing array.
+	 */
 	@FXML
 	private void updateList() {
 		List<String> images = new ArrayList<String>();
 
 		File[] files = new File("creation_files/temporary_files/image_files/").listFiles();
-
+		
+		//adding all the downloading image file names to the array
 		if (files.length != 0) {
 			for (File file : files) {
 				if (file.isFile()) {
@@ -74,7 +81,8 @@ public class OrderImagesController {
 			images.add("Error: no images found.");
 
 		}
-
+		
+		//this isnt neccessary, but why not haha
 		sorted = FXCollections.observableArrayList();
 
 		
@@ -87,8 +95,6 @@ public class OrderImagesController {
 		listView.setItems(sorted);
 
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-		//return index-1;
 
 	}
 
@@ -106,6 +112,9 @@ public class OrderImagesController {
 		moveDownImageView.setImage(downImage);
 		
 		//preview the image :)
+		//essentially i have set up a imageview which i just switch the image on for whatever list item is currently selected. it is
+		//updated every time you click on the listView, which could be clicking the same item or a new item, but will always display
+		//the selected item.
 		listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {			
@@ -121,7 +130,18 @@ public class OrderImagesController {
 
 
 	}
-
+	
+	/**
+	 * This is activated on trying to go to the next scene.
+	 * In order for ffmpeg to generate the slideshow, it needs the images to have a naming pattern of img01 img02... etc
+	 * where img01 comes before img02 in the slideshow. 
+	 * This function renames all the images to that pattern, following the order the user has edited.
+	 * It then navigates to the creation scene.
+	 * No multithreading is necessary for this as even with the maximum number of images, 10, this process happens to quickly
+	 * to notice any GUI delays. Plus, multithreading this risks errors in the next scene as it relies on the images already being renamed.
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void renameImages(ActionEvent e) throws IOException {
 		
@@ -143,8 +163,10 @@ public class OrderImagesController {
 
 		}
 		
+		//store the number of images, post user deleting unwanted ones, so that it can be retrieved in the creation scene to determine the framerate.
 		AssociationClass.getInstance().storeNumImages(index);
 		
+		//move to the next scene
 		try {
 			AppWindow.valueOf("CreationName").setScene(e);
 			return;
@@ -159,15 +181,22 @@ public class OrderImagesController {
 	
 	
 	//deletes the selected image (after prompting confirmation)
+	/**
+	 * Deletes the selected image, after prompting the user for confirmation.
+	 * It also prevents the deletion if there is only one image left, so that no errors are produced by not having any images.
+	 * This could be edited to give the user the option to make a creation with no images, instead selecting a solid colour background.
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void deleteImage(ActionEvent e) throws IOException {
-
+		//determine the currently selected item
 		String selected = listView.getSelectionModel().getSelectedItem();
 
 		// if something is selected
 		if (selected != null) {
 			if(sorted.size() <= 1) {
-				//cant delete the last element
+				//cant delete the last element - would create errors in creation generation
 				Alert noDeleteAlert = new Alert(Alert.AlertType.INFORMATION);
 				noDeleteAlert.setTitle("Sorry");
 				noDeleteAlert.setHeaderText("You cannot delete the last image");
@@ -185,12 +214,14 @@ public class OrderImagesController {
 				deleteAlert.setContentText("This action CANNOT be undone!");
 
 				deleteAlert.showAndWait().ifPresent(selection -> {
-
+					//confirm before deleting the file
 					if(selection == ButtonType.OK) {
+						//delete from directory
 						File file = new File("./creation_files/temporary_files/image_files/"+ selected);
 						file.delete();
 						//delete from the array
 						sorted.remove(index);
+						//update the list to reflect this change, but dont reset the ordering.
 						listView.setItems(sorted);
 					}
 				});
@@ -213,11 +244,11 @@ public class OrderImagesController {
 			int index = listView.getSelectionModel().getSelectedIndex();
 			//want to temporarily store the item and swap it with the index thats just above it
 			if(index != 0) {
-				//if its 0 we dont want to go up again
+				//if its 0 we dont want to go up again, avoids arrayoutofbounds
 				String temp = sorted.get(index-1);
 				sorted.remove(index-1);
 				sorted.add(index,temp);
-				//
+				//update view
 				listView.setItems(sorted);
 			}
 			
@@ -238,12 +269,13 @@ public class OrderImagesController {
 		if(selected != null) {
 			//we have got something selected
 			int index = listView.getSelectionModel().getSelectedIndex();
-			//want to temporarily store the item and swap it with the index thats just above it
+			//want to temporarily store the item and swap it with the index thats just below it
 			if(index != sorted.size()-1) {
+				//the last item cannot go down any further
 				String temp = sorted.get(index+1);
 				sorted.remove(index+1);
 				sorted.add(index,temp);
-				//
+				//update the view
 				listView.setItems(sorted);
 			}
 
@@ -253,7 +285,14 @@ public class OrderImagesController {
 	}
 	
 
-	//actually returns to main menu lmaoo
+	/**
+	 * Returns to the download images scene. Before that, it deletes all the images already downloaded.
+	 * This is important because the Flickr API terms of service specifies that you can't display more
+	 * than 30 images at once. So to avoid breaching this, we need to make sure the users can only have
+	 * a limited number of images downloaded at once.
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void returnToSelectImages(ActionEvent e) throws IOException {
 		//Delete any images currently there

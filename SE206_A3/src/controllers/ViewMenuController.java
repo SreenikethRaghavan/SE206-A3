@@ -187,20 +187,16 @@ public class ViewMenuController {
 
 		}
 		// update view
-		//initialize();
 		updateList();
 	}
 	
 
 	/*
 	 * Changed 26/09/2019: No longer use ffmplay to play videos, instead embeds them in the gui
+	 * Allows overriding, if you are already playing a creation you can click play on another creation and that will play instead.
 	 */
 	@FXML
 	private void playCreation() {
-
-		//playButton.setDisable(true);
-		//deleteButton.setDisable(true);
-		
 
 		String selected = listView.getSelectionModel().getSelectedItem();
 
@@ -213,15 +209,11 @@ public class ViewMenuController {
 			pausePlayButton.setDisable(false);
 
 			String selectedCreation = selected.substring(3);
-
+			
+			//sending to a different thread allows you to keep interacting with the GUI while the video is playing.
 			Task<Void> task = new Task<Void>() {
 				@Override protected Void call() throws Exception {
-
-					//BashProcess playCreation = new BashProcess();
-
-					// play using ffplay on a different thread
-					//String command = "ffplay -autoexit \"./creation_files/creations/" + selectedCreation + ".mp4\" &> /dev/null";
-
+					//gets the selected file and plays it on the media view
 					File fileUrl = new File("creation_files/creations/" + selectedCreation + ".mp4");
 					Media video = new Media(fileUrl.toURI().toString());
 					player = new MediaPlayer(video);
@@ -230,9 +222,7 @@ public class ViewMenuController {
 					player.setOnEndOfMedia(new Runnable() {
 						@Override
 						public void run() {
-							//System.out.println("Finished my video :)");
 							//resets it back to default view once the video has finished playing
-							//TODO: check that if u start playing a new video part way through another one, the original one doesnt trigger this
 							File fileUrl = new File("src/images/defaultView.mp4");
 							Media video = new Media(fileUrl.toURI().toString());
 							player = new MediaPlayer(video);
@@ -243,15 +233,12 @@ public class ViewMenuController {
 						}
 					});
 
-					//playCreation.runCommand(command);
-
 
 
 					return null;
 				}
 				@Override protected void done() {
 					Platform.runLater(() -> {
-						//initialize();
 						//doesnt need to run anything post play?
 
 					});

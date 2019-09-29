@@ -67,7 +67,12 @@ public class SelectImagesController {
 		slider.setMin(1);
 		slider.setMax(10);
 	}
-
+	
+	/**
+	 * Return to previous scene.
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void goBack(ActionEvent e) throws IOException {
 
@@ -75,7 +80,12 @@ public class SelectImagesController {
 		return;
 	}
 	
-	//flickr method
+	/**
+	 * This is what enables the use of the Flickr API.
+	 * @param key
+	 * @return
+	 * @throws Exception
+	 */
 	public static String getAPIKey(String key) throws Exception {
 
 		String config = System.getProperty("user.dir") 
@@ -98,23 +108,22 @@ public class SelectImagesController {
 	/**
 	 * Read the slider value and use it to get the number of 
 	 * sentences specified by the user.
-	 * 
+	 * Then use that number to specify the number of images we wish to download.
+	 * Finally, resize the images to the dimension of the video, padding to make sure to respect the original dimensions of the images.
 	 */
 	@FXML
 	private void readImageSlider(ActionEvent e) throws IOException {
 		
-		//this will send the task to a new thread to download the images and create the slideshow
 		progressBar.setVisible(true);
-		//progressBar.progressProperty().add(1);
 		enterButton.setDisable(true);
 		backButton.setDisable(true);
 		
 		int imageNum = (int)slider.getValue();
+	
 		//place holder value. TODO: get the length of the audio file, this value should be imageNum/audioLength
+		//this is no longer used.
 		Double imageDuration = ((double)imageNum)/5.0;
-		//System.out.println(imageDuration);
-		
-		//AssociationClass.getInstance().getSearchTerm() 
+
 		
 		//make a new task to get images and make the slideshow
 		Task<Void> task = new Task<Void>() {
@@ -138,12 +147,13 @@ public class SelectImagesController {
 			        params.setText(query);
 			        
 			        PhotoList<Photo> results = photos.search(params, resultsPerPage, page);
-			        //System.out.println("Retrieving " + results.size()+ " results");
 			        
 			        
 			        for (Photo photo: results) {
 			        	try {
 			        		BufferedImage image = photos.getImage(photo,Size.LARGE);
+			        		//update the progress of downloading the images
+			        		//this will need to be refactored so bob doesnt interact with the gui
 			        		progressBar.setProgress(progressBar.getProgress()+1.0/(results.size()));
 				        	String filename = query.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
 				        	File outputfile = new File("creation_files/temporary_files/image_files",filename);
@@ -157,7 +167,6 @@ public class SelectImagesController {
 					e.printStackTrace();
 				}
 				
-				//make video afterward
 				
 				BashProcess creationProcess = new BashProcess();
 				
@@ -177,7 +186,7 @@ public class SelectImagesController {
 			}
 
 			@Override protected void done() {
-				// alert user about creation being created
+				// once the images are downloaded we can move on to the next scene
 				Platform.runLater(() -> {
 					
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
@@ -201,13 +210,11 @@ public class SelectImagesController {
 		
 		Thread thread = new Thread(task);
 
-		//doesn't need to keep running if the program is exited?
+
 		thread.setDaemon(true);
 
 		thread.start();
-		
-		
-		//AppWindow.valueOf("CreationName").setScene(e);
+
 		return;
 
 
