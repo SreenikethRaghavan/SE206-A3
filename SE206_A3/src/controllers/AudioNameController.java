@@ -29,6 +29,8 @@ public class AudioNameController {
 
 	private String fileName;
 
+	private boolean audioCreationFailed = false; 
+
 	@FXML
 	private void createAudioFile(ActionEvent e) throws IOException {
 
@@ -71,7 +73,7 @@ public class AudioNameController {
 
 				if(selection == ButtonType.OK) {					
 
-					generateWavFile(e);
+					generateWaveFile(e);
 				}
 
 				else {
@@ -92,13 +94,13 @@ public class AudioNameController {
 
 		else {
 
-			generateWavFile(e);
+			generateWaveFile(e);
 
 		}
 	}
 
 	@FXML
-	private void generateWavFile(ActionEvent e) {
+	private void generateWaveFile(ActionEvent e) {
 
 		backButton.setDisable(true);
 		enterButton.setDisable(true);
@@ -115,12 +117,42 @@ public class AudioNameController {
 
 				createAudio.runCommand(command);
 
+				File testFile = new File(fileName);
+
+				System.out.println(testFile.length());
+
+				if(testFile.length() == 0) {
+					testFile.delete();
+					audioCreationFailed = true;
+				}
+
 				return null;
 			}
 
 			@Override protected void done() {
 
 				Platform.runLater(() -> {
+
+					if (audioCreationFailed) {
+
+						Alert creationFailed = new Alert(Alert.AlertType.ERROR);
+
+						creationFailed.setTitle("Audio File Creation Failed");
+						creationFailed.setHeaderText("Creation of the Audio File with the name '" + userInput + "' has unfortunately "
+								+ "failed due the text-to-speech synthesizer not being able to pronounce a word in the text you selected!");
+						creationFailed.setContentText("Kindly select a different part/chunk of text and test the audio output before attempting to create "
+								+ "an audio file.");
+						creationFailed.showAndWait();
+
+						try {
+							AppWindow.valueOf("SelectSentences").setScene(e);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+
+						return;			
+					}
+
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
 
 					created.setTitle("Audio File Created");
