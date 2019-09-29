@@ -25,6 +25,8 @@ public class AssociationClass {
 	
 	private double numImages;
 
+	private String selectedText; 
+
 	private AssociationClass() { 
 
 	}
@@ -67,6 +69,14 @@ public class AssociationClass {
 		this.audioFile = audioFile;
 	}
 
+	public String getSelectedText() {
+		return selectedText;
+	}
+
+
+	public void storeSelectedText(String selectedText) {
+		this.selectedText = selectedText;
+	}
 
 	public String getSelectedVoice() {
 		return selectedVoice;

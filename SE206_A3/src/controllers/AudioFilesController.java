@@ -112,6 +112,10 @@ public class AudioFilesController {
 				if(selection == ButtonType.OK) {
 					File file = new File("./creation_files/temporary_files/audio_files/"+ selectedFile +".wav");
 					file.delete();
+
+					if (mergeList.contains(selectedFile)) {
+						mergeList.remove(selectedFile);
+					}
 				}
 			});
 
@@ -202,6 +206,19 @@ public class AudioFilesController {
 
 	@FXML
 	private void mergeFiles(ActionEvent e) throws Exception {
+
+		if(mergeList.size() <= 1) {
+
+			Alert fewFiles = new Alert(Alert.AlertType.ERROR);
+
+			fewFiles.setTitle("Cannot Merge Files");
+			fewFiles.setHeaderText("You can only merge 2 or more files.");
+			fewFiles.setContentText("Kindly provide 2 or more files to merge.");
+			fewFiles.showAndWait();
+
+			return;
+
+		}
 
 		List<String> filesToMerge = new ArrayList<String>();
 

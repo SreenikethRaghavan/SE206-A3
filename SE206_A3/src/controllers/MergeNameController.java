@@ -19,10 +19,27 @@ public class MergeNameController {
 
 	private String userInput;
 
+	private List<String> mergeList;
+
 	@FXML
 	private void mergeAudioFiles(ActionEvent e) throws IOException {
 
 		userInput = textBar.getText();
+
+		mergeList = AssociationClass.getInstance().getFilesToMerge();
+
+		if (mergeList.contains(userInput)) {
+
+			Alert sameFile = new Alert(Alert.AlertType.ERROR);
+			sameFile.setTitle("Invalid Audio File Name");
+			sameFile.setHeaderText("You cannot save an audio file with the same name as one of the files being merged!");
+			sameFile.setContentText("Kindly enter a different name.");
+			sameFile.showAndWait();
+
+			AppWindow.valueOf("MergeName").setScene(e);		
+
+			return;
+		}
 
 		if(userInput == null || userInput.equals("")){
 			AppWindow.valueOf("MergeName").setScene(e);
@@ -112,8 +129,6 @@ public class MergeNameController {
 		String path = "\"./creation_files/temporary_files/audio_files/";
 
 		String command = "sox ";
-
-		List<String> mergeList = AssociationClass.getInstance().getFilesToMerge();		
 
 
 		for (String audioFile : mergeList) {

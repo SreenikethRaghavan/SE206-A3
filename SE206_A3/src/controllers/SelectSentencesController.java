@@ -3,14 +3,15 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import FXML.AppWindow;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import wikispeak.BashProcess;
@@ -35,6 +36,18 @@ public class SelectSentencesController {
 
 	@FXML
 	private RadioButton femaleNZVoiceButton;
+
+	@FXML
+	private Button backButton;
+
+	@FXML
+	private Button testAudioButton;
+
+	@FXML
+	private Button createAudioButton;
+
+	@FXML
+	private Button skipStepButton;
 
 
 	@FXML
@@ -105,6 +118,13 @@ public class SelectSentencesController {
 		String selectedText = sentenceDisplay.getSelectedText();
 
 		if (selectedText == null || selectedText.equals("")) {
+
+			Alert noTextSelected = new Alert(Alert.AlertType.ERROR);
+			noTextSelected.setTitle("No Text Selected");
+			noTextSelected.setHeaderText("You must select some text to create an audio file from.");
+			noTextSelected.setContentText("Kindly select a part/chunk of text.");
+			noTextSelected.showAndWait();
+
 			return;
 		}
 
@@ -120,11 +140,8 @@ public class SelectSentencesController {
 			return;
 		}
 
-		BashProcess storeText = new BashProcess();
+		AssociationClass.getInstance().storeSelectedText(selectedText);
 
-		String command = "echo -e \"" + selectedText + "\" | tee ./creation_files/temporary_files/text_files/audio_text.txt 1> /dev/null";
-
-		storeText.runCommand(command);
 
 		if (defaultVoiceButton.isSelected()) {
 			AssociationClass.getInstance().storeSelectedVoice("kal_diphone");
@@ -158,6 +175,12 @@ public class SelectSentencesController {
 		String selectedText = sentenceDisplay.getSelectedText();
 
 		if (selectedText == null || selectedText.equals("")) {
+			Alert noTextSelected = new Alert(Alert.AlertType.ERROR);
+			noTextSelected.setTitle("No Text Selected");
+			noTextSelected.setHeaderText("You must select some text to test the audio output.");
+			noTextSelected.setContentText("Kindly select a part/chunk of text.");
+			noTextSelected.showAndWait();
+
 			return;
 		}
 
@@ -175,14 +198,17 @@ public class SelectSentencesController {
 
 		if (defaultVoiceButton.isSelected()) {
 			sayText(selectedText, "kal_diphone");
+			return;
 		}
 
 		else if (maleNZVoiceButton.isSelected()) {
 			sayText(selectedText, "akl_nz_jdt_diphone");
+			return;
 		}
 
 		else if (femaleNZVoiceButton.isSelected()) {
 			sayText(selectedText, "akl_nz_cw_cg_cg");
+			return;
 		}
 
 		else {
@@ -197,12 +223,41 @@ public class SelectSentencesController {
 
 	private void sayText(String text, String voice) throws IOException {
 
-		Process process = Runtime.getRuntime().exec("festival");
-		Writer writer = new OutputStreamWriter(process.getOutputStream());
+		backButton.setDisable(true);
+		skipStepButton.setDisable(true);
+		testAudioButton.setDisable(true);
+		createAudioButton.setDisable(true);
 
-		writer.append("(voice_" + voice + ")");
-		writer.append("(SayText \"" + text + "\")");
-		writer.flush();
+
+		Task<Void> task = new Task<Void>() {
+			@Override protected Void call() throws Exception {
+
+				BashProcess createAudio = new BashProcess();
+
+				String command = "echo -e \"(voice_" + voice + ") ;; \\n (SayText \\\"" + text + "\\\")\" | festival -i";
+
+				createAudio.runCommand(command);
+
+				return null;
+			}
+
+			@Override protected void done() {
+
+				Platform.runLater(() -> {
+
+					backButton.setDisable(false);
+					skipStepButton.setDisable(false);
+					testAudioButton.setDisable(false);
+					createAudioButton.setDisable(false);
+				});
+			}
+		};
+
+		Thread thread = new Thread(task);
+
+		thread.setDaemon(true);
+
+		thread.start();		
 
 	}
 

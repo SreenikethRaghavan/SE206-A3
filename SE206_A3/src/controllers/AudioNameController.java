@@ -108,8 +108,10 @@ public class AudioNameController {
 
 				BashProcess createAudio = new BashProcess();
 
-				String command = " text2wave -o \"" + fileName + "\" ./creation_files/temporary_files/text_files/audio_text.txt -eval \"(voice_"
-						+ AssociationClass.getInstance().getSelectedVoice() + ")\"";
+				String selectedText = AssociationClass.getInstance().getSelectedText();
+				String selectedVoice = AssociationClass.getInstance().getSelectedVoice();
+
+				String command = "echo -e \"" + selectedText + "\" | text2wave -eval \"(voice_" + selectedVoice + ")\" > " + fileName;
 
 				createAudio.runCommand(command);
 
@@ -123,7 +125,7 @@ public class AudioNameController {
 
 					created.setTitle("Audio File Created");
 					created.setHeaderText("Audio File with the name '" + userInput + "' has been successfully created!");
-					created.setContentText("You can now listen to the audio file you have created and can merge multiple audio file together.");
+					created.setContentText("You can now listen to the audio file you have created and can merge multiple audio files together.");
 					created.showAndWait();
 
 					try {

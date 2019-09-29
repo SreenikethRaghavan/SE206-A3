@@ -24,7 +24,7 @@
                   <ListView fx:id="existingFiles" prefHeight="209.0" prefWidth="250.0" />
                   <HBox alignment="CENTER" prefHeight="40.0" prefWidth="252.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#useExistingFile" text="Use Single Selected File">
+                        <Button mnemonicParsing="false" onAction="#useExistingFile" text="Use Selected File for Creation">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
