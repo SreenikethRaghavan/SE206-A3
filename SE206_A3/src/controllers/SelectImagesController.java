@@ -71,7 +71,7 @@ public class SelectImagesController {
 	@FXML
 	private void goBack(ActionEvent e) throws IOException {
 
-		AppWindow.valueOf("CreateMenu").setScene(e);
+		AppWindow.valueOf("AudioFiles").setScene(e);
 		return;
 	}
 	

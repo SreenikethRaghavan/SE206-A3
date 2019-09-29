@@ -2,6 +2,11 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
 import FXML.AppWindow;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -11,7 +16,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import wikispeak.BashProcess;
 
 
@@ -33,18 +37,23 @@ public class CreationNameController {
 	private Button enterButton;
 
 	@FXML
-	private Text instructions;
-
-	@FXML
 	private TextField searchBar;
 
 	private String userInput;
-
-
+	
+	@FXML
+	private void initialize() {
+		enterButton.setDisable(false);
+		searchBar.setDisable(false);
+		
+	}
+	
+	
 	@FXML
 	private void createCreation(ActionEvent e) throws IOException {
 
 		enterButton.setDisable(true);
+		
 
 		userInput = searchBar.getText();
 
@@ -84,115 +93,94 @@ public class CreationNameController {
 			fileExists.setContentText("Would you like to override the existing creation?");
 			fileExists.showAndWait().ifPresent(selection -> {
 
-				if(selection == ButtonType.OK) {
-
-					// Run the creation process on a different thread
-					Task<Void> task = new Task<Void>() {
-						@Override protected Void call() throws Exception {
-
-							BashProcess creationProcess = new BashProcess();
-							String command = "ffmpeg -y -i \"./creation_files/temporary_files/video_files/" + userInput+".mp4\" -i \"./creation_files/temporary_files/audio_files/" + userInput + ".wav\" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet";
-
-							creationProcess.runCommand(command);
-
-							return null;
-						}
-
-						@Override protected void done() {
-
-							Platform.runLater(() -> {
-
-								// Alert the user about the creation being successfully created
-								Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-								created.setTitle("Creation Created");
-								created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
-								created.setContentText("Select the 'View Existing Creations' option to manage and play your creations.");
-								created.showAndWait();
-
-								try {
-									AppWindow.valueOf("MainMenu").setScene(e);
-									return;
-								} catch (IOException e1) {
-								}
-
-
-							});
-						}
-					};
-
-
-					Thread thread = new Thread(task);
-
-					thread.setDaemon(true);
-
-					thread.start();
-
-
-				}
-
-				else { // if the user doesn't want to override the file, allow them to enter a new creation name
-
+				if(selection != ButtonType.OK) {
+					//if they dont want to override, give them a chance to rename it
 					try {
 						AppWindow.valueOf("CreationName").setScene(e);
 						return;
 					} catch (IOException e1) {
 					}
-
 				}
 			});
 		}
 
-		else {
+		
 
-			// if the entered name is valid and unique, then create the creation on a different thread
-			Task<Void> task = new Task<Void>() {
-				@Override protected Void call() throws Exception {
+		// if the entered name is valid and unique, or they want to override, then create the creation on a different thread	
+		Task<Void> task = new Task<Void>() {
+			@Override protected Void call() throws Exception {
 
-					BashProcess creationProcess = new BashProcess();
-
-					String command = "ffmpeg -y -f lavfi -i color=c=orange:s=500x500:d=$audio_length -vf \"drawtext=fontfile=:fontsize=30: fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text="
-							+ AssociationClass.getInstance().getSearchTerm() +
-							"\" \"./creation_files/temporary_files/video_files/"
-							+userInput+".mp4\" -v quiet;" +
-							"ffmpeg -y -i \"./creation_files/temporary_files/video_files/" + userInput+".mp4\" -i \"./creation_files/temporary_files/audio_files/"+userInput+".wav\" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet";
-
-					creationProcess.runCommand(command);
-
-					return null;
-				}
-
-				@Override protected void done() {
-					// alert user about creation being created
-					Platform.runLater(() -> {
-
-						Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-						created.setTitle("Creation Created");
-						created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
-						created.setContentText("Select the 'View Existing Creations' option to manage and play your creations.");
-						created.showAndWait();
-
-						try {
-							AppWindow.valueOf("MainMenu").setScene(e);
-							return;
-						} catch (IOException e) {
-
-						}
+				BashProcess creationProcess = new BashProcess();
 
 
-					});
+				String audioFileName = "creation_files/temporary_files/audio_files/" + AssociationClass.getInstance().getAudioFile() + ".wav";
+				String videoFileName = "creation_files/temporary_files/video_files/output.mp4";
 
-				}
-			};
+				//get the audio length
+				File audioFile = new File(audioFileName);
+				
+
+				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);					
+				AudioFormat format = audioInputStream.getFormat();							
+
+				
+				long audioFileLength = audioFile.length();
+				
+				int frameSize = format.getFrameSize();
+				
+				float audioframeRate = format.getFrameRate();
+				
+				float durationInSeconds = (audioFileLength / (frameSize * audioframeRate));
+				
+
+				//calculate the image duration
+				double frameRate = AssociationClass.getInstance().getNumImages()/durationInSeconds;
+				frameRate = Math.round(frameRate*1000.0)/1000.0;
 
 
-			Thread thread = new Thread(task);
+				String command = "image_Duration="+frameRate+";"
+						+ " ffmpeg -y -framerate $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -c:v libx264 -r 24 ./creation_files/temporary_files/video_files/outputishere.mp4  > /dev/null; wait;"
+						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize=60:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
+						+ " rm -f ./creation_files/temporary_files/image_files/*; "
+						+ " rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;"
+						+ " ffmpeg -y -i ./"+videoFileName+" -i ./"+audioFileName+" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet> /dev/null; wait;";
 
-			thread.setDaemon(true);
+				creationProcess.runCommand(command);
 
-			thread.start();
-		}
+				return null;
+			}
+
+			@Override protected void done() {
+
+				Platform.runLater(() -> {
+
+					// Alert the user about the creation being successfully created
+					Alert created = new Alert(Alert.AlertType.INFORMATION);
+
+					created.setTitle("Creation Created");
+					created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
+					created.setContentText("Select the 'View Existing Creations' option from the main menu to manage and play your creations.");
+					created.showAndWait();
+
+					try {
+						AppWindow.valueOf("MainMenu").setScene(e);
+						return;
+					} catch (IOException e1) {
+					}
+
+
+				});
+			}
+		};
+
+
+
+		Thread thread = new Thread(task);
+
+		thread.setDaemon(true);
+
+		thread.start();
+
 	}
 }
 

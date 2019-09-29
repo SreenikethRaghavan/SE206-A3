@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreationNameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreationNameController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -24,7 +24,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <TextField id="searchBar" fx:id="searchBar" alignment="CENTER" prefHeight="30.0" prefWidth="201.0">
+            <TextField id="searchBar" fx:id="searchBar" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="201.0">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
@@ -41,3 +41,6 @@
       </HBox>
    </children>
 </VBox>
+
+
+

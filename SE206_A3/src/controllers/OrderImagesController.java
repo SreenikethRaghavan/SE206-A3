@@ -8,11 +8,8 @@ import java.util.List;
 
 
 import FXML.AppWindow;
-import javafx.application.Platform;
-//import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,7 +21,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import wikispeak.BashProcess;
 
 
 /**
@@ -128,10 +124,6 @@ public class OrderImagesController {
 
 	@FXML
 	private void renameImages(ActionEvent e) throws IOException {
-		//this is where the action happens
-		//TODO: make video afterward
-
-		
 		
 		//for each image in the array
 		//rename its corresponding file to the img00 format
@@ -151,65 +143,14 @@ public class OrderImagesController {
 
 		}
 		
-		Double imageDuration = ((double)index)/5.0;
-
-		Task<Void> task = new Task<Void>() {
-			@Override protected Void call() throws Exception {
-
-
-				//make video afterward
-
-				BashProcess creationProcess = new BashProcess();
-
-
-				//TODO: All of this will likely ultimately be moved to the CreationNameController in the end. It is here for now so it doesn't step on anyones toes.
-				//line 1: declare duration
-				//line 2: this resizes and renames all the images to fit in the video. it also adds padding around the edges so that it fits the 320x240 frame instead of distorting the ratios
-				//line 3: makes inital slideshow from resized images
-				//line 4: adds the text onto the video (-y -> force override)
-				//line 5 and 6: clean up extra files.
-				String command = "image_Duration="+imageDuration+";"
-						//+ " index_num=1; for i in $( ls creation_files/temporary_files/image_files); do ffmpeg -y -i ./creation_files/temporary_files/image_files/$i -vf \"scale=320:240:force_original_aspect_ratio=decrease,pad=350:250:(ow-iw)/2:(oh-ih)/2\" ./creation_files/temporary_files/image_files/img$(printf \"%02d\" $index_num).jpg -loglevel 'quiet'; index_num=$((index_num+1)); done;"
-						+ " ffmpeg -framerate $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -c:v libx264 -r 24 ./creation_files/temporary_files/video_files/outputishere.mp4 -loglevel 'quiet' > /dev/null; wait;"
-						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize=60:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
-						+ " rm -f ./creation_files/temporary_files/image_files/*; "
-						+ " rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;";
-
-				creationProcess.runCommand(command);
-
-
-				return null;
-			}
-
-			@Override protected void done() {
-				// alert user about creation being created
-				Platform.runLater(() -> {
-
-					Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-					created.setTitle("Slideshow Created");
-					created.setHeaderText("Wow that actually worked!");
-					created.setContentText("Select the 'View Existing Creations' option to manage and play your creations.");
-					created.showAndWait();
-
-					try {
-						AppWindow.valueOf("CreationName").setScene(e);
-						return;
-					} catch (IOException e1) {
-						System.out.println("That didnt work: "+ e1);
-					}
-
-				});
-
-			}
-		};
-
-		Thread thread = new Thread(task);
-
-		//doesn't need to keep running if the program is exited?
-		thread.setDaemon(true);
-
-		thread.start();
+		AssociationClass.getInstance().storeNumImages(index);
+		
+		try {
+			AppWindow.valueOf("CreationName").setScene(e);
+			return;
+		} catch (IOException e1) {
+			System.out.println("That didnt work: "+ e1);
+		}
 
 
 		//AppWindow.valueOf("CreationName").setScene(e);
@@ -324,7 +265,7 @@ public class OrderImagesController {
 		
 		
 
-		AppWindow.valueOf("MainMenu").setScene(e);
+		AppWindow.valueOf("SelectImages").setScene(e);
 		return;
 	}
 }
