@@ -1,0 +1,13 @@
+Button {
+	opacity: 0;
+    -fx-background-color: 
+        rgba(0,0,0,0);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+
+}
+
+Button:hover {
+	opacity: 1;
+	-fx-background-color: rgba(255,255,255,1);
+	background-repeat:no-repeat;
+}

@@ -45,12 +45,6 @@ public class OrderImagesController {
 	@FXML
 	private ImageView imageView;
 	
-	@FXML
-	private ImageView deleteImageView;
-	@FXML
-	private ImageView moveUpImageView;
-	@FXML
-	private ImageView moveDownImageView;
 
 	private ObservableList<String> sorted;
 	
@@ -101,15 +95,7 @@ public class OrderImagesController {
 
 	@FXML
 	private void initialize() {
-		//setting up the images for the buttons
-		Image deleteImage = new Image((new File("src/images/bin.png").toURI().toString()));
-		deleteImageView.setImage(deleteImage);
-		
-		Image upImage = new Image((new File("src/images/upArrow.png").toURI().toString()));
-		moveUpImageView.setImage(upImage);
-		
-		Image downImage = new Image((new File("src/images/downArrow.png").toURI().toString()));
-		moveDownImageView.setImage(downImage);
+
 		
 		//preview the image :)
 		//essentially i have set up a imageview which i just switch the image on for whatever list item is currently selected. it is
