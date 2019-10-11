@@ -5,6 +5,7 @@ import java.io.IOException;
 import FXML.AppWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 
 /**
@@ -16,7 +17,16 @@ import javafx.fxml.FXML;
  * 
  */
 public class SearchErrorController {
+	
+	@FXML
+	private Text searchTxt;
 
+	@FXML
+	private void initialize() {
+		searchTxt.setText("Sorry! Wikipedia didn't find anything for " + AssociationClass.getInstance().getSearchTerm());
+		
+	}
+	
 	@FXML
 	private void search(ActionEvent event) throws IOException {
 
