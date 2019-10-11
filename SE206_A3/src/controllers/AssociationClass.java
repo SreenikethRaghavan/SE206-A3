@@ -8,6 +8,7 @@ import java.util.List;
  * in the video creation.
  * 
  * @author Sreeniketh Raghavan
+ * @author Hazel Williams
  * 
  */
 
@@ -22,7 +23,7 @@ public class AssociationClass {
 	private String audioFile; 
 
 	private String selectedVoice;
-	
+
 	private double numImages;
 
 	private String selectedText; 
@@ -81,16 +82,16 @@ public class AssociationClass {
 	public String getSelectedVoice() {
 		return selectedVoice;
 	}
-	
+
 
 	public void storeSelectedVoice(String selectedVoice) {
 		this.selectedVoice = selectedVoice;
 	}
-	
+
 	public void storeNumImages(int numImages) {
 		this.numImages = (double)numImages;
 	}
-	
+
 	public double getNumImages() {
 		return numImages;
 	}

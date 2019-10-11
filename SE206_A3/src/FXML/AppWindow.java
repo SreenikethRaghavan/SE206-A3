@@ -30,7 +30,7 @@ public enum AppWindow {
 
 	/**
 	 * Change the scene depending on the enum 
-	 * object being refered to.
+	 * object being referred to.
 	 * 
 	 */
 	public void setScene(ActionEvent e) throws IOException {

@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import FXML.AppWindow;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,13 +15,22 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import wikispeak.BashProcess;
 
+/**
+ * Controller for the Audio Name scene,
+ * where the user is allowed to enter a 
+ * name for the audio file generated from 
+ * the selected text.
+ * 
+ * @author Sreeniketh Raghavan
+ * 
+ */
 public class AudioNameController {
 
 	@FXML
 	private TextField textBar;
 
 	@FXML
-	private Button enterButton;
+	private Button saveButton;
 
 	@FXML
 	private Button backButton;
@@ -32,18 +42,44 @@ public class AudioNameController {
 	private boolean audioCreationFailed = false; 
 
 	@FXML
+	private void initialize() {
+
+		String searchTerm = AssociationClass.getInstance().getSearchTerm();
+
+		String defaultName = searchTerm + "_audio";
+
+		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+
+		File file = new File(fileName);
+
+		while(file.exists() && file.isFile()) {
+
+			int fileCount = 1;
+
+			defaultName = searchTerm + "_audio_" + fileCount;
+
+			fileCount++;
+
+			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+
+			file = new File(fileName);
+		}
+
+		textBar.setText(defaultName);
+
+		saveButton.disableProperty().bind(
+				Bindings.isEmpty(textBar.textProperty()));
+	}
+
+
+	@FXML
 	private void createAudioFile(ActionEvent e) throws IOException {
 
 		userInput = textBar.getText();
 
-		if(userInput == null || userInput.equals("")){
-			AppWindow.valueOf("AudioName").setScene(e);
-			return;
-		}
-
-
 		char[] chars = userInput.toCharArray();
 
+		// Check for inavlid chars in the name
 		for(char Char : chars) {
 			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
 				Alert invalidName = new Alert(Alert.AlertType.ERROR);
@@ -62,9 +98,9 @@ public class AudioNameController {
 
 		File file = new File(fileName);
 
+		// If the file exists, give the user the option to override it
 		if(file.exists() && file.isFile()) {
 
-			// give the user the option to override the existing audio file
 			Alert fileExists = new Alert(Alert.AlertType.CONFIRMATION);
 			fileExists.setTitle("Audio File Already Exists");
 			fileExists.setHeaderText("An audio file with the name '" + userInput + "' already exists!");
@@ -99,11 +135,18 @@ public class AudioNameController {
 		}
 	}
 
+	/**
+	 * The method used to create the audio file using 
+	 * text2wave. Its run on a different thread to prevent 
+	 * the GUI from freezing. 
+	 */
 	@FXML
 	private void generateWaveFile(ActionEvent e) {
 
+		saveButton.disableProperty().unbind();
+
 		backButton.setDisable(true);
-		enterButton.setDisable(true);
+		saveButton.setDisable(true);
 
 		Task<Void> task = new Task<Void>() {
 			@Override protected Void call() throws Exception {
@@ -119,8 +162,7 @@ public class AudioNameController {
 
 				File testFile = new File(fileName);
 
-				System.out.println(testFile.length());
-
+				// If the voice cannot pronounce a word in the selected text
 				if(testFile.length() == 0) {
 					testFile.delete();
 					audioCreationFailed = true;

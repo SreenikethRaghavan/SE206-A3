@@ -17,15 +17,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="150.0" prefWidth="599.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="You may edit the text above" textAlignment="CENTER" underline="true">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Once done editing, kindly select the text (no greater than 40 words) you would like to test/create an audio file from." textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="598.6343994140625">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the text (no greater than 40 words) you would like to test/create an audio file from." textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="598.6343994140625">
                      <font>
                         <Font size="17.0" />
                      </font>

@@ -7,8 +7,8 @@ package wikispeak;
  * as a string, which are then processed using 
  * a ProcessBuilder object.
  * 
- * @author Sreeniketh Raghavan
- * 
+ * @author Sreeniketh Raghavan 
+ * @author Hazel Williams
  */
 public class BashProcess {
 

@@ -1,12 +1,14 @@
 package controllers;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import FXML.AppWindow;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,10 +55,12 @@ public class SelectSentencesController {
 	@FXML
 	private TextArea sentenceDisplay;
 
+	private boolean audioTestFailed = false;
+
 
 	/**
 	 * Initialise the scene. Read the text file and display the 
-	 * sentences in a numbered format in the Text Area. 
+	 * sentences in the Text Area. 
 	 * 
 	 */
 	@FXML
@@ -89,6 +93,16 @@ public class SelectSentencesController {
 
 		sentenceDisplay.setText(result);
 
+		defaultVoiceButton.setSelected(true);
+
+		testAudioButton.disableProperty().bind(
+				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
+				);
+
+		createAudioButton.disableProperty().bind(
+				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
+				);
+
 	}
 
 	@FXML
@@ -108,8 +122,7 @@ public class SelectSentencesController {
 
 
 	/**
-	 * Read the slider value and use it to get the number of 
-	 * sentences specified by the user.
+	 * Create audio file from selected text
 	 * 
 	 */
 	@FXML
@@ -117,19 +130,9 @@ public class SelectSentencesController {
 
 		String selectedText = sentenceDisplay.getSelectedText();
 
-		if (selectedText == null || selectedText.equals("")) {
-
-			Alert noTextSelected = new Alert(Alert.AlertType.ERROR);
-			noTextSelected.setTitle("No Text Selected");
-			noTextSelected.setHeaderText("You must select some text to create an audio file from.");
-			noTextSelected.setContentText("Kindly select a part/chunk of text.");
-			noTextSelected.showAndWait();
-
-			return;
-		}
-
 		String[] words = selectedText.split("\\s+");
 
+		// The selected text cannot contain more than 40 words
 		if (words.length > 40) {
 			Alert invalidWordCount = new Alert(Alert.AlertType.ERROR);
 			invalidWordCount.setTitle("Word Count Exceeded");
@@ -151,18 +154,8 @@ public class SelectSentencesController {
 			AssociationClass.getInstance().storeSelectedVoice("akl_nz_jdt_diphone");
 		}
 
-		else if (femaleNZVoiceButton.isSelected()) {
-			AssociationClass.getInstance().storeSelectedVoice("akl_nz_cw_cg_cg");
-		}
-
 		else {
-			Alert noVoice = new Alert(Alert.AlertType.ERROR);
-			noVoice.setTitle("No Voice Selected");
-			noVoice.setHeaderText("You have not selected a voice!");
-			noVoice.setContentText("Kindly select a voice to use for the audio file.");
-			noVoice.showAndWait();
-
-			return;
+			AssociationClass.getInstance().storeSelectedVoice("akl_nz_cw_cg_cg");
 		}
 
 		AppWindow.valueOf("AudioName").setScene(e);
@@ -174,16 +167,7 @@ public class SelectSentencesController {
 
 		String selectedText = sentenceDisplay.getSelectedText();
 
-		if (selectedText == null || selectedText.equals("")) {
-			Alert noTextSelected = new Alert(Alert.AlertType.ERROR);
-			noTextSelected.setTitle("No Text Selected");
-			noTextSelected.setHeaderText("You must select some text to test the audio output.");
-			noTextSelected.setContentText("Kindly select a part/chunk of text.");
-			noTextSelected.showAndWait();
-
-			return;
-		}
-
+		// Used to count the number of words in the selected text
 		String[] words = selectedText.split("\\s+");
 
 		if (words.length > 40) {
@@ -198,57 +182,89 @@ public class SelectSentencesController {
 
 		if (defaultVoiceButton.isSelected()) {
 			sayText(selectedText, "kal_diphone");
-			return;
 		}
 
 		else if (maleNZVoiceButton.isSelected()) {
 			sayText(selectedText, "akl_nz_jdt_diphone");
-			return;
-		}
 
-		else if (femaleNZVoiceButton.isSelected()) {
-			sayText(selectedText, "akl_nz_cw_cg_cg");
-			return;
 		}
 
 		else {
-			Alert noVoice = new Alert(Alert.AlertType.ERROR);
-			noVoice.setTitle("No Voice Selected");
-			noVoice.setHeaderText("You have not selected a voice!");
-			noVoice.setContentText("Kindly select a voice to test the text with.");
-			noVoice.showAndWait();
+			sayText(selectedText, "akl_nz_cw_cg_cg");
+
 		}
 
 	}
 
 	private void sayText(String text, String voice) throws IOException {
 
+		testAudioButton.disableProperty().unbind();
+		createAudioButton.disableProperty().unbind();
+
 		backButton.setDisable(true);
 		skipStepButton.setDisable(true);
 		testAudioButton.setDisable(true);
 		createAudioButton.setDisable(true);
 
-
+		// Use festival on a different thread to allow the user to preview the audio output
 		Task<Void> task = new Task<Void>() {
+
 			@Override protected Void call() throws Exception {
 
-				BashProcess createAudio = new BashProcess();
+				BashProcess testAudio = new BashProcess();
 
-				String command = "echo -e \"(voice_" + voice + ") ;; \\n (SayText \\\"" + text + "\\\")\" | festival -i";
+				String command = "echo -e \"" + text + "\" | text2wave -eval \"(voice_" + voice + ")\" > "
+						+ "./creation_files/temporary_files/audio_files/test_audio_output.wav";
 
-				createAudio.runCommand(command);
+				testAudio.runCommand(command);
 
-				return null;
+				File testFile = new File("./creation_files/temporary_files/audio_files/test_audio_output.wav");
+
+				// If the voice cannot pronounce a word in the selected text
+				if(testFile.length() == 0) {
+					testFile.delete();
+					audioTestFailed = true;
+
+					return null;
+				}
+
+				else {
+
+					command = "play \"./creation_files/temporary_files/audio_files/test_audio_output.wav\" 2> /dev/null";
+
+					testAudio.runCommand(command);
+
+					audioTestFailed = false;
+
+					return null;
+				}
 			}
 
 			@Override protected void done() {
 
 				Platform.runLater(() -> {
 
-					backButton.setDisable(false);
-					skipStepButton.setDisable(false);
-					testAudioButton.setDisable(false);
-					createAudioButton.setDisable(false);
+					if (audioTestFailed) {
+
+						Alert creationFailed = new Alert(Alert.AlertType.ERROR);
+
+						creationFailed.setTitle("Audio Test Failed");
+						creationFailed.setHeaderText("The audio test has unfortunately "
+								+ "failed due the text-to-speech synthesizer not being able to pronounce a word in the text you selected!");
+						creationFailed.setContentText("Kindly select a different part/chunk of text to test the audio output.");
+						creationFailed.showAndWait();
+
+						enableButtons();
+
+					}
+
+					else {
+
+						File testFile = new File("./creation_files/temporary_files/audio_files/test_audio_output.wav");
+						testFile.delete();
+
+						enableButtons();
+					}
 				});
 			}
 		};
@@ -259,6 +275,22 @@ public class SelectSentencesController {
 
 		thread.start();		
 
+	}
+
+	private void enableButtons() {
+
+		backButton.setDisable(false);
+		skipStepButton.setDisable(false);
+		testAudioButton.setDisable(false);
+		createAudioButton.setDisable(false);
+
+		testAudioButton.disableProperty().bind(
+				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
+				);
+
+		createAudioButton.disableProperty().bind(
+				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
+				);
 	}
 
 }

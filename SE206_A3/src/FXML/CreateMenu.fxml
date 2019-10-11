@@ -12,7 +12,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the term you would like to search for:" textAlignment="CENTER">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a search term :" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>

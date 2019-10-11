@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import FXML.AppWindow;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +33,16 @@ public class CreateMenuController {
 	@FXML
 	private Button searchButton;
 
+
+	@FXML
+	private void initialize() {
+
+		searchButton.disableProperty().bind(
+				Bindings.isEmpty(searchBar.textProperty()));
+
+	}
+
+
 	/**
 	 * Method called when the user enters the
 	 * term they wish to search for. 
@@ -40,6 +51,8 @@ public class CreateMenuController {
 	@FXML
 	private void searchTerm(ActionEvent e) throws IOException {
 
+		searchButton.disableProperty().unbind();
+
 		backButton.setDisable(true);
 		searchButton.setDisable(true);
 
@@ -47,11 +60,6 @@ public class CreateMenuController {
 
 		AssociationClass.getInstance().storeSearchTerm(searchTerm);
 
-		if (searchTerm == null || searchTerm.equals("")) {
-
-			AppWindow.valueOf("CreateMenu").setScene(e);
-			return;
-		}
 
 		// Process finding the word using wikit and storing the result in a file on a different thread
 		Task<Void> task = new Task<Void>() {

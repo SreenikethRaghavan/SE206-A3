@@ -9,6 +9,7 @@ import javax.sound.sampled.AudioSystem;
 
 import FXML.AppWindow;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,14 +42,37 @@ public class CreationNameController {
 	private TextField searchBar;
 
 	private String userInput;
-	
+
 	@FXML
 	private void initialize() {
-		enterButton.setDisable(false);
-		searchBar.setDisable(false);
-		
+
+		String searchTerm = AssociationClass.getInstance().getSearchTerm();
+
+		String defaultName = searchTerm + "_creation";
+
+		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+
+		File file = new File(fileName);
+
+		while(file.exists() && file.isFile()) {
+
+			int fileCount = 1;
+
+			defaultName = searchTerm + "_creation_" + fileCount;
+
+			fileCount++;
+
+			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+
+			file = new File(fileName);
+		}
+
+		searchBar.setText(defaultName);
+
+		enterButton.disableProperty().bind(
+				Bindings.isEmpty(searchBar.textProperty()));
 	}
-	
+
 	/**
 	 * createCreation is triggered by clicking the enter button.
 	 * It first checks whether the provided potential file name is valid. If it isn't the user will be prompted to try again.
@@ -61,16 +85,12 @@ public class CreationNameController {
 	@FXML
 	private void createCreation(ActionEvent e) throws IOException {
 		//want to disable the enter button so they can't spam a lot of file creations, avoids them causing overwrite issues.
+		enterButton.disableProperty().unbind();
+
 		enterButton.setDisable(true);
-		
-		
+
+
 		userInput = searchBar.getText();
-		
-		//if they havent written anything yet but they tried to submit it, dont make a file yet.
-		if(userInput == null || userInput.equals("")){
-			AppWindow.valueOf("CreationName").setScene(e);
-			return;
-		}
 
 		// Check for invalid creation names
 		char[] chars = userInput.toCharArray();
@@ -114,9 +134,9 @@ public class CreationNameController {
 				//if they want to override it, continue on.
 			});
 		}
-		
 
-		
+
+
 
 		// if the entered name is valid and unique, or they want to override, then create the creation on a different thread	
 		Task<Void> task = new Task<Void>() {
@@ -131,18 +151,18 @@ public class CreationNameController {
 				//get the audio length
 				//soxi wasnt behaving, so I have gone with a java based approach.
 				File audioFile = new File(audioFileName);
-				
+
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);					
 				AudioFormat format = audioInputStream.getFormat();							
-				
+
 				long audioFileLength = audioFile.length();
-				
+
 				int frameSize = format.getFrameSize();
-				
+
 				float audioframeRate = format.getFrameRate();
-				
+
 				float durationInSeconds = (audioFileLength / (frameSize * audioframeRate));
-				
+
 
 				//calculate the image duration and round it to something ffmpeg will tolerate. 3dp accuracy is sufficient for matching the audio length to the slideshow length.
 				double frameRate = AssociationClass.getInstance().getNumImages()/durationInSeconds;
@@ -181,7 +201,7 @@ public class CreationNameController {
 					created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
 					created.setContentText("Select the 'View Existing Creations' option from the main menu to manage and play your creations.");
 					created.showAndWait();
-					
+
 					//currently the user relies on this message to navigate away from the creation screen, in future we will revamp this so that the user can go and perform other tasks while the creation is being generated.
 					try {
 						AppWindow.valueOf("MainMenu").setScene(e);

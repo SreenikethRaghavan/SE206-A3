@@ -5,27 +5,69 @@ import java.io.IOException;
 import java.util.List;
 
 import FXML.AppWindow;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import wikispeak.BashProcess;
 
+/**
+ * Controller for the Merge Name scene,
+ * where the user is allowed to enter a 
+ * name for the merged audio file.
+ * 
+ * @author Sreeniketh Raghavan
+ * 
+ */
 public class MergeNameController {
 
 	@FXML
 	private TextField textBar;
+
+	@FXML
+	private Button saveButton;
 
 	private String userInput;
 
 	private List<String> mergeList;
 
 	@FXML
+	private void initialize() {
+
+		String defaultName = "combined_audio";
+
+		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+
+		File file = new File(fileName);
+
+		while(file.exists() && file.isFile()) {
+
+			int fileCount = 1;
+
+			defaultName = "combined_audio_" + fileCount;
+
+			fileCount++;
+
+			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+
+			file = new File(fileName);
+		}
+
+		textBar.setText(defaultName);
+
+		saveButton.disableProperty().bind(
+				Bindings.isEmpty(textBar.textProperty()));
+	}
+
+	@FXML
 	private void mergeAudioFiles(ActionEvent e) throws IOException {
 
 		userInput = textBar.getText();
 
+		// Get the list of files in the order they wish to merge them
 		mergeList = AssociationClass.getInstance().getFilesToMerge();
 
 		if (mergeList.contains(userInput)) {
@@ -41,14 +83,10 @@ public class MergeNameController {
 			return;
 		}
 
-		if(userInput == null || userInput.equals("")){
-			AppWindow.valueOf("MergeName").setScene(e);
-			return;
-		}
-
 
 		char[] chars = userInput.toCharArray();
 
+		// Check for invalid chars in the name
 		for(char Char : chars) {
 			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
 				Alert invalidName = new Alert(Alert.AlertType.ERROR);
@@ -120,6 +158,11 @@ public class MergeNameController {
 		return;
 	}
 
+	/**
+	 *The main merging method called to merge
+	 *multiple audio files together.
+	 * 
+	 */
 	private void merging() {
 
 		AssociationClass.getInstance().storeAudioFile(userInput);
@@ -131,11 +174,13 @@ public class MergeNameController {
 		String command = "sox ";
 
 
+		// Add path of each individual file
 		for (String audioFile : mergeList) {
 
 			command += path + audioFile + ".wav\" ";
 		}
 
+		// add path of the combined file
 		command += path + userInput + ".wav\"";
 
 		playAudio.runCommand(command);
