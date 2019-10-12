@@ -76,7 +76,7 @@
                         </VBox>
                         <VBox alignment="TOP_CENTER" prefHeight="284.0" prefWidth="300.0">
                            <children>
-                              <Label text="Audio file(s) to use in Creation">
+                              <Label text="Audio file(s) for Creation">
                                  <font>
                                     <Font name="System Bold" size="19.0" />
                                  </font>
@@ -94,7 +94,7 @@
                                        <graphic>
                                           <ImageView fx:id="mergeImage" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../images/list.png" />
+                                                <Image url="@../images/audioNote.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
