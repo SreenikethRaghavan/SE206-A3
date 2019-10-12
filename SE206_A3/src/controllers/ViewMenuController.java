@@ -154,6 +154,7 @@ public class ViewMenuController {
 	private void stopVideo() {
 		File fileUrl = new File("src/images/defaultView.mp4");
 		Media video = new Media(fileUrl.toURI().toString());
+		player.pause();
 		player = new MediaPlayer(video);
 		player.setAutoPlay(true);
 		mediaView.setMediaPlayer(player);
@@ -259,7 +260,7 @@ public class ViewMenuController {
 
 	@FXML
 	private void returnToMainMenu(ActionEvent e) throws IOException {
-
+		player.pause();
 		AppWindow.valueOf("MainMenu").setScene(e);
 		return;
 	}
