@@ -62,7 +62,7 @@ public class MainMenuController {
 		return;
 
 	} 
-	
+
 	@FXML
 	private void learnStuff(ActionEvent event) throws IOException {
 		

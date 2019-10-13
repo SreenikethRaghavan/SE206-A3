@@ -95,6 +95,7 @@ public class SelectSentencesController {
 
 		defaultVoiceButton.setSelected(true);
 
+		// Bind test audio and create audio buttons to the text area so that they are disabled when nothing is selected
 		testAudioButton.disableProperty().bind(
 				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
 				);
@@ -213,6 +214,7 @@ public class SelectSentencesController {
 
 				BashProcess testAudio = new BashProcess();
 
+				// create audio file
 				String command = "echo -e \"" + text + "\" | text2wave -eval \"(voice_" + voice + ")\" > "
 						+ "./creation_files/temporary_files/audio_files/test_audio_output.wav";
 
@@ -230,6 +232,7 @@ public class SelectSentencesController {
 
 				else {
 
+					// play audio corresponding to the selected text and the chosen voice
 					command = "play \"./creation_files/temporary_files/audio_files/test_audio_output.wav\" 2> /dev/null";
 
 					testAudio.runCommand(command);
@@ -246,13 +249,13 @@ public class SelectSentencesController {
 
 					if (audioTestFailed) {
 
-						Alert creationFailed = new Alert(Alert.AlertType.ERROR);
+						Alert audioTestFailed = new Alert(Alert.AlertType.ERROR);
 
-						creationFailed.setTitle("Audio Test Failed");
-						creationFailed.setHeaderText("The audio test has unfortunately "
+						audioTestFailed.setTitle("Audio Test Failed");
+						audioTestFailed.setHeaderText("The audio test has unfortunately "
 								+ "failed due the text-to-speech synthesizer not being able to pronounce a word in the text you selected!");
-						creationFailed.setContentText("Kindly select a different part/chunk of text to test the audio output.");
-						creationFailed.showAndWait();
+						audioTestFailed.setContentText("Kindly select a different part/chunk of text to test the audio output.");
+						audioTestFailed.showAndWait();
 
 						enableButtons();
 

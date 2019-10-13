@@ -43,6 +43,8 @@ public class MergeNameController {
 
 		File file = new File(fileName);
 
+		// if a file with the suggested default name already exists then keep generating 
+		// new names with numbers at the end of them till a unique file name is generated 
 		while(file.exists() && file.isFile()) {
 
 			int fileCount = 1;
@@ -56,6 +58,8 @@ public class MergeNameController {
 			file = new File(fileName);
 		}
 
+		// auto-fill the text field with the default name so that the user doesn't have to 
+		// type a new name every time
 		textBar.setText(defaultName);
 
 		saveButton.disableProperty().bind(
@@ -171,6 +175,7 @@ public class MergeNameController {
 
 		String path = "\"./creation_files/temporary_files/audio_files/";
 
+		// use the sox bash command to merge multiple audio files together
 		String command = "sox ";
 
 

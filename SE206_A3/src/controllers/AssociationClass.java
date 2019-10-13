@@ -5,7 +5,13 @@ import java.util.List;
 /**
  * A singleton class used for storing the term 
  * searched by the user, which is then displayed 
- * in the video creation.
+ * in the video creation. It is also used to store
+ * any information which is generated in one scene
+ * but may be required in a different scene, for
+ * example the voice and text selected by the user
+ * in the select sentences scene is later required
+ * in the audio name scene to create the audio
+ * file using the name provided by the user. 
  * 
  * @author Sreeniketh Raghavan
  * @author Hazel Williams

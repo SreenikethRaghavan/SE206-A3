@@ -52,6 +52,8 @@ public class AudioNameController {
 
 		File file = new File(fileName);
 
+		// if a file with the suggested default name already exists then keep generating 
+		// new names with numbers at the end of them till a unique file name is generated 
 		while(file.exists() && file.isFile()) {
 
 			int fileCount = 1;
@@ -65,8 +67,12 @@ public class AudioNameController {
 			file = new File(fileName);
 		}
 
+		// auto-fill the text field with the default name so that the user 		
+		// doesn't have to type a new name every time
 		textBar.setText(defaultName);
 
+		// bind the save button to the text field so that it is disabled 
+		// when the text field is empty
 		saveButton.disableProperty().bind(
 				Bindings.isEmpty(textBar.textProperty()));
 	}
@@ -156,6 +162,7 @@ public class AudioNameController {
 				String selectedText = AssociationClass.getInstance().getSelectedText();
 				String selectedVoice = AssociationClass.getInstance().getSelectedVoice();
 
+				// generate audio file using text2wave
 				String command = "echo -e \"" + selectedText + "\" | text2wave -eval \"(voice_" + selectedVoice + ")\" > " + fileName;
 
 				createAudio.runCommand(command);

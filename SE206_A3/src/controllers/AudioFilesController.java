@@ -99,14 +99,14 @@ public class AudioFilesController {
 
 		existingFiles.setItems(audioFiles);
 
-		filesToMerge.setItems(mergeList);
-
 		existingList = audioFiles;
 
 		existingFiles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 		filesToMerge.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+		// bind the play and delete buttons to both the lists so that they are 
+		// disabled if nothing is selected
 		playButton.disableProperty().bind(
 				Bindings.isNull(existingFiles.getSelectionModel().selectedItemProperty())
 				.and(Bindings.isNull(filesToMerge.getSelectionModel().selectedItemProperty())));
@@ -115,12 +115,15 @@ public class AudioFilesController {
 				Bindings.isNull(existingFiles.getSelectionModel().selectedItemProperty())
 				.and(Bindings.isNull(filesToMerge.getSelectionModel().selectedItemProperty())));
 
+		// disable the merge button if the merge list is empty
 		mergeButton.disableProperty().bind(
 				Bindings.size(mergeList).isEqualTo(0));
 
+		// disable the add button if nothing is selected in the left list
 		addButton.disableProperty().bind(
 				Bindings.isNull(existingFiles.getSelectionModel().selectedItemProperty()));
 
+		// disable the remove button if nothing is selected in the right list
 		removeButton.disableProperty().bind(
 				Bindings.isNull(filesToMerge.getSelectionModel().selectedItemProperty()));
 	}
@@ -130,6 +133,7 @@ public class AudioFilesController {
 
 		String selected = existingFiles.getSelectionModel().getSelectedItem();
 
+		// if nothing is selected from the left list then get the right list selection
 		if (selected == null) {
 
 			selected = filesToMerge.getSelectionModel().getSelectedItem();
@@ -236,22 +240,21 @@ public class AudioFilesController {
 
 		String selection = existingFiles.getSelectionModel().getSelectedItem();
 
-		if (selection != null) {
+		mergeList.add(selection);
+		existingList.remove(selection);
 
-			mergeList.add(selection);
-			existingList.remove(selection);
+		existingFiles.setItems(existingList);
+		filesToMerge.setItems(mergeList);
 
-			existingFiles.setItems(existingList);
-			filesToMerge.setItems(mergeList);
+		// if the merge list has more than 1 file then change the 
+		// button image and text from 'use selected file' to 'merge files'
+		if (mergeList.size() > 1) {
 
-			if (mergeList.size() > 1) {
+			mergeButton.setText("Merge Audio Files");
 
-				mergeButton.setText("Merge Audio Files");
+			Image image = new Image("/images/merge.jpg");
 
-				Image image = new Image("/images/merge.jpg");
-
-				mergeImage.setImage(image);
-			}
+			mergeImage.setImage(image);
 		}
 	}
 
@@ -265,11 +268,14 @@ public class AudioFilesController {
 			mergeList.remove(selection);
 			existingList.add(selection);
 
+			// sort alphabetically
 			Collections.sort(existingList);
 
 			existingFiles.setItems(existingList);
 			filesToMerge.setItems(mergeList);
 
+			// if the merge list has 1 or no files then change the 
+			// button image and text from 'merge files' to 'use selected file'
 			if (mergeList.size() <= 1) {
 
 				mergeButton.setText("Use Audio File");

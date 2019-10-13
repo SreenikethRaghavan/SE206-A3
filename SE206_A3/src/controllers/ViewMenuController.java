@@ -40,10 +40,10 @@ public class ViewMenuController {
 
 	@FXML
 	private Button playButton;
-	
+
 	@FXML
 	private Button pausePlayButton;
-	
+
 	@FXML
 	private Button stopButton;
 
@@ -52,9 +52,9 @@ public class ViewMenuController {
 
 	@FXML
 	private MediaView mediaView;
-	
+
 	private MediaPlayer player;
-	
+
 
 	@FXML
 	private void updateList() {
@@ -79,11 +79,13 @@ public class ViewMenuController {
 			noCreationsAlert.setHeaderText("There are currently no existing creations to display.");
 			noCreationsAlert.setContentText("Kindly create a new creation to view it on the list. ");
 			noCreationsAlert.showAndWait();
-			
+
 			creations.add("No creations currently exist.");
 			creations.add("Please create a creation to view it.");
-			playButton.setDisable(true);
+
+			playButton.setDisable(true); 
 			deleteButton.setDisable(true);
+
 
 		}
 
@@ -94,7 +96,7 @@ public class ViewMenuController {
 		ObservableList<String> sorted = FXCollections.observableArrayList();
 
 		int index = 1;
-		
+
 		String creationName = "";
 
 		// number the creations, if there are creations
@@ -108,7 +110,7 @@ public class ViewMenuController {
 			}
 			sorted.add(creationName);
 			index++;
-	
+
 		}
 
 
@@ -138,8 +140,8 @@ public class ViewMenuController {
 		mediaView.setMediaPlayer(player);
 
 	}
-	
-	
+
+
 	@FXML
 	private void togglePausePlay() {
 		if (player.getStatus() == Status.PLAYING) {
@@ -148,7 +150,7 @@ public class ViewMenuController {
 			player.play();
 		}
 	}
-	
+
 	//resets the video to default view, ie stops the video.
 	@FXML
 	private void stopVideo() {
@@ -161,7 +163,7 @@ public class ViewMenuController {
 		stopButton.setDisable(true);
 		pausePlayButton.setDisable(true);
 	}
-	
+
 	@FXML
 	private void deleteCreation() {
 
@@ -190,7 +192,7 @@ public class ViewMenuController {
 		// update view
 		updateList();
 	}
-	
+
 
 	/*
 	 * Changed 26/09/2019: No longer use ffmplay to play videos, instead embeds them in the gui
@@ -205,12 +207,12 @@ public class ViewMenuController {
 			playButton.setDisable(false);
 		}
 
-		if (selected != null) {
+		else {
 			stopButton.setDisable(false);
 			pausePlayButton.setDisable(false);
 
 			String selectedCreation = selected.substring(3);
-			
+
 			//sending to a different thread allows you to keep interacting with the GUI while the video is playing.
 			Task<Void> task = new Task<Void>() {
 				@Override protected Void call() throws Exception {

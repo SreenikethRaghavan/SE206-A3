@@ -47,10 +47,10 @@ public class OrderImagesController {
 
 	@FXML
 	private ImageView imageView;
-	
+
 
 	private ObservableList<String> sorted;
-	
+
 	/**
 	 * updateList is used to initialize and reset the listView of the images that have been downloaded for the slideshow.
 	 * calling it will reset the order of the images, as it creates a new array and fills it directly from the directory,
@@ -62,7 +62,7 @@ public class OrderImagesController {
 		List<String> images = new ArrayList<String>();
 
 		File[] files = new File("creation_files/temporary_files/image_files/").listFiles();
-		
+
 		//adding all the downloading image file names to the array
 		if (files.length != 0) {
 			for (File file : files) {
@@ -78,17 +78,17 @@ public class OrderImagesController {
 			images.add("Error: no images found.");
 
 		}
-		
+
 		//this isnt neccessary, but why not haha
 		sorted = FXCollections.observableArrayList();
 
-		
+
 
 		for(String image : images) {
 			sorted.add(image);
 
 		}
-		
+
 		listView.setItems(sorted);
 
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -99,7 +99,7 @@ public class OrderImagesController {
 	@FXML
 	private void initialize() {
 
-		
+
 		//preview the image :)
 		//essentially i have set up a imageview which i just switch the image on for whatever list item is currently selected. it is
 		//updated every time you click on the listView, which could be clicking the same item or a new item, but will always display
@@ -113,33 +113,33 @@ public class OrderImagesController {
 
 			}
 		});
-		
-		
+
+
 		updateList();
 
 
 	}
-	
-	
+
+
 	public static void copyFile(File sourceFile, File destFile) throws IOException {
-	    if(!destFile.exists()) {
-	        destFile.createNewFile();
-	    }
+		if(!destFile.exists()) {
+			destFile.createNewFile();
+		}
 
-	    FileChannel source = new FileInputStream(sourceFile).getChannel();
-	    FileChannel destination = new FileOutputStream(destFile).getChannel();
+		FileChannel source = new FileInputStream(sourceFile).getChannel();
+		FileChannel destination = new FileOutputStream(destFile).getChannel();
 
-	    try {
-	        source = new FileInputStream(sourceFile).getChannel();
-	        destination = new FileOutputStream(destFile).getChannel();
-	        destination.transferFrom(source, 0, source.size());
-	    } finally {
-	    	source.close();
-	        destination.close();
-	    }
+		try {
+			source = new FileInputStream(sourceFile).getChannel();
+			destination = new FileOutputStream(destFile).getChannel();
+			destination.transferFrom(source, 0, source.size());
+		} finally {
+			source.close();
+			destination.close();
+		}
 	}
-	
-	
+
+
 	/**
 	 * This is activated on trying to go to the next scene.
 	 * In order for ffmpeg to generate the slideshow, it needs the images to have a naming pattern of img01 img02... etc
@@ -153,25 +153,25 @@ public class OrderImagesController {
 	 */
 	@FXML
 	private void renameImages(ActionEvent e) throws IOException {
-		
+
 		//for each image in the array
 		//rename its corresponding file to the img00 format
 		int index = 0;
-		
+
 		//make a image file for the quiz game
 		String destination = "creation_files/quiz_files/quiz_images/" + AssociationClass.getInstance().getSearchTerm() + ".jpg";
 		File destFile = new File(destination);
-		
+
 		for(String imageName : sorted) {
 			index++;
 			//sorted.add(image);
 			File f1 = new File("creation_files/temporary_files/image_files/"+imageName);
-			
+
 			if(index == 1) {
 				//this is the quiz image we want
 				copyFile(f1, destFile);
 			}
-			
+
 			File f2 = new File("creation_files/temporary_files/image_files/img0"+index+".jpg");
 			if(index==10) {
 				f2 = new File("creation_files/temporary_files/image_files/img10.jpg");
@@ -182,10 +182,10 @@ public class OrderImagesController {
 			}
 
 		}
-		
+
 		//store the number of images, post user deleting unwanted ones, so that it can be retrieved in the creation scene to determine the framerate.
 		AssociationClass.getInstance().storeNumImages(index);
-		
+
 		//move to the next scene
 		try {
 			AppWindow.valueOf("CreationName").setScene(e);
@@ -198,8 +198,8 @@ public class OrderImagesController {
 		//AppWindow.valueOf("CreationName").setScene(e);
 		return;
 	}
-	
-	
+
+
 	//deletes the selected image (after prompting confirmation)
 	/**
 	 * Deletes the selected image, after prompting the user for confirmation.
@@ -216,16 +216,16 @@ public class OrderImagesController {
 		// if something is selected
 		if (selected != null) {
 			if(sorted.size() <= 1) {
-				//cant delete the last element - would create errors in creation generation
+				//can't delete the last element - would create errors in creation generation
 				Alert noDeleteAlert = new Alert(Alert.AlertType.INFORMATION);
 				noDeleteAlert.setTitle("Sorry");
 				noDeleteAlert.setHeaderText("You cannot delete the last image");
 				noDeleteAlert.setContentText("There must be at least 1 image in the creation");
-				
+
 				noDeleteAlert.show();
-				
+
 			} else {
-				
+
 				int index = listView.getSelectionModel().getSelectedIndex();
 				Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
@@ -245,20 +245,20 @@ public class OrderImagesController {
 						listView.setItems(sorted);
 					}
 				});
-				
+
 			}
-			
+
 		}
 
-		
+
 	}
-	
+
 	//moves the selected image up in the list
 	@FXML
 	private void moveUp(ActionEvent e) throws IOException {
 
 		String selected = listView.getSelectionModel().getSelectedItem();
-		
+
 		if(selected != null) {
 			//we have got something selected
 			int index = listView.getSelectionModel().getSelectedIndex();
@@ -271,21 +271,21 @@ public class OrderImagesController {
 				//update view
 				listView.setItems(sorted);
 			}
-			
+
 		}
-		
+
 		return;
 	}
-	
+
 	//moves the selected image down in the list
 	@FXML
 	private void moveDown(ActionEvent e) throws IOException {
-		
+
 		String selected = listView.getSelectionModel().getSelectedItem();
 		Image selectedImage = new Image((new File("creation_files/temporary_files/image_files/"+selected).toURI().toString()));
 		imageView.setImage(selectedImage);
 		//int index = listView.getSelectionModel().getSelectedIndex();
-		
+
 		if(selected != null) {
 			//we have got something selected
 			int index = listView.getSelectionModel().getSelectedIndex();
@@ -300,10 +300,10 @@ public class OrderImagesController {
 			}
 
 		}
-		
+
 		return;
 	}
-	
+
 
 	/**
 	 * Returns to the download images scene. Before that, it deletes all the images already downloaded.
@@ -321,8 +321,8 @@ public class OrderImagesController {
 			file.delete();
 
 		}
-		
-		
+
+
 
 		AppWindow.valueOf("SelectImages").setScene(e);
 		return;

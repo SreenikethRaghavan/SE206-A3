@@ -37,6 +37,8 @@ public class CreateMenuController {
 	@FXML
 	private void initialize() {
 
+		// bind the search button to the text field so that it is disabled when 
+		// the text field is empty
 		searchButton.disableProperty().bind(
 				Bindings.isEmpty(searchBar.textProperty()));
 
@@ -67,7 +69,8 @@ public class CreateMenuController {
 
 				BashProcess wikit = new BashProcess();
 
-
+				// Use the wikit bash command to search for the wikipedia entry corresponding the search term. 
+				// Format the wikit output and store it in a text file
 				String command = "touch ./creation_files/temporary_files/text_files/wikipedia_output.txt; "        
 						+ "wikit " + searchTerm +" | sed 's/\\([.?!]\\) \\([[:upper:]]\\)/\\1\\n\\2/g' | sed 's/  //g' | tee ./creation_files/temporary_files/text_files/wikipedia_output.txt";
 

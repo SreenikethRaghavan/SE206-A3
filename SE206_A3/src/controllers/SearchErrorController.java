@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
  * term or return to the main menu.
  * 
  * @author Sreeniketh Raghavan
+ * @author Hazel Williams
  * 
  */
 public class SearchErrorController {

@@ -26,7 +26,7 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Button layoutX="713.0" layoutY="286.0" mnemonicParsing="false" onAction="#checkAnswer" prefHeight="56.0" prefWidth="145.0" stylesheets="@../CSS/stylesheet.css" text="ENTER" />
+            <Button fx:id="enterButton" layoutX="713.0" layoutY="286.0" mnemonicParsing="false" onAction="#checkAnswer" prefHeight="56.0" prefWidth="145.0" stylesheets="@../CSS/stylesheet.css" text="ENTER" />
             <Text fill="WHITE" layoutX="4.0" layoutY="81.0" stroke="BLACK" strokeType="OUTSIDE" text="Quiz Time!" textAlignment="CENTER" wrappingWidth="891.7155456542969">
                <font>
                   <Font name="System Bold" size="47.0" />
