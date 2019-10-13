@@ -50,7 +50,7 @@ public class CreationNameController {
 
 		String defaultName = searchTerm + "_creation";
 
-		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+		String fileName = "./creation_files/creations/"+ defaultName +".mp4";
 
 		File file = new File(fileName);
 
@@ -62,7 +62,7 @@ public class CreationNameController {
 
 			fileCount++;
 
-			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
+			fileName = "./creation_files/creations/"+ defaultName +".mp4";
 
 			file = new File(fileName);
 		}
