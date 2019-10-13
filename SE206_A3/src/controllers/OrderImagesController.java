@@ -1,7 +1,10 @@
 package controllers;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -117,6 +120,26 @@ public class OrderImagesController {
 
 	}
 	
+	
+	public static void copyFile(File sourceFile, File destFile) throws IOException {
+	    if(!destFile.exists()) {
+	        destFile.createNewFile();
+	    }
+
+	    FileChannel source = new FileInputStream(sourceFile).getChannel();
+	    FileChannel destination = new FileOutputStream(destFile).getChannel();
+
+	    try {
+	        source = new FileInputStream(sourceFile).getChannel();
+	        destination = new FileOutputStream(destFile).getChannel();
+	        destination.transferFrom(source, 0, source.size());
+	    } finally {
+	    	source.close();
+	        destination.close();
+	    }
+	}
+	
+	
 	/**
 	 * This is activated on trying to go to the next scene.
 	 * In order for ffmpeg to generate the slideshow, it needs the images to have a naming pattern of img01 img02... etc
@@ -134,10 +157,21 @@ public class OrderImagesController {
 		//for each image in the array
 		//rename its corresponding file to the img00 format
 		int index = 0;
+		
+		//make a image file for the quiz game
+		String destination = "creation_files/quiz_files/quiz_images/" + AssociationClass.getInstance().getSearchTerm() + ".jpg";
+		File destFile = new File(destination);
+		
 		for(String imageName : sorted) {
 			index++;
 			//sorted.add(image);
 			File f1 = new File("creation_files/temporary_files/image_files/"+imageName);
+			
+			if(index == 1) {
+				//this is the quiz image we want
+				copyFile(f1, destFile);
+			}
+			
 			File f2 = new File("creation_files/temporary_files/image_files/img0"+index+".jpg");
 			if(index==10) {
 				f2 = new File("creation_files/temporary_files/image_files/img10.jpg");
