@@ -16,7 +16,7 @@ public class AssociationClass {
 
 	private static AssociationClass controller;
 
-	private String searchTerm;
+	private String searchTerm = "  ";
 
 	private List<String> filesToMerge;
 

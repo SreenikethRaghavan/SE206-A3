@@ -44,8 +44,12 @@ public class MainMenuController {
 
 	@FXML
 	private void createCreation(ActionEvent event) throws IOException {
-
-		AppWindow.valueOf("CreateMenu").setScene(event);
+		if(AssociationClass.getInstance().getSearchTerm().contentEquals("  ")) {
+			AppWindow.valueOf("CreateMenu").setScene(event);
+		} else {
+			AppWindow.valueOf("CreateCreationMenu").setScene(event);
+		}
+		
 		return;
 
 	} 
