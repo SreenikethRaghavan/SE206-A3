@@ -138,6 +138,13 @@ public class SelectImagesController {
 					
 					String query = AssociationClass.getInstance().getSearchTerm();
 					int resultsPerPage = imageNum;
+					if(AssociationClass.getInstance().getSearchTerm().contentEquals(AssociationClass.getInstance().getSearchTerm().trim().replace(' ', '-'))) {
+						System.out.println("No spaces detected.");
+					} else {
+						resultsPerPage = resultsPerPage + 1;
+						resultsPerPage = resultsPerPage - 1;
+						System.out.println("Spaces Detected.");
+					}
 					int page = 0;
 					
 			        PhotosInterface photos = flickr.getPhotosInterface();
@@ -169,14 +176,20 @@ public class SelectImagesController {
 				
 				
 				BashProcess creationProcess = new BashProcess();
-				
+				//A fault was occurring when the user entered a search term that had a space in it
+				//the below command was searching to delete any images that began with the search term,
+				//but of course ones with a space in them were changed so that they could be a valid file name.
+				//This meant the program was not deleting the originally sized images, leading to duplicates
+				//and missized images. By changing the search term in the same way we do when downloading the images,
+				//this will catch that error.
+				String searchTermNotSpaced = AssociationClass.getInstance().getSearchTerm().trim().replace(' ', '-');
 				
 				//resize and rename the images
 				//delete the originals
 				String command = "image_Duration="+imageDuration+";"
 						//+ " rm -f ./creation_files/temporary_files/image_files/*;wait;"
 						+ " index_num=1; for i in $( ls creation_files/temporary_files/image_files); do ffmpeg -y -i ./creation_files/temporary_files/image_files/$i -vf \"scale=320:240:force_original_aspect_ratio=decrease,pad=350:250:(ow-iw)/2:(oh-ih)/2\" ./creation_files/temporary_files/image_files/imageNum$(printf \"%02d\" $index_num).jpg -loglevel 'quiet'; index_num=$((index_num+1)); done;"
-						+ "rm -f ./creation_files/temporary_files/image_files/"+AssociationClass.getInstance().getSearchTerm()+"*;"
+						+ "rm -f ./creation_files/temporary_files/image_files/"+searchTermNotSpaced+"*;"
 						+"";
 				
 				creationProcess.runCommand(command);

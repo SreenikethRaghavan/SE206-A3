@@ -105,7 +105,14 @@ public class CreationNameController {
 				//calculate the image duration and round it to something ffmpeg will tolerate. 3dp accuracy is sufficient for matching the audio length to the slideshow length.
 				double frameRate = AssociationClass.getInstance().getNumImages()/durationInSeconds;
 				frameRate = Math.round(frameRate*1000.0)/1000.0;
-
+				
+				//default font size is 60
+				int fontSize = 60;
+				
+				if(AssociationClass.getInstance().getSearchTerm().length() >= 10) {
+					fontSize = 40;
+				}
+				
 				//This command is where both the slideshow and the final creation is generated
 				//line 1: establish the image_Duration variable. As this variable is only used in one place in the following code, this could be refactored out. 
 				//		  However its working at the moment so no point breaking it.
@@ -118,7 +125,7 @@ public class CreationNameController {
 				//line 6: Combine the audio file and the video file to make the final creation video.
 				String command = "image_Duration="+frameRate+";"
 						+ " ffmpeg -y -framerate $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -c:v libx264 -r 24 ./creation_files/temporary_files/video_files/outputishere.mp4  > /dev/null; wait;"
-						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize=60:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
+						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize="+fontSize+":fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
 						+ " rm -f ./creation_files/temporary_files/image_files/*; "
 						+ " rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;"
 						+ " ffmpeg -y -i ./"+videoFileName+" -i ./"+audioFileName+" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet> /dev/null; wait;";
