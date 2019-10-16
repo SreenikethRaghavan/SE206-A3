@@ -139,11 +139,11 @@ public class SelectImagesController {
 					String query = AssociationClass.getInstance().getSearchTerm();
 					int resultsPerPage = imageNum;
 					if(AssociationClass.getInstance().getSearchTerm().contentEquals(AssociationClass.getInstance().getSearchTerm().trim().replace(' ', '-'))) {
-						System.out.println("No spaces detected.");
+						//System.out.println("No spaces detected.");
 					} else {
 						resultsPerPage = resultsPerPage + 1;
 						resultsPerPage = resultsPerPage - 1;
-						System.out.println("Spaces Detected.");
+						//System.out.println("Spaces Detected.");
 					}
 					int page = 0;
 					

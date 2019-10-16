@@ -113,6 +113,16 @@ public class CreationNameController {
 					fontSize = 40;
 				}
 				
+				if(AssociationClass.getInstance().getSearchTerm().length() >= 16) {
+					fontSize = 30;
+				}
+				
+				if(AssociationClass.getInstance().getSearchTerm().length() > 20) {
+					//this should be able to fit ~30 characters so. should be sufficient.
+					fontSize = 20;
+				}
+				
+				
 				//This command is where both the slideshow and the final creation is generated
 				//line 1: establish the image_Duration variable. As this variable is only used in one place in the following code, this could be refactored out. 
 				//		  However its working at the moment so no point breaking it.
