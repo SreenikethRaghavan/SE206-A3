@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,6 +58,9 @@ public class AudioFilesController {
 
 	@FXML
 	private ImageView mergeImage;
+	
+	@FXML
+	private CheckBox includeBGMusic;
 
 
 	private ObservableList<String> mergeList = FXCollections.observableArrayList();
@@ -291,6 +295,12 @@ public class AudioFilesController {
 
 	@FXML
 	private void mergeFiles(ActionEvent e) throws Exception {
+		
+		if(includeBGMusic.isSelected()) {
+			AssociationClass.getInstance().setBGMusic(true);
+		} else {
+			AssociationClass.getInstance().setBGMusic(false);
+		}
 
 		if (mergeButton.getText().equals("Use Audio File")) {
 

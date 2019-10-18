@@ -42,9 +42,14 @@ public class CreationNameController {
 	private TextField searchBar;
 
 	private String userInput;
+	
+	Boolean backgroundMusic = true;
+	
+	private String backMusic = "funkTest.mp3";
 
 	@FXML
 	private void initialize() {
+		backgroundMusic = AssociationClass.getInstance().isBGMusic();
 
 		String searchTerm = AssociationClass.getInstance().getSearchTerm();
 
@@ -137,9 +142,22 @@ public class CreationNameController {
 						+ " ffmpeg -y -framerate $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -c:v libx264 -r 24 ./creation_files/temporary_files/video_files/outputishere.mp4  > /dev/null; wait;"
 						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize="+fontSize+":fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
 						+ " rm -f ./creation_files/temporary_files/image_files/*; "
-						+ " rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;"
-						+ " ffmpeg -y -i ./"+videoFileName+" -i ./"+audioFileName+" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet> /dev/null; wait;";
-
+						+ " rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;";
+						
+				
+				if(backgroundMusic == true) {
+					//need to add the background music.
+					//resizing the sound to match the audio clip
+					command = command +" ffmpeg -y -i "+backMusic+" -af apad -t "+durationInSeconds+" -filter:a \"volume=0.4\" ./creation_files/temporary_files/resizedFunk.wav; wait;";
+					//merging sound
+					command = command +" ffmpeg -y -i ./"+audioFileName+" -i ./creation_files/temporary_files/resizedFunk.wav -filter_complex amerge -ac 2 -c:a libmp3lame -q:a 4 ./creation_files/temporary_files/temp1.wav; wait;";
+					//using sound to make creation
+					command = command +" ffmpeg -y -i ./"+videoFileName+" -i ./creation_files/temporary_files/temp1.wav -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet> /dev/null; wait;";
+				} else {
+					//create with no background music
+					command = command + " ffmpeg -y -i ./"+videoFileName+" -i ./"+audioFileName+" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet> /dev/null; wait;";
+				}
+				
 				creationProcess.runCommand(command);
 
 				return null;

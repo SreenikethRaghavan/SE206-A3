@@ -33,6 +33,8 @@ public class AssociationClass {
 	private double numImages;
 
 	private String selectedText; 
+	
+	private Boolean backgroundMusic = false;
 
 	private AssociationClass() { 
 
@@ -45,6 +47,14 @@ public class AssociationClass {
 			return controller;
 		}
 		return controller;
+	}
+	
+	public Boolean isBGMusic() {
+		return backgroundMusic;
+	}
+	
+	public void setBGMusic(Boolean x) {
+		backgroundMusic = x;
 	}
 
 

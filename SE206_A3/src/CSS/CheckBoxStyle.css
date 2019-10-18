@@ -1,0 +1,12 @@
+.check-box .box {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: white;
+    -fx-border-radius: 100%;
+    -fx-background-radius: 100%;
+
+}
+
+.label {
+   -fx-font-size: 1.8em;
+}
