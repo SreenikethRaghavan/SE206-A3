@@ -314,16 +314,14 @@ public class AudioFilesController {
 		}
 
 		else {
-
+			
 			List<String> filesToMerge = new ArrayList<String>();
-
+			
 			for (String file : mergeList) {
-
 				filesToMerge.add(file);
 			}
 
 			AssociationClass.getInstance().storeFilesToMerge(filesToMerge);
-
 			AppWindow.valueOf("MergeName").setScene(e);
 
 			return;
