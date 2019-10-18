@@ -53,7 +53,7 @@
                                  <children>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="46.0" opacity="0.69" stroke="BLACK" strokeType="INSIDE" width="300.0" />
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="46.0" opacity="0.69" stroke="BLACK" strokeType="INSIDE" width="330.0" />
                                           <CheckBox fx:id="includeBGMusic" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" stylesheets="@../CSS/CheckBoxStyle.css" text="Include Background Music">
                                              <font>
                                                 <Font size="20.0" />
