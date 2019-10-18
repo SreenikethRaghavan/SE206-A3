@@ -58,10 +58,10 @@ public class CreationNameController {
 		String fileName = "./creation_files/creations/"+ defaultName +".mp4";
 
 		File file = new File(fileName);
-
+		int fileCount = 1;
 		while(file.exists() && file.isFile()) {
 
-			int fileCount = 1;
+			fileCount = 1;
 
 			defaultName = searchTerm + "_creation_" + fileCount;
 
