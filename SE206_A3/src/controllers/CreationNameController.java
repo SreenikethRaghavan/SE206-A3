@@ -17,6 +17,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import wikispeak.BashProcess;
 
 
@@ -40,6 +42,9 @@ public class CreationNameController {
 
 	@FXML
 	private TextField searchBar;
+
+	@FXML
+	private ImageView loadingGif;
 
 	private String userInput;
 
@@ -81,6 +86,9 @@ public class CreationNameController {
 
 	//task to actually create the creation is in this, to avoid code duplication between overwrite/don't overwrite case.
 	private void makeCreation(ActionEvent e) {
+
+		Image image = new Image("/images/loading.gif");
+		loadingGif.setImage(image);
 
 		// if the entered name is valid and unique, or they want to override, then create the creation on a different thread	
 		Task<Void> task = new Task<Void>() {
@@ -171,6 +179,8 @@ public class CreationNameController {
 					// Alert the user about the creation being successfully created
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
 
+					loadingGif.setImage(null);
+
 					created.setTitle("Creation Created");
 					created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
 					created.setContentText("Select the 'View Existing Creations' option from the main menu to manage and play your creations.");
@@ -209,6 +219,10 @@ public class CreationNameController {
 	 */
 	@FXML
 	private void createCreation(ActionEvent e) throws IOException {
+
+		Image image = new Image("/images/loading.gif");
+		loadingGif.setImage(image);
+
 		//want to disable the enter button so they can't spam a lot of file creations, avoids them causing overwrite issues.
 		enterButton.disableProperty().unbind();
 
@@ -222,6 +236,9 @@ public class CreationNameController {
 
 		for(char Char : chars) {
 			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
+
+				loadingGif.setImage(null);
+
 				Alert invalidName = new Alert(Alert.AlertType.ERROR);
 				invalidName.setTitle("Invalid Creation Name");
 				invalidName.setHeaderText("You cannot save a creation with the character '" + Char + "' in its name!");
@@ -240,6 +257,8 @@ public class CreationNameController {
 		File file = new File(fileName);
 
 		if(file.exists() && file.isFile()) {
+
+			loadingGif.setImage(null);
 
 			// give the user the option to override the existing creation
 			Alert fileExists = new Alert(Alert.AlertType.CONFIRMATION);

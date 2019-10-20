@@ -150,10 +150,16 @@ public class QuizController {
 
 				for(char Char : chars) {
 
-					if (index % 2 != 0) {
+					if (Char == ' ') {
+
+						hint += "  ";
+					}
+
+					else if (index % 2 != 0) {
 
 						hint += Char;
 					}
+
 
 					else {
 
@@ -164,7 +170,7 @@ public class QuizController {
 
 				}
 
-				result.setText("Wrong answer.\nHINT: " + hint);
+				result.setText("Wrong answer. HINT: " + hint);
 				result.setFill(Color.BLUE);
 				answerField.clear();
 			}
@@ -183,7 +189,12 @@ public class QuizController {
 
 				for(char Char : chars) {
 
-					if (index == 0 || index == (chars.length)/2 || index == chars.length - 1) {
+					if (Char == ' ') {
+
+						hint += "  ";
+					}
+
+					else if (index == 0 || index == (chars.length)/2 || index == chars.length - 1) {
 
 						hint += '_';
 					}
@@ -197,7 +208,7 @@ public class QuizController {
 
 				}
 
-				result.setText("Wrong answer.\nHINT: " + hint);
+				result.setText("Wrong answer. HINT: " + hint);
 				result.setFill(Color.BLUE);
 				answerField.clear();
 
@@ -208,7 +219,6 @@ public class QuizController {
 
 				wrongAnswerCount++;
 
-
 				char[] chars = correctAnswer.toCharArray();
 
 				String hint = "";
@@ -217,7 +227,12 @@ public class QuizController {
 
 				for(char Char : chars) {
 
-					if (index == 0) {
+					if (Char == ' ') {
+
+						hint += "  ";
+					}
+
+					else if (index == 0) {
 
 						hint += '_';
 					}
@@ -231,7 +246,7 @@ public class QuizController {
 
 				}
 
-				result.setText("Wrong answer.\nHINT: " + hint);
+				result.setText("Wrong answer. HINT: " + hint);
 				result.setFill(Color.BLUE);	
 				answerField.clear();
 			}

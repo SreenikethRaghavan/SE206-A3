@@ -23,7 +23,7 @@
                   <Font name="System Bold" size="47.0" />
                </font>
             </Text>
-            <Button fx:id="searchButton" defaultButton="true" layoutX="599.0" layoutY="295.0" mnemonicParsing="false" onAction="#searchTerm" prefHeight="58.0" prefWidth="178.0" stylesheets="@../CSS/stylesheet.css" text="SEARCH" AnchorPane.topAnchor="295.0" />
+            <Button fx:id="searchButton" defaultButton="true" layoutX="590.0" layoutY="286.0" mnemonicParsing="false" onAction="#searchTerm" prefHeight="58.0" prefWidth="178.0" stylesheets="@../CSS/stylesheet.css" text="SEARCH" AnchorPane.topAnchor="286.0" />
             <Button fx:id="backButton" layoutX="14.0" layoutY="522.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToMainMenu" opacity="0.69" prefHeight="64.0" prefWidth="66.4" stylesheets="@../CSS/backbuttonStyle.css">
                <graphic>
                   <ImageView fitHeight="58.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -33,7 +33,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TextField id="searchBar" fx:id="searchBar" alignment="CENTER" layoutX="113.0" layoutY="295.0" prefHeight="58.0" prefWidth="436.0" promptText="TYPE YOUR CREATION TERM HERE" AnchorPane.topAnchor="295.0">
+            <TextField id="searchBar" fx:id="searchBar" alignment="CENTER" layoutX="135.0" layoutY="286.0" prefHeight="58.0" prefWidth="436.0" promptText="TYPE YOUR CREATION TERM HERE" AnchorPane.topAnchor="286.0">
                <font>
                   <Font size="14.0" />
                </font>

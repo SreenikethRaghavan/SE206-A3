@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AudioNameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AudioNameController">
    <children>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
          <children>
@@ -23,7 +23,7 @@
                   <Font name="System Bold" size="47.0" />
                </font>
             </Text>
-            <Button fx:id="saveButton" layoutX="573.0" layoutY="256.0" mnemonicParsing="false" onAction="#createAudioFile" prefHeight="58.0" prefWidth="178.0" stylesheets="@../CSS/stylesheet.css" text="SAVE" />
+            <Button fx:id="saveButton" layoutX="592.0" layoutY="271.0" mnemonicParsing="false" onAction="#createAudioFile" prefHeight="58.0" prefWidth="178.0" stylesheets="@../CSS/stylesheet.css" text="SAVE" />
             <Button fx:id="backButton" layoutX="14.0" layoutY="522.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToSelectSentences" opacity="0.69" prefHeight="64.0" prefWidth="66.4" stylesheets="@../CSS/backbuttonStyle.css">
                <graphic>
                   <ImageView fitHeight="58.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -33,11 +33,12 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TextField id="searchBar" fx:id="textBar" alignment="CENTER" layoutX="127.0" layoutY="256.0" prefHeight="58.0" prefWidth="436.0" promptText="TYPE YOUR AUDIO NAME HERE">
+            <TextField id="searchBar" fx:id="textBar" alignment="CENTER" layoutX="133.0" layoutY="271.0" prefHeight="58.0" prefWidth="436.0" promptText="TYPE YOUR AUDIO NAME HERE">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
+            <ImageView fx:id="loadingGif" fitHeight="233.0" fitWidth="298.0" layoutX="301.0" layoutY="353.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </children>
