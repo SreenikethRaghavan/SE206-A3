@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateCreationMenuController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateCreationMenuController">
    <children>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
          <children>
@@ -22,8 +22,8 @@
                   <Font name="System Bold" size="96.0" />
                </font>
             </Text>
-            <Button layoutX="287.0" layoutY="196.0" mnemonicParsing="false" onAction="#goToWIki" prefHeight="58.0" prefWidth="325.0" stylesheets="@../CSS/stylesheet.css" text="NEW CREATION" />
-            <Button fx:id="previousBtn" layoutX="287.0" layoutY="286.0" mnemonicParsing="false" onAction="#goToSelectSentences" prefHeight="58.0" prefWidth="325.0" stylesheets="@../CSS/stylesheet.css" text="USE [PREVIOUS TERM]" />
+            <Button layoutX="288.0" layoutY="217.0" mnemonicParsing="false" onAction="#goToWIki" prefHeight="58.0" prefWidth="325.0" stylesheets="@../CSS/stylesheet.css" text="NEW CREATION" />
+            <Button fx:id="previousBtn" layoutX="288.0" layoutY="352.0" mnemonicParsing="false" onAction="#goToSelectSentences" prefHeight="58.0" prefWidth="325.0" stylesheets="@../CSS/stylesheet.css" text="USE [PREVIOUS TERM]" />
             <Button fx:id="backButton" layoutX="14.0" layoutY="522.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToMainMenu" opacity="0.69" prefHeight="64.0" prefWidth="66.4" stylesheets="@../CSS/backbuttonStyle.css">
                <graphic>
                   <ImageView fitHeight="58.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">

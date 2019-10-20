@@ -34,7 +34,7 @@ public class AssociationClass {
 
 	private String selectedText; 
 	
-	private Boolean backgroundMusic = false;
+	private boolean backgroundMusic = false;
 
 	private AssociationClass() { 
 
@@ -49,11 +49,11 @@ public class AssociationClass {
 		return controller;
 	}
 	
-	public Boolean isBGMusic() {
+	public boolean isBGMusic() {
 		return backgroundMusic;
 	}
 	
-	public void setBGMusic(Boolean x) {
+	public void setBGMusic(boolean x) {
 		backgroundMusic = x;
 	}
 

@@ -17,6 +17,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import wikispeak.BashProcess;
 
 
@@ -41,35 +43,39 @@ public class CreationNameController {
 	@FXML
 	private TextField searchBar;
 
+	@FXML
+	private ImageView loadingGif;
+
 	private String userInput;
-	
-	Boolean backgroundMusic = true;
-	
+
+	boolean backgroundMusic;
+
 	private String backMusic = "funkTest.mp3";
 
 	@FXML
 	private void initialize() {
+
 		backgroundMusic = AssociationClass.getInstance().isBGMusic();
 
 		String searchTerm = AssociationClass.getInstance().getSearchTerm();
 
 		String defaultName = searchTerm + "_creation";
+		defaultName = defaultName.replace(' ', '_');
 
 		String fileName = "./creation_files/creations/"+ defaultName +".mp4";
-
 		File file = new File(fileName);
+
 		int fileCount = 1;
+
 		while(file.exists() && file.isFile()) {
 
-			fileCount = 1;
-
 			defaultName = searchTerm + "_creation_" + fileCount;
-
-			fileCount++;
+			defaultName = defaultName.replace(' ', '_');
 
 			fileName = "./creation_files/creations/"+ defaultName +".mp4";
-
 			file = new File(fileName);
+
+			fileCount++;
 		}
 
 		searchBar.setText(defaultName);
@@ -80,6 +86,9 @@ public class CreationNameController {
 
 	//task to actually create the creation is in this, to avoid code duplication between overwrite/don't overwrite case.
 	private void makeCreation(ActionEvent e) {
+
+		Image image = new Image("/images/loading.gif");
+		loadingGif.setImage(image);
 
 		// if the entered name is valid and unique, or they want to override, then create the creation on a different thread	
 		Task<Void> task = new Task<Void>() {
@@ -110,24 +119,24 @@ public class CreationNameController {
 				//calculate the image duration and round it to something ffmpeg will tolerate. 3dp accuracy is sufficient for matching the audio length to the slideshow length.
 				double frameRate = AssociationClass.getInstance().getNumImages()/durationInSeconds;
 				frameRate = Math.round(frameRate*1000.0)/1000.0;
-				
+
 				//default font size is 60
 				int fontSize = 60;
-				
+
 				if(AssociationClass.getInstance().getSearchTerm().length() >= 10) {
 					fontSize = 40;
 				}
-				
+
 				if(AssociationClass.getInstance().getSearchTerm().length() >= 16) {
 					fontSize = 30;
 				}
-				
+
 				if(AssociationClass.getInstance().getSearchTerm().length() > 20) {
 					//this should be able to fit ~30 characters so. should be sufficient.
 					fontSize = 20;
 				}
-				
-				
+
+
 				//This command is where both the slideshow and the final creation is generated
 				//line 1: establish the image_Duration variable. As this variable is only used in one place in the following code, this could be refactored out. 
 				//		  However its working at the moment so no point breaking it.
@@ -143,8 +152,8 @@ public class CreationNameController {
 						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize="+fontSize+":fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
 						+ " rm -f ./creation_files/temporary_files/image_files/*; "
 						+ " rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;";
-						
-				
+
+
 				if(backgroundMusic == true) {
 					//need to add the background music.
 					//resizing the sound to match the audio clip
@@ -157,7 +166,7 @@ public class CreationNameController {
 					//create with no background music
 					command = command + " ffmpeg -y -i ./"+videoFileName+" -i ./"+audioFileName+" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet> /dev/null; wait;";
 				}
-				
+
 				creationProcess.runCommand(command);
 
 				return null;
@@ -169,6 +178,8 @@ public class CreationNameController {
 
 					// Alert the user about the creation being successfully created
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
+
+					loadingGif.setImage(null);
 
 					created.setTitle("Creation Created");
 					created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
@@ -208,6 +219,10 @@ public class CreationNameController {
 	 */
 	@FXML
 	private void createCreation(ActionEvent e) throws IOException {
+
+		Image image = new Image("/images/loading.gif");
+		loadingGif.setImage(image);
+
 		//want to disable the enter button so they can't spam a lot of file creations, avoids them causing overwrite issues.
 		enterButton.disableProperty().unbind();
 
@@ -221,6 +236,9 @@ public class CreationNameController {
 
 		for(char Char : chars) {
 			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
+
+				loadingGif.setImage(null);
+
 				Alert invalidName = new Alert(Alert.AlertType.ERROR);
 				invalidName.setTitle("Invalid Creation Name");
 				invalidName.setHeaderText("You cannot save a creation with the character '" + Char + "' in its name!");
@@ -239,6 +257,8 @@ public class CreationNameController {
 		File file = new File(fileName);
 
 		if(file.exists() && file.isFile()) {
+
+			loadingGif.setImage(null);
 
 			// give the user the option to override the existing creation
 			Alert fileExists = new Alert(Alert.AlertType.CONFIRMATION);

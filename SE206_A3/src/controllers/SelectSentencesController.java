@@ -128,11 +128,11 @@ public class SelectSentencesController {
 	 */
 	@FXML
 	private void createAudio(ActionEvent e) throws IOException {
-
+		
 		String selectedText = sentenceDisplay.getSelectedText();
 
 		String[] words = selectedText.split("\\s+");
-
+	
 		// The selected text cannot contain more than 40 words
 		if (words.length > 40) {
 			Alert invalidWordCount = new Alert(Alert.AlertType.ERROR);
@@ -158,9 +158,10 @@ public class SelectSentencesController {
 		else {
 			AssociationClass.getInstance().storeSelectedVoice("akl_nz_cw_cg_cg");
 		}
-
-		AppWindow.valueOf("AudioName").setScene(e);
-		return;
+		
+		  AppWindow.valueOf("AudioName").setScene(e);
+		  return;
+		 
 	}
 
 	@FXML

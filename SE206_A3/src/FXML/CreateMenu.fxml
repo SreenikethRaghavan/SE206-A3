@@ -9,8 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateMenuController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateMenuController">
    <children>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
          <children>
@@ -19,12 +18,12 @@
                   <Image url="@../images/forest.jpg" />
                </image>
             </ImageView>
-            <Text fill="WHITE" layoutX="-6.0" layoutY="133.0" stroke="BLACK" strokeType="OUTSIDE" text="What term would you &#10;like to search for?" textAlignment="CENTER" wrappingWidth="891.7155456542969">
+            <Text fill="WHITE" layoutX="-6.0" layoutY="133.0" stroke="BLACK" strokeType="OUTSIDE" text="What term would you &#10;like to search for ?" textAlignment="CENTER" wrappingWidth="891.7155456542969">
                <font>
                   <Font name="System Bold" size="47.0" />
                </font>
             </Text>
-            <Button fx:id="searchButton" layoutX="573.0" layoutY="234.0" mnemonicParsing="false" onAction="#searchTerm" prefHeight="58.0" prefWidth="178.0" stylesheets="@../CSS/stylesheet.css" text="SEARCH" />
+            <Button fx:id="searchButton" defaultButton="true" layoutX="590.0" layoutY="286.0" mnemonicParsing="false" onAction="#searchTerm" prefHeight="58.0" prefWidth="178.0" stylesheets="@../CSS/stylesheet.css" text="SEARCH" AnchorPane.topAnchor="286.0" />
             <Button fx:id="backButton" layoutX="14.0" layoutY="522.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToMainMenu" opacity="0.69" prefHeight="64.0" prefWidth="66.4" stylesheets="@../CSS/backbuttonStyle.css">
                <graphic>
                   <ImageView fitHeight="58.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -34,11 +33,12 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TextField id="searchBar" fx:id="searchBar" alignment="CENTER" layoutX="127.0" layoutY="234.0" prefHeight="58.0" prefWidth="436.0" promptText="TYPE YOUR CREATION TERM HERE">
+            <TextField id="searchBar" fx:id="searchBar" alignment="CENTER" layoutX="135.0" layoutY="286.0" prefHeight="58.0" prefWidth="436.0" promptText="TYPE YOUR CREATION TERM HERE" AnchorPane.topAnchor="286.0">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
+            <ImageView fx:id="loadingGif" fitHeight="233.0" fitWidth="298.0" layoutX="301.0" layoutY="353.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </children>

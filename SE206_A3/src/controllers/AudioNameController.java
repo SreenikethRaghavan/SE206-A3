@@ -13,6 +13,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import wikispeak.BashProcess;
 
 /**
@@ -35,6 +37,9 @@ public class AudioNameController {
 	@FXML
 	private Button backButton;
 
+	@FXML
+	private ImageView loadingGif;
+
 	private String userInput;
 
 	private String fileName;
@@ -48,24 +53,28 @@ public class AudioNameController {
 
 		String defaultName = searchTerm + "_audio";
 
+		defaultName = defaultName.replace(' ', '_');
+
 		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
 
 		File file = new File(fileName);
 
 		// if a file with the suggested default name already exists then keep generating 
 		// new names with numbers at the end of them till a unique file name is generated 
-		int fileCount = 1;
-		while(file.exists() && file.isFile()) {
 
-			fileCount = 1;
+		int fileCount = 1;
+
+		while(file.exists() && file.isFile()) {
 
 			defaultName = searchTerm + "_audio_" + fileCount;
 
-			fileCount++;
+			defaultName = defaultName.replace(' ', '_');
 
 			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
 
 			file = new File(fileName);
+
+			fileCount++;
 		}
 
 		// auto-fill the text field with the default name so that the user 		
@@ -82,6 +91,9 @@ public class AudioNameController {
 	@FXML
 	private void createAudioFile(ActionEvent e) throws IOException {
 
+		Image image = new Image("/images/loading.gif");
+		loadingGif.setImage(image);
+
 		userInput = textBar.getText();
 
 		char[] chars = userInput.toCharArray();
@@ -89,6 +101,8 @@ public class AudioNameController {
 		// Check for inavlid chars in the name
 		for(char Char : chars) {
 			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
+				loadingGif.setImage(null);
+				
 				Alert invalidName = new Alert(Alert.AlertType.ERROR);
 				invalidName.setTitle("Invalid Audio File Name");
 				invalidName.setHeaderText("You cannot save an audio file with the character '" + Char + "' in its name!");
@@ -108,6 +122,8 @@ public class AudioNameController {
 		// If the file exists, give the user the option to override it
 		if(file.exists() && file.isFile()) {
 
+			loadingGif.setImage(null);
+			
 			Alert fileExists = new Alert(Alert.AlertType.CONFIRMATION);
 			fileExists.setTitle("Audio File Already Exists");
 			fileExists.setHeaderText("An audio file with the name '" + userInput + "' already exists!");
@@ -185,6 +201,8 @@ public class AudioNameController {
 
 					if (audioCreationFailed) {
 
+						loadingGif.setImage(null);
+						
 						Alert creationFailed = new Alert(Alert.AlertType.ERROR);
 
 						creationFailed.setTitle("Audio File Creation Failed");
@@ -203,6 +221,8 @@ public class AudioNameController {
 						return;			
 					}
 
+					loadingGif.setImage(null);
+					
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
 
 					created.setTitle("Audio File Created");

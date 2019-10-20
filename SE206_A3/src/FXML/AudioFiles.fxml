@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AudioFilesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AudioFilesController">
    <children>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
          <children>
@@ -22,18 +22,9 @@
                   <Image url="@../images/forest.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="backButton" layoutX="14.0" layoutY="522.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToSelectSentences" opacity="0.69" prefHeight="64.0" prefWidth="66.4" stylesheets="@../CSS/backbuttonStyle.css">
-               <graphic>
-                  <ImageView fitHeight="58.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/arrowBack.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
             <VBox alignment="TOP_CENTER" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="438.0" prefWidth="900.0">
+                  <HBox alignment="CENTER" prefHeight="450.0" prefWidth="900.0">
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="284.0" prefWidth="300.0">
                            <children>
@@ -125,9 +116,9 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="91.0" prefWidth="900.0" spacing="20.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="20.0">
                      <children>
-                        <Button id="playButton" fx:id="playButton" mnemonicParsing="false" onAction="#playFile" styleClass="iconButton" stylesheets="@../CSS/stylesheet.css" text="Play">
+                        <Button id="playButton" fx:id="playButton" mnemonicParsing="false" onAction="#playFile" prefHeight="42.0" prefWidth="118.0" styleClass="iconButton" stylesheets="@../CSS/stylesheet.css" text="Play">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -159,6 +150,18 @@
                         <Insets top="80.0" />
                      </padding>
                   </HBox>
+                  <Button fx:id="backButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToSelectSentences" opacity="0.69" prefHeight="64.0" prefWidth="66.4" stylesheets="@../CSS/backbuttonStyle.css">
+                     <graphic>
+                        <ImageView fitHeight="58.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/arrowBack.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets bottom="30.0" right="750.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
          </children>
