@@ -31,6 +31,7 @@ public class WikiSpeak extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainMenu.fxml"));		
 		primaryStage.setTitle("VARpedia");
 		primaryStage.sizeToScene();
+		primaryStage.setResizable(false);
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}

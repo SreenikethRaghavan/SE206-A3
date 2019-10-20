@@ -42,34 +42,35 @@ public class CreationNameController {
 	private TextField searchBar;
 
 	private String userInput;
-	
-	Boolean backgroundMusic = true;
-	
+
+	boolean backgroundMusic;
+
 	private String backMusic = "funkTest.mp3";
 
 	@FXML
 	private void initialize() {
+
 		backgroundMusic = AssociationClass.getInstance().isBGMusic();
 
 		String searchTerm = AssociationClass.getInstance().getSearchTerm();
 
 		String defaultName = searchTerm + "_creation";
+		defaultName = defaultName.replace(' ', '_');
 
 		String fileName = "./creation_files/creations/"+ defaultName +".mp4";
-
 		File file = new File(fileName);
+
 		int fileCount = 1;
+
 		while(file.exists() && file.isFile()) {
 
-			fileCount = 1;
-
 			defaultName = searchTerm + "_creation_" + fileCount;
-
-			fileCount++;
+			defaultName = defaultName.replace(' ', '_');
 
 			fileName = "./creation_files/creations/"+ defaultName +".mp4";
-
 			file = new File(fileName);
+
+			fileCount++;
 		}
 
 		searchBar.setText(defaultName);
@@ -110,24 +111,24 @@ public class CreationNameController {
 				//calculate the image duration and round it to something ffmpeg will tolerate. 3dp accuracy is sufficient for matching the audio length to the slideshow length.
 				double frameRate = AssociationClass.getInstance().getNumImages()/durationInSeconds;
 				frameRate = Math.round(frameRate*1000.0)/1000.0;
-				
+
 				//default font size is 60
 				int fontSize = 60;
-				
+
 				if(AssociationClass.getInstance().getSearchTerm().length() >= 10) {
 					fontSize = 40;
 				}
-				
+
 				if(AssociationClass.getInstance().getSearchTerm().length() >= 16) {
 					fontSize = 30;
 				}
-				
+
 				if(AssociationClass.getInstance().getSearchTerm().length() > 20) {
 					//this should be able to fit ~30 characters so. should be sufficient.
 					fontSize = 20;
 				}
-				
-				
+
+
 				//This command is where both the slideshow and the final creation is generated
 				//line 1: establish the image_Duration variable. As this variable is only used in one place in the following code, this could be refactored out. 
 				//		  However its working at the moment so no point breaking it.
@@ -143,8 +144,8 @@ public class CreationNameController {
 						+ " ffmpeg -y -i ./creation_files/temporary_files/video_files/outputishere.mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize="+fontSize+":fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
 						+ " rm -f ./creation_files/temporary_files/image_files/*; "
 						+ " rm -f ./creation_files/temporary_files/video_files/outputishere.mp4;";
-						
-				
+
+
 				if(backgroundMusic == true) {
 					//need to add the background music.
 					//resizing the sound to match the audio clip
@@ -157,7 +158,7 @@ public class CreationNameController {
 					//create with no background music
 					command = command + " ffmpeg -y -i ./"+videoFileName+" -i ./"+audioFileName+" -strict experimental \"./creation_files/creations/"+userInput+".mp4\" -v quiet> /dev/null; wait;";
 				}
-				
+
 				creationProcess.runCommand(command);
 
 				return null;

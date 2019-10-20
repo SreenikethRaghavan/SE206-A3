@@ -48,24 +48,28 @@ public class AudioNameController {
 
 		String defaultName = searchTerm + "_audio";
 
+		defaultName = defaultName.replace(' ', '_');
+
 		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
 
 		File file = new File(fileName);
 
 		// if a file with the suggested default name already exists then keep generating 
 		// new names with numbers at the end of them till a unique file name is generated 
-		int fileCount = 1;
-		while(file.exists() && file.isFile()) {
 
-			fileCount = 1;
+		int fileCount = 1;
+
+		while(file.exists() && file.isFile()) {
 
 			defaultName = searchTerm + "_audio_" + fileCount;
 
-			fileCount++;
+			defaultName = defaultName.replace(' ', '_');
 
 			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
 
 			file = new File(fileName);
+
+			fileCount++;
 		}
 
 		// auto-fill the text field with the default name so that the user 		

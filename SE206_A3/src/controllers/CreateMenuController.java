@@ -12,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import wikispeak.BashProcess;
 
 /**
@@ -33,6 +35,9 @@ public class CreateMenuController {
 	@FXML
 	private Button searchButton;
 
+	@FXML
+	private ImageView loadingGif;
+
 
 	@FXML
 	private void initialize() {
@@ -53,6 +58,9 @@ public class CreateMenuController {
 	@FXML
 	private void searchTerm(ActionEvent e) throws IOException {
 
+		Image image = new Image("/images/loading.gif");
+		loadingGif.setImage(image);
+		
 		searchButton.disableProperty().unbind();
 
 		backButton.setDisable(true);
@@ -84,6 +92,7 @@ public class CreateMenuController {
 
 				Platform.runLater(() -> {
 					BufferedReader reader = null;
+
 					try {
 						reader = new BufferedReader(new FileReader("./creation_files/temporary_files/text_files/wikipedia_output.txt"));
 					} catch (FileNotFoundException e1) {

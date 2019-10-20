@@ -36,21 +36,25 @@ public class MergeNameController {
 
 	@FXML
 	private void initialize() {
+
 		String defaultName = "combined_audio";
 
 		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
 		File file = new File(fileName);
+
 		// if a file with the suggested default name already exists then keep generating 
 		// new names with numbers at the end of them till a unique file name is generated 
+
 		int fileCount = 1;
+
 		while(file.exists() && file.isFile()) {
+
 			defaultName = "combined_audio_" + fileCount;
 
-			fileCount++;
-
 			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
-
 			file = new File(fileName);
+
+			fileCount++;
 		}
 
 		// auto-fill the text field with the default name so that the user doesn't have to 
