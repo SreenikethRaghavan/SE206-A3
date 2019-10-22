@@ -23,6 +23,8 @@ public class AssociationClass {
 	private static AssociationClass controller;
 
 	private String searchTerm = "  ";
+	
+	private int xp = 15;
 
 	private List<String> filesToMerge;
 
@@ -55,6 +57,10 @@ public class AssociationClass {
 	
 	public void setBGMusic(boolean x) {
 		backgroundMusic = x;
+	}
+	
+	public int getXP() {
+		return xp;
 	}
 
 
