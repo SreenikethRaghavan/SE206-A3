@@ -138,8 +138,8 @@ public class LearnMenuController {
     }
 
     @FXML
-    void returnToMainMenu(ActionEvent event) {
-
-    }
+    void returnToMainMenu(ActionEvent event) throws IOException {
+		AppWindow.valueOf("MainMenu").setScene(event);
+	}
 
 }

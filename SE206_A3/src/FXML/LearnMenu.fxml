@@ -80,7 +80,7 @@
             </ImageView>
             <Text fill="WHITE" layoutX="4.0" layoutY="85.0" stroke="BLACK" strokeType="OUTSIDE" text="LEARN" textAlignment="CENTER" underline="true" wrappingWidth="891.7155456542969">
                <font>
-                  <Font name="System Bold" size="90.0" />
+                  <Font name="System Bold" size="80.0" />
                </font>
             </Text>
          </children>
