@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -83,6 +85,27 @@
                   <Font name="System Bold" size="80.0" />
                </font>
             </Text>
+            <Button layoutX="10.0" layoutY="12.0" mnemonicParsing="false" onAction="#showSettings" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fx:id="settingImageView" fitHeight="58.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/settingCog.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <AnchorPane fx:id="settingsPane" layoutX="24.0" layoutY="76.0" prefHeight="259.0" prefWidth="250.0">
+               <children>
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="150.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="308.0" />
+                  <Polygon fill="WHITE" layoutX="53.0" layoutY="41.0" points="-29.99999237060547, 10, 24.600013732910156, 15, -29.99999237060547, -40.92811584472656" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Button layoutX="55.0" layoutY="100.0" mnemonicParsing="false" onAction="#resetXP" prefHeight="26.0" prefWidth="197.0" styleClass="iconButton" stylesheets="@../CSS/stylesheet.css" text="Reset XP Progress" />
+                  <Button alignment="CENTER" layoutX="270.0" layoutY="56.0" mnemonicParsing="false" onAction="#exitSettings" style="-fx-background-color: #fa4040;" text="X">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>

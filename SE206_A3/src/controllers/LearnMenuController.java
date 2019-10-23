@@ -5,9 +5,11 @@ import java.io.IOException;
 import FXML.AppWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import objects.Level;
 
@@ -54,9 +56,16 @@ public class LearnMenuController {
 
     @FXML
     private ImageView lock3;
+    
+    @FXML
+    private ImageView settingImageView;
 
     @FXML
     private ImageView lock4;
+
+    @FXML
+    private AnchorPane settingsPane;
+
     
     private ImageView[] locks;
     private Button[] gameBtns;
@@ -64,6 +73,28 @@ public class LearnMenuController {
     //should have a "level" object that contains max xp, min xp, features unlocked.
     private Level currLevel;
     private int currXP;
+    
+    
+
+    @FXML
+    void exitSettings(ActionEvent event) {
+    	settingsPane.setVisible(false);
+    }   
+    
+    @FXML
+    void showSettings(ActionEvent event) {
+    	settingsPane.setVisible(true);
+    }
+
+    @FXML
+    void resetXP(ActionEvent event) {
+    	AssociationClass.getInstance().increaseXP(-AssociationClass.getInstance().getXP());
+    	AssociationClass.getInstance().saveProgess();
+    	
+    	updateLevel();
+    	settingsPane.setVisible(false);
+
+    }
     
     /*
      * If this is called then the game hasn't been unlocked yet.
@@ -81,12 +112,7 @@ public class LearnMenuController {
     	gameBtns[index].setDisable(false);
     }
     
-    
-    @FXML
-	private void initialize() {
-    	locks = new ImageView[] {lock1,lock2,lock3,lock4};
-    	gameBtns = new Button[] {btn1,btn2,btn3,btn4};
-    	
+    private void updateLevel() {
     	//find out what level we are at
     	//we will first have to get the current XP
     	//eventually this will be stored in the association class
@@ -123,6 +149,15 @@ public class LearnMenuController {
     	
     	//with the currXP we need to update the progress bar
     	xpProgressBar.setProgress(currLevel.getProgress(currXP));
+    }
+    
+    @FXML
+	private void initialize() {
+    	locks = new ImageView[] {lock1,lock2,lock3,lock4};
+    	gameBtns = new Button[] {btn1,btn2,btn3,btn4};
+    	settingsPane.setVisible(false);
+    	
+    	updateLevel();
     	
 	}
 
