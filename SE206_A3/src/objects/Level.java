@@ -56,7 +56,7 @@ public enum Level {
 	 * giving out the maxXP
 	 */
 	public String getXPText(int XP) {
-		return XP + " / " + maxXP;
+		return XP + " / " + maxXP + " XP";
 	}
 	
 	/*

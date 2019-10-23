@@ -158,29 +158,15 @@ public class OrderImagesController {
 		//rename its corresponding file to the img00 format
 		int index = 0;
 
-		//make a image file for the quiz game
-		String destination = "creation_files/quiz_files/quiz_images/" + AssociationClass.getInstance().getSearchTerm() + ".jpg";
-		File destFile = new File(destination);
-
 		for(String imageName : sorted) {
 			index++;
 			//sorted.add(image);
 			File f1 = new File("creation_files/temporary_files/image_files/"+imageName);
-
-			if(index == 1) {
-				//this is the quiz image we want
-				copyFile(f1, destFile);
-			}
-
 			File f2 = new File("creation_files/temporary_files/image_files/img0"+index+".jpg");
 			if(index==10) {
 				f2 = new File("creation_files/temporary_files/image_files/img10.jpg");
 			}
-			boolean b = f1.renameTo(f2);
-			if(b) {
-				//System.out.println("Renamed successfully");
-			}
-
+			f1.renameTo(f2);
 		}
 
 		//store the number of images, post user deleting unwanted ones, so that it can be retrieved in the creation scene to determine the framerate.

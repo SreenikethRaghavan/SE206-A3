@@ -11,15 +11,19 @@ import java.util.List;
 
 import FXML.AppWindow;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 /**
  * Controller for the Quiz scene where the user 
@@ -30,12 +34,13 @@ import javafx.scene.text.Text;
  * the expected answer is the term they searched for.  
  * 
  * @author Sreeniketh Raghavan
+ * @author Hazel Williams
  * 
  */
 public class QuizController {
-
+	
 	@FXML
-	private ImageView imageView;
+	private MediaView mediaView;
 
 	@FXML
 	private Button enterButton;
@@ -46,36 +51,72 @@ public class QuizController {
 	@FXML
 	private Text result;
 
-	private List<Image> imageList = new ArrayList<Image>();
 
 	private int wrongAnswerCount = 0;
 	private int xpIncrease=0;
+	private MediaPlayer player;
+	
+	String fileLocation = "./creation_files/quiz_files/quiz_images";
+	ObservableList<String> urlList;
 
-	@FXML
-	private void initialize() {
+	private ObservableList<String> getURLList() {
+		List<String> creations = new ArrayList<String>();
 
-		File[] files = new File("./creation_files/quiz_files/quiz_images").listFiles();
+		File[] files = new File(fileLocation).listFiles();
 
-		List<File> fileList = Arrays.asList(files);
-
-		// to randomise the image being shown (don't want the same image to be the first question every time)
-		Collections.shuffle(fileList);
-
-		for (File file : files) {
-			if (file.isFile()) {
-
-				Image image = new Image("file:" + file.getPath().substring(2));
-				imageList.add(image);				
+		// remove creation extensions (.mp4)
+		// is this necessary? 
+		if (files.length != 0) {
+			for (File file : files) {
+				if (file.isFile()) {
+					String name = file.getName();
+					name = name.substring(0, name.lastIndexOf("."));
+					creations.add(name);
+				}
 			}
 		}
 
-		// select an image at random and quiz the user on it
-		if(!imageList.isEmpty()) {
-			Image randomImage = imageList.get((int)Math.random()*imageList.size());
-			imageView.setImage(randomImage);		
+		// to randomise the video being shown (don't want the same video to be the first question every time)
+		Collections.shuffle(creations);
+
+		ObservableList<String> sorted = FXCollections.observableArrayList();
+
+		// add the videos to the observable list
+		for(String creation : creations) {
+			sorted.add(fileLocation+"/"+creation+".mp4");
+		}
+		
+		return sorted;
+
+
+	}
+
+	
+	@FXML
+	private void initialize() {
+		
+		//get the list of mp4 urls in the folder
+		urlList = getURLList();
+
+		// select an video at random and quiz the user on it
+		if(!urlList.isEmpty()) {
+			String randomVideoURL = urlList.get((int)Math.random()*urlList.size());
+			File fileUrl = new File(randomVideoURL);
+			Media video = new Media(fileUrl.toURI().toString());
+			player = new MediaPlayer(video);
+			player.setAutoPlay(true);
+			//repeats the video once the video ends
+			player.setOnEndOfMedia(new Runnable() {
+		        @Override
+		        public void run() {
+		            player.seek(Duration.ZERO);
+		            player.play();
+		        }
+		    }); 
+			mediaView.setMediaPlayer(player);
 
 			// in order to avoid repeat questions
-			imageList.remove(randomImage);
+			urlList.remove(randomVideoURL);
 
 		}
 
@@ -99,10 +140,12 @@ public class QuizController {
 
 		String answer = answerField.getText();
 
-		Path path = Paths.get(imageView.getImage().getUrl());
+		Path path = Paths.get(mediaView.getMediaPlayer().getMedia().getSource());
+		
+		
 
-		String imageName = path.getFileName().toString();
-		String correctAnswer = imageName.substring(0, imageName.lastIndexOf("."));
+		String videoName = path.getFileName().toString();
+		String correctAnswer = videoName.substring(0, videoName.lastIndexOf("."));
 
 		if(answer.equalsIgnoreCase(correctAnswer)) {
 			
@@ -123,13 +166,30 @@ public class QuizController {
 			wrongAnswerCount = 0;
 
 			// avoid duplication of questions
-			imageList.remove(imageView.getImage());	
+			urlList.remove(mediaView.getMediaPlayer().getMedia().getSource());
 			answerField.clear();
 
-			if(!imageList.isEmpty()) {
+			if(!urlList.isEmpty()) {
+				String randomVideoURL = urlList.get((int)Math.random()*urlList.size());
+				File fileUrl = new File(randomVideoURL);
+				Media video = new Media(fileUrl.toURI().toString());
+				//stop whatever video was playing
+				player.stop();
+				player = new MediaPlayer(video);
+				player.play();
+				player.setAutoPlay(true);
+				//repeats the video once the video ends
+				player.setOnEndOfMedia(new Runnable() {
+			        @Override
+			        public void run() {
+			            player.seek(Duration.ZERO);
+			            player.play();
+			        }
+			    }); 
+				mediaView.setMediaPlayer(player);
 
-				Image randomImage = imageList.get((int)Math.random()*imageList.size());
-				imageView.setImage(randomImage);
+				// in order to avoid repeat questions
+				urlList.remove(randomVideoURL);
 
 			}
 
