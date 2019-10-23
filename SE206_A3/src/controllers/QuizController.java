@@ -145,7 +145,7 @@ public class QuizController {
 		
 
 		String videoName = path.getFileName().toString();
-		String correctAnswer = videoName.substring(0, videoName.lastIndexOf("."));
+		String correctAnswer = videoName.substring(0, videoName.lastIndexOf(".")).trim().replace('-', ' ');;
 
 		if(answer.equalsIgnoreCase(correctAnswer)) {
 			

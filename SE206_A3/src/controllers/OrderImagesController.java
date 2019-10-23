@@ -78,8 +78,7 @@ public class OrderImagesController {
 			images.add("Error: no images found.");
 
 		}
-
-		//this isnt neccessary, but why not haha
+		
 		sorted = FXCollections.observableArrayList();
 
 

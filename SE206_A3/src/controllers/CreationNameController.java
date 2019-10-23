@@ -135,7 +135,8 @@ public class CreationNameController {
 					//this should be able to fit ~30 characters so. should be sufficient.
 					fontSize = 20;
 				}
-
+				
+				String fileTerm = AssociationClass.getInstance().getSearchTerm().trim().replace(' ', '-');
 
 				//This command is where both the slideshow and the final creation is generated
 				//line 1: establish the image_Duration variable. As this variable is only used in one place in the following code, this could be refactored out. 
@@ -148,8 +149,8 @@ public class CreationNameController {
 				//			 cause duplicate images in the slideshow and risk breaching Flickr's 30 image maximum user condition.
 				//line 6: Combine the audio file and the video file to make the final creation video.
 				String command = "image_Duration="+frameRate+";"
-						+ " ffmpeg -y -framerate $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -c:v libx264 -r 24 ./creation_files/quiz_files/quiz_images/"+AssociationClass.getInstance().getSearchTerm()+".mp4  > /dev/null; wait;"
-						+ " ffmpeg -y -i ./creation_files/quiz_files/quiz_images/"+AssociationClass.getInstance().getSearchTerm()+".mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize="+fontSize+":fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
+						+ " ffmpeg -y -framerate $image_Duration -i  ./creation_files/temporary_files/image_files/img%02d.jpg -c:v libx264 -r 24 ./creation_files/quiz_files/quiz_images/"+fileTerm+".mp4  > /dev/null; wait;"
+						+ " ffmpeg -y -i ./creation_files/quiz_files/quiz_images/"+fileTerm+".mp4 -vf \"drawtext=fontfile=myfont.tff:fontsize="+fontSize+":fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+AssociationClass.getInstance().getSearchTerm()+"'\" -codec:a copy ./creation_files/temporary_files/video_files/output.mp4 > /dev/null; wait;"
 						+ " rm -f ./creation_files/temporary_files/image_files/*; ";
 
 
