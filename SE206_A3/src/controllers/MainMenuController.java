@@ -65,8 +65,8 @@ public class MainMenuController {
 
 	@FXML
 	private void learnStuff(ActionEvent event) throws IOException {
-		
-		AppWindow.valueOf("Quiz").setScene(event);
+		AppWindow.valueOf("LearnMenu").setScene(event);
+		//AppWindow.valueOf("Quiz").setScene(event);
 		return;
 	}
 
