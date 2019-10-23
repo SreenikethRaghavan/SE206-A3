@@ -156,11 +156,20 @@ public class OrderImagesController {
 		//for each image in the array
 		//rename its corresponding file to the img00 format
 		int index = 0;
-
-		for(String imageName : sorted) {
-			index++;
-			//sorted.add(image);
-			File f1 = new File("creation_files/temporary_files/image_files/"+imageName);
+		 
+		//make a image file for the quiz game 
+		String destination = "creation_files/memory_files/" + AssociationClass.getInstance().getSearchTerm() + ".jpg"; 
+		File destFile = new File(destination); 
+		 
+		for(String imageName : sorted) { 
+			index++; 
+			//sorted.add(image); 
+			File f1 = new File("creation_files/temporary_files/image_files/"+imageName); 
+			 
+			if(index == 1) { 
+				//this is the quiz image we want 
+				copyFile(f1, destFile); 
+			} 
 			File f2 = new File("creation_files/temporary_files/image_files/img0"+index+".jpg");
 			if(index==10) {
 				f2 = new File("creation_files/temporary_files/image_files/img10.jpg");

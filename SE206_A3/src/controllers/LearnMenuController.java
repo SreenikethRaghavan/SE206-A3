@@ -170,7 +170,7 @@ public class LearnMenuController {
     @FXML
     void goToMissingWord(ActionEvent event) throws IOException {
     	//while this game isnt implemented, it will just go to the quiz game
-    	AppWindow.valueOf("Quiz").setScene(event);
+    	AppWindow.valueOf("Memory").setScene(event);
     }
 
     @FXML

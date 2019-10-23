@@ -58,7 +58,7 @@
                   <Image url="@../images/lock.png" />
                </image>
             </ImageView>
-            <Button fx:id="btn2" alignment="BASELINE_LEFT" layoutX="285.0" layoutY="278.0" mnemonicParsing="false" onAction="#goToMissingWord" prefHeight="58.0" prefWidth="326.0" stylesheets="@../CSS/stylesheet.css" text="  MISSING WORD" />
+            <Button fx:id="btn2" alignment="BASELINE_LEFT" layoutX="285.0" layoutY="278.0" mnemonicParsing="false" onAction="#goToMissingWord" prefHeight="58.0" prefWidth="326.0" stylesheets="@../CSS/stylesheet.css" text="  MEMORY" />
             <ImageView fx:id="lock2" fitHeight="64.0" fitWidth="56.0" layoutX="563.0" layoutY="263.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/lock.png" />

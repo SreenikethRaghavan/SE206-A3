@@ -21,7 +21,7 @@ public enum AppWindow {
 
 	MainMenu("MainMenu"), CreateMenu("CreateMenu"), CreationName("CreationName"), SearchError("SearchError"), SelectSentences("SelectSentences"), AudioFiles("AudioFiles"), 
 	AudioName("AudioName"), MergeName("MergeName"), SelectImages("SelectImages"), OrderImages("OrderImages"), ViewMenu("ViewMenu"), Quiz("Quiz"), CreateCreationMenu("CreateCreationMenu"),
-	LearnMenu("LearnMenu");
+	LearnMenu("LearnMenu"), Memory("Memory");
 
 	private final String fileName;
 
