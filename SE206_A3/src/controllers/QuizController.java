@@ -107,6 +107,7 @@ public class QuizController {
 
 			result.setText("Correct answer. Well done, that was impressive! :D");
 			result.setFill(Color.GREEN);
+			AssociationClass.getInstance().increaseXP(20);
 
 			wrongAnswerCount = 0;
 
@@ -129,7 +130,7 @@ public class QuizController {
 				completedQuiz.setContentText("Create new creations to unlock additional quiz questions.");
 				completedQuiz.showAndWait();
 
-				AppWindow.valueOf("MainMenu").setScene(e);
+				AppWindow.valueOf("LearnMenu").setScene(e);
 			}
 
 		}
@@ -265,6 +266,6 @@ public class QuizController {
 	@FXML
 	private void returnToMainMenu(ActionEvent e) throws IOException {
 
-		AppWindow.valueOf("MainMenu").setScene(e);
+		AppWindow.valueOf("LearnMenu").setScene(e);
 	}
 }

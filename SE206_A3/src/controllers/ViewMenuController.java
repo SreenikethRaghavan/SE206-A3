@@ -74,12 +74,6 @@ public class ViewMenuController {
 		}
 		else {
 			// if no creations exist
-			Alert noCreationsAlert = new Alert(Alert.AlertType.INFORMATION);
-			noCreationsAlert.setTitle("No Existing Creations");
-			noCreationsAlert.setHeaderText("There are currently no existing creations to display.");
-			noCreationsAlert.setContentText("Kindly create a new creation to view it on the list. ");
-			noCreationsAlert.showAndWait();
-
 			creations.add("No creations currently exist.");
 			creations.add("Please create a creation to view it.");
 

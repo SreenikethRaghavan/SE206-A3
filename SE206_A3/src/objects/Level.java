@@ -6,7 +6,7 @@ package objects;
  *
  */
 public enum Level {
-	L1(1,new Boolean[]{true,false,false,false},0,20), L2(1,new Boolean[]{true,true,false,false},20,9999);
+	L1(1,new Boolean[]{true,false,false,false},0,100), L2(2,new Boolean[]{true,true,false,false},100,9999);
 	
 	private Boolean[] featureUnlocks;
 	private int maxXP;

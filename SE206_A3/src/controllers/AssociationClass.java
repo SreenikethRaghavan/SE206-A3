@@ -62,6 +62,10 @@ public class AssociationClass {
 	public int getXP() {
 		return xp;
 	}
+	
+	public void increaseXP(int add) {
+		xp = xp + add;
+	}
 
 
 	public String getSearchTerm() {
