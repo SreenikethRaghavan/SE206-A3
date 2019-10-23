@@ -83,7 +83,12 @@ public class LearnMenuController {
     
     @FXML
     void showSettings(ActionEvent event) {
-    	settingsPane.setVisible(true);
+    	if(settingsPane.isVisible()) {
+    		settingsPane.setVisible(false);
+    	} else {
+    		settingsPane.setVisible(true);
+    	}
+    	
     }
 
     @FXML
