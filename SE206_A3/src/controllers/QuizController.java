@@ -49,6 +49,7 @@ public class QuizController {
 	private List<Image> imageList = new ArrayList<Image>();
 
 	private int wrongAnswerCount = 0;
+	private int xpIncrease=0;
 
 	@FXML
 	private void initialize() {
@@ -104,10 +105,20 @@ public class QuizController {
 		String correctAnswer = imageName.substring(0, imageName.lastIndexOf("."));
 
 		if(answer.equalsIgnoreCase(correctAnswer)) {
+			
+			if(wrongAnswerCount==0) {
+				xpIncrease = 20;
+			} else if(wrongAnswerCount<2) {
+				xpIncrease = 10;
+			} else if(wrongAnswerCount<3) {
+				xpIncrease = 5;
+			} else {
+				xpIncrease = 1;
+			}
 
-			result.setText("Correct answer. Well done, that was impressive! :D");
+			result.setText("Correct answer. Well done! :D (+"+xpIncrease+"XP)");
 			result.setFill(Color.GREEN);
-			AssociationClass.getInstance().increaseXP(20);
+			AssociationClass.getInstance().increaseXP(xpIncrease);
 
 			wrongAnswerCount = 0;
 
