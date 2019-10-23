@@ -32,6 +32,11 @@ public class MainMenuController {
 
 	@FXML
 	private void initialize() {
+		try {
+			AssociationClass.getInstance().loadProgess();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		BashProcess process = new BashProcess();
 

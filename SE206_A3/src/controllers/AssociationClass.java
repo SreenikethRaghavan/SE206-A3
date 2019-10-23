@@ -1,6 +1,13 @@
 package controllers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
+
+import wikispeak.BashProcess;
 
 /**
  * A singleton class used for storing the term 
@@ -40,6 +47,43 @@ public class AssociationClass {
 
 	private AssociationClass() { 
 
+	}
+	
+	/*
+	 * Save the XP to an external file. Could probably save the previous term as well.
+	 */
+	public void saveProgess() {
+		BashProcess saving = new BashProcess();
+
+		// save the xp to saveFile
+		String command = "touch ./creation_files/temporary_files/text_files/saveFile.txt; "        
+				+ "echo "+xp+" | tee ./creation_files/temporary_files/text_files/saveFile.txt";
+
+		saving.runCommand(command);
+	}
+	
+	/*
+	 * Load the XP from an external file.
+	 */
+	public void loadProgess() throws IOException {
+		
+		File file = new File("./creation_files/temporary_files/text_files/saveFile.txt"); 
+		  
+		if(file.exists()) {
+			BufferedReader br = new BufferedReader(new FileReader(file)); 
+			
+			String xptemp = br.readLine();
+			if(xptemp == null) {
+				xp = 10;
+			} else {
+				xp = Integer.parseInt(xptemp);
+			}
+		} else {
+			xp = 10;
+		}
+		
+		  
+		
 	}
 
 	public static AssociationClass getInstance() {

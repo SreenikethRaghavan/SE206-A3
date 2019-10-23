@@ -17,7 +17,7 @@ import objects.Level;
  * current level of access to the games.
  * For this prototype, the user will start with a set number of XP points
  * and level, in order to have enough features unlocked to demonstrate.
- * @author student
+ * @author Hazel Williams
  *
  */
 public class LearnMenuController {
@@ -92,6 +92,7 @@ public class LearnMenuController {
     	//eventually this will be stored in the association class
     	//but for now lets have a dummy value
     	currXP = AssociationClass.getInstance().getXP();
+    	AssociationClass.getInstance().saveProgess();
     	//then loop through the level enums, til we get to one that is the current level.
     	for (Level level : Level.values()) {
     		//iterate through each level

@@ -1,6 +1,8 @@
 package wikispeak;
 
 import java.io.IOException;
+
+import controllers.AssociationClass;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
