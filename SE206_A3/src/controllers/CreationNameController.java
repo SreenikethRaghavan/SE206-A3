@@ -157,7 +157,7 @@ public class CreationNameController {
 				if(backgroundMusic == true) {
 					//need to add the background music.
 					//resizing the sound to match the audio clip
-					command = command +" ffmpeg -y -i "+backMusic+" -af apad -t "+durationInSeconds+" -filter:a \"volume=0.4\" ./creation_files/temporary_files/resizedFunk.wav; wait;";
+					command = command +" ffmpeg -y -i "+backMusic+" -af apad -t "+durationInSeconds+" -filter:a \"volume=0.2\" ./creation_files/temporary_files/resizedFunk.wav; wait;";
 					//merging sound
 					command = command +" ffmpeg -y -i ./"+audioFileName+" -i ./creation_files/temporary_files/resizedFunk.wav -filter_complex amerge -ac 2 -c:a libmp3lame -q:a 4 ./creation_files/temporary_files/temp1.wav; wait;";
 					//using sound to make creation
