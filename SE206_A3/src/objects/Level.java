@@ -6,7 +6,7 @@ package objects;
  *
  */
 public enum Level {
-	L1(1,new Boolean[]{true,false,false,false},0,100), L2(2,new Boolean[]{true,true,false,false},100,9999);
+	L1(1,new Boolean[]{true,false,false,false},0,100), L2(2,new Boolean[]{true,true,false,false},100,200), L3(3,new Boolean[]{true,true,false,false},200,450), L4(4,new Boolean[]{true,true,false,false},450,9999);
 	
 	private Boolean[] featureUnlocks;
 	private int maxXP;
@@ -56,7 +56,7 @@ public enum Level {
 	 * giving out the maxXP
 	 */
 	public String getXPText(int XP) {
-		return XP + " / " + maxXP + " XP";
+		return (XP-minXP) + " / " + (maxXP-minXP) + " XP";
 	}
 	
 	/*
@@ -64,7 +64,7 @@ public enum Level {
 	 */
 	public double getProgress(int XP) {
 		//TODO: implement this function
-		return ((double)XP)/((double)maxXP);
+		return ((double)(XP-minXP))/((double)(maxXP-minXP));
 	}
 
 }
