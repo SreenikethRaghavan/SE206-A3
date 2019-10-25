@@ -169,23 +169,49 @@ public class LearnMenuController {
 
 
 	@FXML
-	void goToQuiz(ActionEvent event) throws IOException {
+	private void goToQuiz(ActionEvent event) throws IOException {
 
 		//while this game isnt implemented, it will just go to the quiz game
+		if(checkForEmptyCreationList(event)) {
+			return;
+		}
 		AppWindow.valueOf("Quiz").setScene(event);
 
 	}
 
 	@FXML
-	void goToMissingWord(ActionEvent event) throws IOException {
+	private void goToMissingWord(ActionEvent event) throws IOException {
 		//while this game isnt implemented, it will just go to the quiz game
+
+		if(checkForEmptyCreationList(event)) {
+			return;
+		}
+
 		AppWindow.valueOf("Memory").setScene(event);
 	}
 
 
 	@FXML
-	void returnToMainMenu(ActionEvent event) throws IOException {
+	private void returnToMainMenu(ActionEvent event) throws IOException {
 		AppWindow.valueOf("MainMenu").setScene(event);
+	}
+
+	@FXML
+	private boolean checkForEmptyCreationList(ActionEvent e) throws IOException {
+
+		File[] files = new File("./creation_files/quiz_files/quiz_images").listFiles();
+
+		if(files.length == 0) {
+			Alert noCreations = new Alert(Alert.AlertType.INFORMATION);
+			noCreations.setTitle("No Existing Creations");
+			noCreations.setHeaderText("There are currently no creations to quiz you on.");
+			noCreations.setContentText("Kindly quit and create a creation to unlock the quiz component. ");
+			noCreations.showAndWait();	
+
+			return true;
+		}
+
+		return false;
 	}
 
 }
