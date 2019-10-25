@@ -128,11 +128,11 @@ public class SelectSentencesController {
 	 */
 	@FXML
 	private void createAudio(ActionEvent e) throws IOException {
-		
+
 		String selectedText = sentenceDisplay.getSelectedText();
 
 		String[] words = selectedText.split("\\s+");
-	
+
 		// The selected text cannot contain more than 40 words
 		if (words.length > 40) {
 			Alert invalidWordCount = new Alert(Alert.AlertType.ERROR);
@@ -158,10 +158,10 @@ public class SelectSentencesController {
 		else {
 			AssociationClass.getInstance().storeSelectedVoice("akl_nz_cw_cg_cg");
 		}
-		
-		  AppWindow.valueOf("AudioName").setScene(e);
-		  return;
-		 
+
+		AppWindow.valueOf("AudioName").setScene(e);
+		return;
+
 	}
 
 	@FXML
@@ -253,9 +253,8 @@ public class SelectSentencesController {
 						Alert audioTestFailed = new Alert(Alert.AlertType.ERROR);
 
 						audioTestFailed.setTitle("Audio Test Failed");
-						audioTestFailed.setHeaderText("The audio test has unfortunately "
-								+ "failed due the text-to-speech synthesizer not being able to pronounce a word in the text you selected!");
-						audioTestFailed.setContentText("Kindly select a different part/chunk of text to test the audio output.");
+						audioTestFailed.setHeaderText("The text-to-speech synthesizer cannot pronounce a word in the text you selected!");
+						audioTestFailed.setContentText("Kindly select a different part/chunk of text to test.");
 						audioTestFailed.showAndWait();
 
 						enableButtons();

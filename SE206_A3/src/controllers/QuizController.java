@@ -37,7 +37,7 @@ import javafx.util.Duration;
  * 
  */
 public class QuizController {
-	
+
 	@FXML
 	private MediaView mediaView;
 
@@ -54,7 +54,7 @@ public class QuizController {
 	private int wrongAnswerCount = 0;
 	private int xpIncrease=0;
 	private MediaPlayer player;
-	
+
 	String fileLocation = "./creation_files/quiz_files/quiz_images";
 	ObservableList<String> urlList;
 
@@ -84,50 +84,37 @@ public class QuizController {
 		for(String creation : creations) {
 			sorted.add(fileLocation+"/"+creation+".mp4");
 		}
-		
+
 		return sorted;
 
 
 	}
 
-	
+
 	@FXML
 	private void initialize() {
-		
+
 		//get the list of mp4 urls in the folder
 		urlList = getURLList();
 
 		// select an video at random and quiz the user on it
-		if(!urlList.isEmpty()) {
-			String randomVideoURL = urlList.get((int)Math.random()*urlList.size());
-			File fileUrl = new File(randomVideoURL);
-			Media video = new Media(fileUrl.toURI().toString());
-			player = new MediaPlayer(video);
-			player.setAutoPlay(true);
-			//repeats the video once the video ends
-			player.setOnEndOfMedia(new Runnable() {
-		        @Override
-		        public void run() {
-		            player.seek(Duration.ZERO);
-		            player.play();
-		        }
-		    }); 
-			mediaView.setMediaPlayer(player);
+		String randomVideoURL = urlList.get((int)Math.random()*urlList.size());
+		File fileUrl = new File(randomVideoURL);
+		Media video = new Media(fileUrl.toURI().toString());
+		player = new MediaPlayer(video);
+		player.setAutoPlay(true);
+		//repeats the video once the video ends
+		player.setOnEndOfMedia(new Runnable() {
+			@Override
+			public void run() {
+				player.seek(Duration.ZERO);
+				player.play();
+			}
+		}); 
+		mediaView.setMediaPlayer(player);
 
-			// in order to avoid repeat questions
-			urlList.remove(randomVideoURL);
-
-		}
-
-		else {
-
-			// if the user has created no creations
-			Alert noCreations = new Alert(Alert.AlertType.INFORMATION);
-			noCreations.setTitle("No Existing Creations");
-			noCreations.setHeaderText("There are currently no creations to quiz you on.");
-			noCreations.setContentText("Kindly quit and create a creation to unlock the quiz component. ");
-			noCreations.showAndWait();	
-		}
+		// in order to avoid repeat questions
+		urlList.remove(randomVideoURL);
 
 		enterButton.disableProperty().bind(
 				Bindings.isEmpty(answerField.textProperty()));
@@ -140,14 +127,14 @@ public class QuizController {
 		String answer = answerField.getText();
 
 		Path path = Paths.get(mediaView.getMediaPlayer().getMedia().getSource());
-		
-		
+
+
 
 		String videoName = path.getFileName().toString();
 		String correctAnswer = videoName.substring(0, videoName.lastIndexOf(".")).trim().replace('-', ' ');;
 
 		if(answer.equalsIgnoreCase(correctAnswer)) {
-			
+
 			if(wrongAnswerCount==0) {
 				xpIncrease = 20;
 			} else if(wrongAnswerCount<2) {
@@ -179,12 +166,12 @@ public class QuizController {
 				player.setAutoPlay(true);
 				//repeats the video once the video ends
 				player.setOnEndOfMedia(new Runnable() {
-			        @Override
-			        public void run() {
-			            player.seek(Duration.ZERO);
-			            player.play();
-			        }
-			    }); 
+					@Override
+					public void run() {
+						player.seek(Duration.ZERO);
+						player.play();
+					}
+				}); 
 				mediaView.setMediaPlayer(player);
 
 				// in order to avoid repeat questions

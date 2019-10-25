@@ -102,7 +102,7 @@ public class AudioNameController {
 		for(char Char : chars) {
 			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
 				loadingGif.setImage(null);
-				
+
 				Alert invalidName = new Alert(Alert.AlertType.ERROR);
 				invalidName.setTitle("Invalid Audio File Name");
 				invalidName.setHeaderText("You cannot save an audio file with the character '" + Char + "' in its name!");
@@ -123,7 +123,7 @@ public class AudioNameController {
 		if(file.exists() && file.isFile()) {
 
 			loadingGif.setImage(null);
-			
+
 			Alert fileExists = new Alert(Alert.AlertType.CONFIRMATION);
 			fileExists.setTitle("Audio File Already Exists");
 			fileExists.setHeaderText("An audio file with the name '" + userInput + "' already exists!");
@@ -202,13 +202,13 @@ public class AudioNameController {
 					if (audioCreationFailed) {
 
 						loadingGif.setImage(null);
-						
+
 						Alert creationFailed = new Alert(Alert.AlertType.ERROR);
 
 						creationFailed.setTitle("Audio File Creation Failed");
-						creationFailed.setHeaderText("Creation of the Audio File with the name '" + userInput + "' has unfortunately "
-								+ "failed due the text-to-speech synthesizer not being able to pronounce a word in the text you selected!");
-						creationFailed.setContentText("Kindly select a different part/chunk of text and test the audio output before attempting to create "
+						creationFailed.setHeaderText("Creation of the Audio File '" + userInput + "' has failed.\n\n"
+								+ "The text-to-speech synthesizer cannot pronounce a word in the text you selected!");
+						creationFailed.setContentText("Kindly test the audio output before attempting to create "
 								+ "an audio file.");
 						creationFailed.showAndWait();
 
@@ -222,7 +222,7 @@ public class AudioNameController {
 					}
 
 					loadingGif.setImage(null);
-					
+
 					Alert created = new Alert(Alert.AlertType.INFORMATION);
 
 					created.setTitle("Audio File Created");
