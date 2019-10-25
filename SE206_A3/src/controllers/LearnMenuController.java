@@ -66,6 +66,16 @@ public class LearnMenuController {
 
 	@FXML
 	private AnchorPane settingsPane;
+	
+	//warning pane items
+	@FXML
+	private AnchorPane warningPane;
+
+	@FXML
+	private Text availabilityText;
+
+	@FXML
+	private Text warningText;
 
 
 	private ImageView[] locks;
@@ -162,11 +172,52 @@ public class LearnMenuController {
 		locks = new ImageView[] {lock1,lock2,lock3,lock4};
 		gameBtns = new Button[] {btn1,btn2,btn3,btn4};
 		settingsPane.setVisible(false);
+		warningPane.setVisible(false);
 
 		updateLevel();
+		String messageText = "";
+		String notAvailable ="";
+		// now check if there are files to play
+		if(!checkForMemoryImages()) {
+			//there are no memory images yet.
+			gameBtns[1].setDisable(true);
+			messageText = "no memory images";
+			notAvailable = "memory game is not available.\n\nTo enable it creation a new creation.";
+		}
+		
+		if(!checkForQuizVideos()) {
+			gameBtns[0].setDisable(true);
+			if(messageText.length() != 0) {
+				messageText = "no memory images or quiz videos";
+				notAvailable = "memory game and the quiz game are not available.\n\nTo enable them creation a new creation.";
+			} else {
+				messageText = "no quiz videos";
+				notAvailable = "quiz game is not available.\n\nTo enable it creation a new creation.";
+			}
+		}
+		
+		if(messageText.length() != 0) {
+			warningPane.setVisible(true);
+			warningText.setText("There are currently "+messageText+".");
+			availabilityText.setText("As such, the "+notAvailable);
+			/*Alert noCreations = new Alert(Alert.AlertType.INFORMATION);
+			noCreations.setTitle("Games Limited");
+			noCreations.setHeaderText("There are currently "+messageText+".");
+			noCreations.setContentText("As such, the "+notAvailable);
+			noCreations.showAndWait();	*/
+		}
 
 	}
 
+    @FXML
+    void exitWarning(ActionEvent event) {
+    	warningPane.setVisible(false);
+    }
+
+    @FXML
+    void goToCreateCreation(ActionEvent event) throws IOException {
+    	AppWindow.valueOf("CreateMenu").setScene(event);
+    }
 
 	@FXML
 	private void goToQuiz(ActionEvent event) throws IOException {
@@ -189,11 +240,27 @@ public class LearnMenuController {
 
 		AppWindow.valueOf("Memory").setScene(event);
 	}
-
+	
 
 	@FXML
 	private void returnToMainMenu(ActionEvent event) throws IOException {
 		AppWindow.valueOf("MainMenu").setScene(event);
+	}
+	
+	private boolean checkForQuizVideos() {
+		File[] files = new File("./creation_files/quiz_files/quiz_images").listFiles();
+		if(files.length ==0) {
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean checkForMemoryImages() {
+		File[] files = new File("./creation_files/memory_files").listFiles();
+		if(files.length ==0) {
+			return false;
+		}
+		return true;
 	}
 
 	@FXML
