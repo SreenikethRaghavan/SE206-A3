@@ -83,9 +83,28 @@ public class CreationNameController {
 		loadingGif.setImage(image);
 
 
-		CreateCreationTask createTask = new CreateCreationTask(userInput, e, loadingGif);
+		CreateCreationTask createTask = new CreateCreationTask(userInput);
 		WikiSpeak.bg.submit(createTask);
 
+		createTask.setOnSucceeded(ev -> {
+			// Alert the user about the creation being successfully created
+			Alert created = new Alert(Alert.AlertType.INFORMATION);
+
+			//TODO: make sure Bob doesnt interact with the GUI
+			loadingGif.setImage(null);
+
+			created.setTitle("Creation Created");
+			created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
+			created.setContentText("Select the 'View Existing Creations' option from the main menu to manage and play your creations.");
+			created.showAndWait();
+
+			//currently the user relies on this message to navigate away from the creation screen, in future we will revamp this so that the user can go and perform other tasks while the creation is being generated.
+			try {
+				AppWindow.valueOf("MainMenu").setScene(e);
+				return;
+			} catch (IOException e1) {
+			}
+		});
 	}
 
 

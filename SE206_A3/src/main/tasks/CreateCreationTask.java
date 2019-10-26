@@ -1,18 +1,11 @@
 package main.tasks;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-
-import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.image.ImageView;
-import main.FXML.AppWindow;
 import main.controllers.AssociationClass;
 import main.wikispeak.BashProcess;
 
@@ -21,13 +14,9 @@ public class CreateCreationTask  extends Task<Void> {
 	private Boolean backgroundMusic = AssociationClass.getInstance().isBGMusic();
 	private String backMusic = "funkTest.mp3";
 	private String userInput;
-	private ActionEvent e;
-	private ImageView loadingGif;
 	
-	public CreateCreationTask(String userInput, ActionEvent e, ImageView loadingGif) {
+	public CreateCreationTask(String userInput) {
 		this.userInput = userInput;
-		this.e = e;
-		this.loadingGif = loadingGif;
 	}
 
 	@Override 
@@ -111,30 +100,4 @@ public class CreateCreationTask  extends Task<Void> {
 		return null;
 	}
 
-	@Override 
-	protected void done() {
-
-		Platform.runLater(() -> {
-
-			// Alert the user about the creation being successfully created
-			Alert created = new Alert(Alert.AlertType.INFORMATION);
-			
-			//TODO: make sure Bob doesnt interact with the GUI
-			loadingGif.setImage(null);
-
-			created.setTitle("Creation Created");
-			created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
-			created.setContentText("Select the 'View Existing Creations' option from the main menu to manage and play your creations.");
-			created.showAndWait();
-
-			//currently the user relies on this message to navigate away from the creation screen, in future we will revamp this so that the user can go and perform other tasks while the creation is being generated.
-			try {
-				AppWindow.valueOf("MainMenu").setScene(e);
-				return;
-			} catch (IOException e1) {
-			}
-
-
-		});
-	}
 }
