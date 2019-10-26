@@ -14,7 +14,7 @@ import main.wikispeak.BashProcess;
 
 public class GenerateWaveFileTask extends Task<Void> {
 	private String fileName;
-	private Boolean audioCreationFailed;
+	private Boolean audioCreationFailed = false;
 	private ImageView loadingGif;
 	private String userInput;
 	private ActionEvent e;
@@ -31,7 +31,6 @@ public class GenerateWaveFileTask extends Task<Void> {
 
 	@Override
 	protected Void call() throws Exception {
-
 		BashProcess createAudio = new BashProcess();
 
 		String selectedText = AssociationClass.getInstance().getSelectedText();
@@ -54,13 +53,11 @@ public class GenerateWaveFileTask extends Task<Void> {
 	}
 	
 	@Override protected void done() {
-
 		Platform.runLater(() -> {
 
 			if (audioCreationFailed) {
-				
-				//TODO: fix this error handling.
-				//loadingGif.setImage(null);
+
+				loadingGif.setImage(null);
 
 				Alert creationFailed = new Alert(Alert.AlertType.ERROR);
 
