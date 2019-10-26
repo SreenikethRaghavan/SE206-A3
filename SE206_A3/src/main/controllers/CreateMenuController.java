@@ -1,13 +1,8 @@
 package main.controllers;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.FXML.AppWindow;
 import main.tasks.WikiTask;
-import main.wikispeak.BashProcess;
 import main.WikiSpeak;
 
 /**
