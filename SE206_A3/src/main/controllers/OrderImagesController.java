@@ -34,16 +34,12 @@ import main.FXML.AppWindow;
  */
 public class OrderImagesController {
 
-
 	@FXML
 	private ListView<String> listView;
-
 	@FXML
 	private Button backButton;
-
 	@FXML
 	private Button nextButton;
-
 	@FXML
 	private ImageView imageView;
 
@@ -80,8 +76,6 @@ public class OrderImagesController {
 		
 		sorted = FXCollections.observableArrayList();
 
-
-
 		for(String image : images) {
 			sorted.add(image);
 
@@ -97,7 +91,6 @@ public class OrderImagesController {
 	@FXML
 	private void initialize() {
 
-
 		//preview the image :)
 		//essentially i have set up a imageview which i just switch the image on for whatever list item is currently selected. it is
 		//updated every time you click on the listView, which could be clicking the same item or a new item, but will always display
@@ -111,29 +104,35 @@ public class OrderImagesController {
 
 			}
 		});
-
-
+		
 		updateList();
-
-
 	}
 
-
+	/**
+	 * This is a helper function which copies one file to another source.
+	 * It is used mostly in renameImages() where the images are copied and renamed to reflect the 
+	 * order that the slideshow will be in.
+	 * @param sourceFile
+	 * @param destFile
+	 * @throws IOException
+	 */
 	public static void copyFile(File sourceFile, File destFile) throws IOException {
 		if(!destFile.exists()) {
 			destFile.createNewFile();
 		}
 
-		FileChannel source = new FileInputStream(sourceFile).getChannel();
-		FileChannel destination = new FileOutputStream(destFile).getChannel();
+		FileInputStream fileInputStream = new FileInputStream(sourceFile);
+		FileChannel source = fileInputStream.getChannel();
+		FileOutputStream fileOutputStream = new FileOutputStream(destFile);
+		FileChannel destination = fileOutputStream.getChannel();
 
 		try {
-			source = new FileInputStream(sourceFile).getChannel();
-			destination = new FileOutputStream(destFile).getChannel();
 			destination.transferFrom(source, 0, source.size());
 		} finally {
 			source.close();
 			destination.close();
+			fileInputStream.close();
+			fileOutputStream.close();
 		}
 	}
 
@@ -192,8 +191,7 @@ public class OrderImagesController {
 		return;
 	}
 
-
-	//deletes the selected image (after prompting confirmation)
+	
 	/**
 	 * Deletes the selected image, after prompting the user for confirmation.
 	 * It also prevents the deletion if there is only one image left, so that no errors are produced by not having any images.
@@ -234,6 +232,8 @@ public class OrderImagesController {
 						file.delete();
 						//delete from the array
 						sorted.remove(index);
+						//change the preview image to show the user that something has changed.
+						imageView.setImage(null);
 						//update the list to reflect this change, but dont reset the ordering.
 						listView.setItems(sorted);
 					}
@@ -246,7 +246,10 @@ public class OrderImagesController {
 
 	}
 
-	//moves the selected image up in the list
+	/**
+	 * moves the selected image up in the list
+	 * @param e
+	 */
 	@FXML
 	private void moveUp(ActionEvent e) throws IOException {
 
@@ -270,7 +273,10 @@ public class OrderImagesController {
 		return;
 	}
 
-	//moves the selected image down in the list
+	/**
+	 * moves the selected image down in the list
+	 * @param e
+	 */
 	@FXML
 	private void moveDown(ActionEvent e) throws IOException {
 
@@ -314,9 +320,6 @@ public class OrderImagesController {
 			file.delete();
 
 		}
-
-
-
 		AppWindow.valueOf("SelectImages").setScene(e);
 		return;
 	}

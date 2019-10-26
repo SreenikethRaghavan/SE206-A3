@@ -9,6 +9,13 @@ import javafx.concurrent.Task;
 import main.controllers.AssociationClass;
 import main.wikispeak.BashProcess;
 
+/**
+ * 
+ * 
+ * @author Sreeniketh Raghavan
+ * @author Hazel Williams
+ *
+ */
 public class CreateCreationTask  extends Task<Void> {
 	
 	private Boolean backgroundMusic = AssociationClass.getInstance().isBGMusic();

@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javafx.application.Platform;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -35,10 +34,9 @@ import main.FXML.AppWindow;
  */
 public class ViewMenuController {
 
-
 	@FXML
 	private ListView<String> listView;
-
+	
 	@FXML
 	private Button playButton;
 
@@ -55,15 +53,17 @@ public class ViewMenuController {
 	private MediaView mediaView;
 
 	private MediaPlayer player;
-
-
+	
+	/*
+	 * Helper function that updates the listview to reflect what is currently stored in the creations folder
+	 */
 	@FXML
 	private void updateList() {
 		List<String> creations = new ArrayList<String>();
 
 		File[] files = new File("./creation_files/creations").listFiles();
 
-		// remove creation extensions (.mp4)
+		// remove creation extensions (.mp4) so they can be displayed neatly
 		if (files.length != 0) {
 			for (File file : files) {
 				if (file.isFile()) {
@@ -80,14 +80,10 @@ public class ViewMenuController {
 
 			playButton.setDisable(true); 
 			deleteButton.setDisable(true);
-
-
 		}
 
 		// sort alphabetically
 		Collections.sort(creations);
-
-
 		ObservableList<String> sorted = FXCollections.observableArrayList();
 
 		int index = 1;
@@ -105,29 +101,23 @@ public class ViewMenuController {
 			}
 			sorted.add(creationName);
 			index++;
-
 		}
 
-
 		listView.setItems(sorted);
-
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-
-
 	}
-
-
 
 
 	@FXML
 	private void initialize() {
 
 		updateList();
+		// while no video is playing the user shouldnt be able to play or pause
 		stopButton.setDisable(true);
 		pausePlayButton.setDisable(true);
 
-		//File fileUrl = new File("creation_files/temporary_files/video_files/output.mp4");
+		// when no video is playing the default view will be a video with instructions
 		File fileUrl = new File("src/main/images/defaultView.mp4");
 		Media video = new Media(fileUrl.toURI().toString());
 		player = new MediaPlayer(video);
@@ -146,7 +136,11 @@ public class ViewMenuController {
 		}
 	}
 
-	//resets the video to default view, ie stops the video.
+	/*
+	 * resets the video to default view, ie stops the video.
+	 * useful function to prevent the continuation of audio chunks after a video has 
+	 * been stopped.
+	 */
 	@FXML
 	private void stopVideo() {
 		File fileUrl = new File("src/main/images/defaultView.mp4");
@@ -159,30 +153,28 @@ public class ViewMenuController {
 		pausePlayButton.setDisable(true);
 	}
 
+	/*
+	 * This function will delete a creation, if a creation is selected and the user confirms they wish to delete it.
+	 */
 	@FXML
 	private void deleteCreation() {
-
 		String selected = listView.getSelectionModel().getSelectedItem();
-
 		// if something is selected
 		if (selected != null) {
 
 			String selectedCreation = selected.substring(3);
-
+			
+			// confirm the user wants to delete
 			Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
-
 			deleteAlert.setTitle("Deletion Confirmation");
 			deleteAlert.setHeaderText("Are you sure that you want to delete the creation '" + selectedCreation + "'?");
 			deleteAlert.setContentText("This action CANNOT be undone!");
-
 			deleteAlert.showAndWait().ifPresent(selection -> {
-
 				if(selection == ButtonType.OK) {
 					File file = new File("./creation_files/creations/"+ selectedCreation +".mp4");
 					file.delete();
 				}
 			});
-
 		}
 		// update view
 		updateList();
@@ -190,8 +182,7 @@ public class ViewMenuController {
 
 
 	/*
-	 * Changed 26/09/2019: No longer use ffmplay to play videos, instead embeds them in the gui
-	 * Allows overriding, if you are already playing a creation you can click play on another creation and that will play instead.
+	 * This function allows overriding, if you are already playing a creation you can click play on another creation and that will play instead.
 	 */
 	@FXML
 	private void playCreation() {
@@ -207,51 +198,27 @@ public class ViewMenuController {
 			pausePlayButton.setDisable(false);
 
 			String selectedCreation = selected.substring(3);
-
-			//sending to a different thread allows you to keep interacting with the GUI while the video is playing.
-			Task<Void> task = new Task<Void>() {
-				@Override protected Void call() throws Exception {
-					//gets the selected file and plays it on the media view
-					File fileUrl = new File("creation_files/creations/" + selectedCreation + ".mp4");
+			
+			//gets the selected file and plays it on the media view
+			File fileUrl = new File("creation_files/creations/" + selectedCreation + ".mp4");
+			Media video = new Media(fileUrl.toURI().toString());
+			player = new MediaPlayer(video);
+			player.setAutoPlay(true);
+			mediaView.setMediaPlayer(player);
+			player.setOnEndOfMedia(new Runnable() {
+				@Override
+				public void run() {
+					//resets it back to default view once the video has finished playing
+					File fileUrl = new File("src/main/images/defaultView.mp4");
 					Media video = new Media(fileUrl.toURI().toString());
 					player = new MediaPlayer(video);
 					player.setAutoPlay(true);
 					mediaView.setMediaPlayer(player);
-					player.setOnEndOfMedia(new Runnable() {
-						@Override
-						public void run() {
-							//resets it back to default view once the video has finished playing
-							File fileUrl = new File("src/main/images/defaultView.mp4");
-							Media video = new Media(fileUrl.toURI().toString());
-							player = new MediaPlayer(video);
-							player.setAutoPlay(true);
-							mediaView.setMediaPlayer(player);
-							stopButton.setDisable(true);
-							pausePlayButton.setDisable(true);
-						}
-					});
-
-
-
-					return null;
+					stopButton.setDisable(true);
+					pausePlayButton.setDisable(true);
 				}
-				@Override protected void done() {
-					Platform.runLater(() -> {
-						//doesnt need to run anything post play?
-
-					});
-
-				}
-			};
-
-			Thread thread = new Thread(task);
-
-			thread.setDaemon(true);
-
-			thread.start();
-
+			});
 		}
-
 	}
 
 
