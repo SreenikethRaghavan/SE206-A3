@@ -139,14 +139,6 @@ public class DownloadImagesTask  extends Task<Void> {
 	protected void done() {
 		// once the images are downloaded we can move on to the next scene
 		Platform.runLater(() -> {
-			
-			Alert created = new Alert(Alert.AlertType.INFORMATION);
-
-			created.setTitle("Images Finished Downloading");
-			created.setHeaderText("All Images Downloaded");
-			created.setContentText("Continue to view images.");
-			created.showAndWait();
-
 			try {
 				AppWindow.valueOf("OrderImages").setScene(e);
 				return;

@@ -116,6 +116,7 @@ public class SelectImagesController {
 		DownloadImagesTask imageTask = new DownloadImagesTask(imageNum, progressBar, imageDuration, e);
 		WikiSpeak.bg.submit(imageTask);
 		
+		
 		return;
 
 
