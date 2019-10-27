@@ -93,6 +93,7 @@ public class AudioFilesController {
 		existingFiles.setItems(audioFiles);
 		existingList = audioFiles;
 
+		// only one file can be selected at a time 
 		existingFiles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		filesToMerge.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -124,11 +125,13 @@ public class AudioFilesController {
 				File file = new File("./creation_files/temporary_files/audio_files/"+ selectedFile +".wav");
 				file.delete();
 
+				// if the merge list contains the file, remove it from the list after deleting 
 				if (mergeList.contains(selectedFile)) {
 					mergeList.remove(selectedFile);
 					filesToMerge.setItems(mergeList);
 				}
 
+				// else remove it from the list of existing files
 				else {
 					existingList.remove(selectedFile);
 					existingFiles.setItems(existingList);
@@ -150,9 +153,10 @@ public class AudioFilesController {
 		playButton.setDisable(true);
 		deleteButton.setDisable(true);
 
-
+		// Get the file which needs to be played
 		String selected = existingFiles.getSelectionModel().getSelectedItem();
 
+		// if a file is not chosen from the list of existing files, get the selected file from the list of files to merge
 		if (selected == null) {
 			selected = filesToMerge.getSelectionModel().getSelectedItem();
 		}
@@ -214,6 +218,11 @@ public class AudioFilesController {
 		}
 	}
 
+	/**
+	 * Remove a file from the right side view 
+	 * and add it back to the list of 
+	 * existing files
+	 */
 	@FXML
 	private void removeFromMergeList() {
 
@@ -243,6 +252,13 @@ public class AudioFilesController {
 
 	}
 
+	/**
+	 * Method which stores the name of the audio file
+	 * if a single file is chosen, else it combines 
+	 * multiple audio files and uses the combined
+	 * output. It also takes into account if the user
+	 * wants background music or not. 
+	 */
 	@FXML
 	private void mergeFiles(ActionEvent e) throws Exception {
 
@@ -254,6 +270,7 @@ public class AudioFilesController {
 			AssociationClass.getInstance().setBGMusic(false);
 		}
 
+		// If a single audio file is selected by the user for their creation
 		if (mergeButton.getText().equals("Use Audio File")) {
 			String selected = mergeList.get(0);
 			AssociationClass.getInstance().storeAudioFile(selected);
@@ -264,6 +281,7 @@ public class AudioFilesController {
 
 		else {
 
+			// if multiple files need to be combined
 			List<String> filesToMerge = new ArrayList<String>();
 
 			for (String file : mergeList) {
