@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.creatingcreation;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 import main.wikispeak.BashProcess;
 
 /**

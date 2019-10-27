@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.creatingcreation;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 
 
 /**

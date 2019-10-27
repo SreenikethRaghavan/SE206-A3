@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.learn;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 
 /**
  * Controller for the Quiz scene where the user 

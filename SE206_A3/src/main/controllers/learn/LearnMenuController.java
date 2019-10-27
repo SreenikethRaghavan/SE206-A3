@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.learn;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 import main.objects.Level;
 
 /**

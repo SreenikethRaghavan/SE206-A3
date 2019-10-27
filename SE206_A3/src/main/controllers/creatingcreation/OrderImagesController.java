@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.creatingcreation;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 
 
 /**

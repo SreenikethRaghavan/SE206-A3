@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.learn;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 
 public class MemoryController {
 

@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.creatingcreation;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 import main.wikispeak.BashProcess;
 
 

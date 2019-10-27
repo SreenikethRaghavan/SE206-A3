@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.creatingcreation;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +21,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.FXML.AppWindow;
+import main.controllers.AssociationClass;
 import main.wikispeak.BashProcess;
 import javafx.scene.control.ListView;
 
