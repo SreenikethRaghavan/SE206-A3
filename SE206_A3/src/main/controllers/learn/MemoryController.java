@@ -1,6 +1,5 @@
 package main.controllers.learn;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,13 +8,12 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import main.FXML.AppWindow;
@@ -26,92 +24,87 @@ public class MemoryController {
 	@FXML
 	private Text result;
 
-	@FXML
-	private ImageView imageView0;
 
+	// text to be added to an array.
 	@FXML
 	private Text text0;
-
-	@FXML
-	private ImageView imageView1;
-
 	@FXML
 	private Text text1;
-
-	@FXML
-	private ImageView imageView2;
-
 	@FXML
 	private Text text2;
-
-	@FXML
-	private ImageView imageView3;
-
 	@FXML
 	private Text text3;
-
-	@FXML
-	private ImageView imageView4;
-
 	@FXML
 	private Text text4;
-
-	@FXML
-	private ImageView imageView5;
-
 	@FXML
 	private Text text5;
-
-	@FXML
-	private ImageView imageView6;
-
 	@FXML
 	private Text text6;
-
-	@FXML
-	private ImageView imageView7;
-
 	@FXML
 	private Text text7;
-
-	private ImageView[] imageViews;
 	private Text[] texts;
+
+	// imageviews to be added to an array.
+	@FXML
+	private ImageView imageView0;
+	@FXML
+	private ImageView imageView1;
+	@FXML
+	private ImageView imageView2;
+	@FXML
+	private ImageView imageView3;
+	@FXML
+	private ImageView imageView4;
+	@FXML
+	private ImageView imageView5;
+	@FXML
+	private ImageView imageView6;
+	@FXML
+	private ImageView imageView7;
+	private ImageView[] imageViews;
+	
+	// reveal count keeps track of how many cards are currently visible, which determines whether the game should check for equality or not.
 	private int revealcount = 0;
+	
 	private String fileLocation = "./creation_files/memory_files";
+	
+	// these arrays store information about the cards.
 	private ObservableList<String> mFiles;
 	private String[] cards = {"X","X","X","X","X","X","X","X"};
 	private Boolean[] isImage = {false,false,false,false,false,false,false,false};
 	private Boolean[] revealed = {false,false,false,false,false,false,false,false};
 	private Boolean[] won = {false,false,false,false,false,false,false,false};
 
+	/**
+	 * This function sets up all the necessary arrays for the game.
+	 * It places the images and text in the card positions.
+	 */
 	@FXML
 	private void initialize() {
 		imageViews = new ImageView[] {imageView0,imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7};
 		texts = new Text[] {text0,text1,text2,text3,text4,text5,text6,text7};
 
-
-		//we need to get the files from the folder now.
+		// we need to get the files from the folder now.
 		mFiles = getURLList();
-
+		
 		ObservableList<Integer> availableIndexs = FXCollections.observableArrayList();
 		for (int i = 0; i<=7; i++) {
 			availableIndexs.add(i);
 		}
+		// shuffle the indexes so that the images and text dont end up in the same places every time.
 		Collections.shuffle(availableIndexs);
 
 
 
-		//with that list we want to distribute them across the board
-		//there are 8 card. which means we need 4 files.
-		//this leaves us with the following cases
-		//case 1: there are >=4 files, so pick 4.
-		//case 2: there are less than 4 files. so duplicate some.
+		// with that list we want to distribute them across the board
+		// there are 8 card. which means we need 4 files.
+		// this leaves us with the following cases
+		// case 1: there are >=4 files, so pick 4.
+		// case 2: there are less than 4 files. so duplicate some.
+		// the smaller case are hard coded because of time restraints
 		if(mFiles.size() >=4) {
 			//pick the first 4
 			for(int i = 0; i < 4; i++) {
-				//String text = mFiles.get(i).substring(mFiles.get(i).lastIndexOf("/")+1, mFiles.get(i).lastIndexOf(".")).trim().replace('-', ' ');
-				//texts[availableIndexs.get(0)].setText(text);
-				//texts[availableIndexs.get(1)].setText(text);
 				cards[availableIndexs.get(0)]=mFiles.get(i);
 				cards[availableIndexs.get(1)]=mFiles.get(i);
 				isImage[availableIndexs.get(0)]=true;
@@ -120,6 +113,7 @@ public class MemoryController {
 				availableIndexs.remove(0);
 			}
 		} else {
+			// first fill up as many as you can with what is available.
 			for(int i = 0; i < mFiles.size(); i++) {
 				cards[availableIndexs.get(0)]=mFiles.get(i);
 				cards[availableIndexs.get(1)]=mFiles.get(i);
@@ -128,10 +122,8 @@ public class MemoryController {
 				availableIndexs.remove(0);
 				availableIndexs.remove(0);
 			}
-			//get the extra ones
-			if(mFiles.size() == 0) {
-				//System.out.println("No files");
-			} else if(mFiles.size() == 1) {
+			// fill the rest of the spaces with duplicates
+			if(mFiles.size() == 1) {
 				for(int i =0; i<3; i++) {
 					cards[availableIndexs.get(0)]=mFiles.get(0);
 					cards[availableIndexs.get(1)]=mFiles.get(0);
@@ -162,11 +154,12 @@ public class MemoryController {
 				availableIndexs.remove(0); 			
 			}
 		}
-
-		//now all the arrays are set up. we can start.	
-
 	}
 
+	/**
+	 * Helper function to get all the urls of the images that we want from the memory files folder.
+	 * @return
+	 */
 	private ObservableList<String> getURLList() {
 		List<String> creations = new ArrayList<String>();
 
@@ -196,7 +189,10 @@ public class MemoryController {
 
 	}
 
-
+	/**
+	 * Helper function which "turns all the cards over"
+	 * ie. makes them all blank again.
+	 */
 	private void clearBoard() {
 		File imageFile = new File("./src/main/images/blankcard.png");
 		Image image = new Image("file:" + imageFile.getPath().substring(2));
@@ -213,15 +209,18 @@ public class MemoryController {
 		}
 	}
 
-
-
+	/**
+	 * Determines whether the revealed cards are a match or not.
+	 * @return
+	 */
 	private boolean isMatch() {
 		int tocheck1 = 34;
 		int tocheck2 = 34;
-
+		
+		// get the indexes of the currently revealed cards.
 		for(int i=0; i<8; i++) {
 			if(revealed[i] && !won[i]) {
-				//visable but not yet won
+				//visible but not yet won
 				if(tocheck1 ==34) {
 					tocheck1 = i;
 				} else {
@@ -250,6 +249,10 @@ public class MemoryController {
 		return false;
 	}
 
+	/**
+	 * Reveals what the card is so long as the game conditions are satisfied
+	 * @param num
+	 */
 	private void reveal(int num) {
 		if (revealcount == 2) {
 			//clear board
@@ -297,45 +300,27 @@ public class MemoryController {
 		//else its already visable
 
 	}
-
+	
+	/**
+	 * This function determines which of the boxes was clicked, and then requests that that box be revealed.
+	 * @param event - contains the information of which element was clicked.
+	 */
 	@FXML
-	void reveal0(MouseEvent event) {
-		reveal(0);
-	}
-
-	@FXML
-	void reveal1(MouseEvent event) {
-		reveal(1);
-	}
-
-	@FXML
-	void reveal2(MouseEvent event) {
-		reveal(2);
-	}
-
-	@FXML
-	void reveal3(MouseEvent event) {
-		reveal(3);
-	}
-
-	@FXML
-	void reveal4(MouseEvent event) {
-		reveal(4);
-	}
-
-	@FXML
-	void reveal5(MouseEvent event) {
-		reveal(5);
-	}
-
-	@FXML
-	void reveal6(MouseEvent event) {
-		reveal(6);
-	}
-
-	@FXML
-	void reveal7(MouseEvent event) {
-		reveal(7);
+	void squareClick(MouseEvent event) {
+		Boolean foundnum = false;
+		int index = 0;
+		for (ImageView imageview : imageViews) {
+			if(!foundnum) {
+				//if its the imageview we want, then this will set foundnum to true.
+				foundnum = ((AnchorPane)event.getSource()).getChildren().contains(imageview);
+			} else {
+				//one was found last time.
+				break;
+			}
+			index++;
+		}
+		//the actual one we want is before the index was increased.
+		reveal(index-1);
 	}
 
 	@FXML
