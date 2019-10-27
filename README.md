@@ -50,7 +50,7 @@ A User Manual on how to use the application has been provided.
 <br>Other images created for use in VARpedia by Hazel Williams.
 
 ### Audio
-funkTest.mp4 = Stefan Kartenberg, "*Guitalele's Happy Place*" Jun 29, 2017. Sourced Oct. 2019 Available: http://ccmixter.org/files/JeffSpeed68/56194
+funkTest.mp3 = Stefan Kartenberg, "*Guitalele's Happy Place*" Jun 29, 2017. Sourced Oct. 2019 Available: http://ccmixter.org/files/JeffSpeed68/56194
 
 ### Flickr API
 Flickr API libraries were sourced from Flickr4Java: https://github.com/boncey/Flickr4Java
