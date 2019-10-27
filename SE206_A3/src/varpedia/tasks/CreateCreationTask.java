@@ -10,6 +10,7 @@ import varpedia.controllers.AssociationClass;
 import varpedia.processes.BashProcess;
 
 /**
+ * This task puts all the pieces of the puzzle together to make the final creation.
  * 
  * @author Sreeniketh Raghavan
  * @author Hazel Williams
@@ -18,6 +19,8 @@ import varpedia.processes.BashProcess;
 public class CreateCreationTask  extends Task<Void> {
 
 	private Boolean backgroundMusic = AssociationClass.getInstance().isBGMusic();
+	
+	//Music file credit: Stefan Kartenberg, "*Guitalele's Happy Place*" Jun 29, 2017. Sourced Oct. 2019 Available: http://ccmixter.org/files/JeffSpeed68/56194
 	private String backMusic = "funkTest.mp3";
 	private String userInput;
 
