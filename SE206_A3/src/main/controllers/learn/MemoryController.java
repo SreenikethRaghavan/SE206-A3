@@ -76,87 +76,6 @@ public class MemoryController {
 	private Boolean[] won = {false,false,false,false,false,false,false,false};
 
 	/**
-	 * This function sets up all the necessary arrays for the game.
-	 * It places the images and text in the card positions.
-	 */
-	@FXML
-	private void initialize() {
-		imageViews = new ImageView[] {imageView0,imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7};
-		texts = new Text[] {text0,text1,text2,text3,text4,text5,text6,text7};
-
-		// we need to get the files from the folder now.
-		mFiles = getURLList();
-		
-		ObservableList<Integer> availableIndexs = FXCollections.observableArrayList();
-		for (int i = 0; i<=7; i++) {
-			availableIndexs.add(i);
-		}
-		// shuffle the indexes so that the images and text dont end up in the same places every time.
-		Collections.shuffle(availableIndexs);
-
-
-
-		// with that list we want to distribute them across the board
-		// there are 8 card. which means we need 4 files.
-		// this leaves us with the following cases
-		// case 1: there are >=4 files, so pick 4.
-		// case 2: there are less than 4 files. so duplicate some.
-		// the smaller case are hard coded because of time restraints
-		if(mFiles.size() >=4) {
-			//pick the first 4
-			for(int i = 0; i < 4; i++) {
-				cards[availableIndexs.get(0)]=mFiles.get(i);
-				cards[availableIndexs.get(1)]=mFiles.get(i);
-				isImage[availableIndexs.get(0)]=true;
-				isImage[availableIndexs.get(1)]=false;
-				availableIndexs.remove(0);
-				availableIndexs.remove(0);
-			}
-		} else {
-			// first fill up as many as you can with what is available.
-			for(int i = 0; i < mFiles.size(); i++) {
-				cards[availableIndexs.get(0)]=mFiles.get(i);
-				cards[availableIndexs.get(1)]=mFiles.get(i);
-				isImage[availableIndexs.get(0)]=true;
-				isImage[availableIndexs.get(1)]=false;
-				availableIndexs.remove(0);
-				availableIndexs.remove(0);
-			}
-			// fill the rest of the spaces with duplicates
-			if(mFiles.size() == 1) {
-				for(int i =0; i<3; i++) {
-					cards[availableIndexs.get(0)]=mFiles.get(0);
-					cards[availableIndexs.get(1)]=mFiles.get(0);
-					isImage[availableIndexs.get(0)]=true;
-					isImage[availableIndexs.get(1)]=false;
-					availableIndexs.remove(0);
-					availableIndexs.remove(0);
-				}
-			} else if(mFiles.size() == 2) {
-				cards[availableIndexs.get(0)]=mFiles.get(0);
-				cards[availableIndexs.get(1)]=mFiles.get(0);
-				isImage[availableIndexs.get(0)]=true;
-				isImage[availableIndexs.get(1)]=false;
-				availableIndexs.remove(0);
-				availableIndexs.remove(0);
-				cards[availableIndexs.get(0)]=mFiles.get(1);
-				cards[availableIndexs.get(1)]=mFiles.get(1);
-				isImage[availableIndexs.get(0)]=true;
-				isImage[availableIndexs.get(1)]=false;
-				availableIndexs.remove(0);
-				availableIndexs.remove(0);   			
-			} else if(mFiles.size() == 3) {
-				cards[availableIndexs.get(0)]=mFiles.get(0);
-				cards[availableIndexs.get(1)]=mFiles.get(0);
-				isImage[availableIndexs.get(0)]=true;
-				isImage[availableIndexs.get(1)]=false;
-				availableIndexs.remove(0);
-				availableIndexs.remove(0); 			
-			}
-		}
-	}
-
-	/**
 	 * Helper function to get all the urls of the images that we want from the memory files folder.
 	 * @return
 	 */
@@ -322,6 +241,89 @@ public class MemoryController {
 		//the actual one we want is before the index was increased.
 		reveal(index-1);
 	}
+	
+
+	/**
+	 * This function sets up all the necessary arrays for the game.
+	 * It places the images and text in the card positions.
+	 */
+	@FXML
+	private void initialize() {
+		imageViews = new ImageView[] {imageView0,imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7};
+		texts = new Text[] {text0,text1,text2,text3,text4,text5,text6,text7};
+
+		// we need to get the files from the folder now.
+		mFiles = getURLList();
+		
+		ObservableList<Integer> availableIndexs = FXCollections.observableArrayList();
+		for (int i = 0; i<=7; i++) {
+			availableIndexs.add(i);
+		}
+		// shuffle the indexes so that the images and text dont end up in the same places every time.
+		Collections.shuffle(availableIndexs);
+
+
+
+		// with that list we want to distribute them across the board
+		// there are 8 card. which means we need 4 files.
+		// this leaves us with the following cases
+		// case 1: there are >=4 files, so pick 4.
+		// case 2: there are less than 4 files. so duplicate some.
+		// the smaller case are hard coded because of time restraints
+		if(mFiles.size() >=4) {
+			//pick the first 4
+			for(int i = 0; i < 4; i++) {
+				cards[availableIndexs.get(0)]=mFiles.get(i);
+				cards[availableIndexs.get(1)]=mFiles.get(i);
+				isImage[availableIndexs.get(0)]=true;
+				isImage[availableIndexs.get(1)]=false;
+				availableIndexs.remove(0);
+				availableIndexs.remove(0);
+			}
+		} else {
+			// first fill up as many as you can with what is available.
+			for(int i = 0; i < mFiles.size(); i++) {
+				cards[availableIndexs.get(0)]=mFiles.get(i);
+				cards[availableIndexs.get(1)]=mFiles.get(i);
+				isImage[availableIndexs.get(0)]=true;
+				isImage[availableIndexs.get(1)]=false;
+				availableIndexs.remove(0);
+				availableIndexs.remove(0);
+			}
+			// fill the rest of the spaces with duplicates
+			if(mFiles.size() == 1) {
+				for(int i =0; i<3; i++) {
+					cards[availableIndexs.get(0)]=mFiles.get(0);
+					cards[availableIndexs.get(1)]=mFiles.get(0);
+					isImage[availableIndexs.get(0)]=true;
+					isImage[availableIndexs.get(1)]=false;
+					availableIndexs.remove(0);
+					availableIndexs.remove(0);
+				}
+			} else if(mFiles.size() == 2) {
+				cards[availableIndexs.get(0)]=mFiles.get(0);
+				cards[availableIndexs.get(1)]=mFiles.get(0);
+				isImage[availableIndexs.get(0)]=true;
+				isImage[availableIndexs.get(1)]=false;
+				availableIndexs.remove(0);
+				availableIndexs.remove(0);
+				cards[availableIndexs.get(0)]=mFiles.get(1);
+				cards[availableIndexs.get(1)]=mFiles.get(1);
+				isImage[availableIndexs.get(0)]=true;
+				isImage[availableIndexs.get(1)]=false;
+				availableIndexs.remove(0);
+				availableIndexs.remove(0);   			
+			} else if(mFiles.size() == 3) {
+				cards[availableIndexs.get(0)]=mFiles.get(0);
+				cards[availableIndexs.get(1)]=mFiles.get(0);
+				isImage[availableIndexs.get(0)]=true;
+				isImage[availableIndexs.get(1)]=false;
+				availableIndexs.remove(0);
+				availableIndexs.remove(0); 			
+			}
+		}
+	}
+
 
 	@FXML
 	private void returnToMainMenu(javafx.event.ActionEvent e) throws IOException {
