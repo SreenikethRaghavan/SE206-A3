@@ -20,12 +20,18 @@ import com.flickr4java.flickr.photos.Size;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ProgressBar;
 import main.FXML.AppWindow;
 import main.controllers.AssociationClass;
 import main.wikispeak.BashProcess;
 
+/**
+ * Task to download images from flickr.
+ * 
+ * @author Hazel Williams
+ * @author Nasser (contributed code)
+ *
+ */
 public class DownloadImagesTask  extends Task<Void> {
 	private int imageNum;
 	private ProgressBar progressBar;
@@ -40,7 +46,7 @@ public class DownloadImagesTask  extends Task<Void> {
 	}
 	
 	/**
-	 * This is what enables the use of the Flickr API. Code credit to Nassar for providing the base for this function.
+	 * This is what enables the use of the Flickr API. Code credit to Nasser for providing the base for this function.
 	 * @param key
 	 * @throws Exception
 	 */
