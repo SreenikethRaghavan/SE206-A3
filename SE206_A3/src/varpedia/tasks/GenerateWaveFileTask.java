@@ -14,20 +14,20 @@ import varpedia.processes.BashProcess;
 
 public class GenerateWaveFileTask extends Task<Void> {
 	private String fileName;
-	private Boolean audioCreationFailed = false;
+	private boolean audioCreationFailed = false;
 	private ImageView loadingGif;
 	private String userInput;
 	private ActionEvent e;
-	
-	
+
+
 	public GenerateWaveFileTask(String filename, ImageView loadingGif, String userInput, ActionEvent e) {
+
 		this.fileName = filename;
-		//this.audioCreationFailed = audioCreationFailed;
 		this.loadingGif = loadingGif;
 		this.userInput = userInput;
 		this.e = e;
 	}
-	
+
 
 	@Override
 	protected Void call() throws Exception {
@@ -51,7 +51,7 @@ public class GenerateWaveFileTask extends Task<Void> {
 
 		return null;
 	}
-	
+
 	@Override protected void done() {
 		Platform.runLater(() -> {
 
@@ -77,6 +77,7 @@ public class GenerateWaveFileTask extends Task<Void> {
 				return;			
 			}
 
+			// if audio creation is successful
 			loadingGif.setImage(null);
 
 			Alert created = new Alert(Alert.AlertType.INFORMATION);
@@ -87,7 +88,7 @@ public class GenerateWaveFileTask extends Task<Void> {
 			created.showAndWait();
 
 			try {
-				AppWindow.valueOf("AudioFiles").setScene(e);
+				AppWindow.valueOf("SelectSentences").setScene(e);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

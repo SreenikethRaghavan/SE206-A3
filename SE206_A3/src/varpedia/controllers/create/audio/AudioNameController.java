@@ -33,7 +33,6 @@ public class AudioNameController {
 
 	@FXML
 	private Button saveButton;
-
 	@FXML
 	private Button backButton;
 
@@ -41,20 +40,16 @@ public class AudioNameController {
 	private ImageView loadingGif;
 
 	private String userInput;
-
 	private String fileName;
 
 	@FXML
 	private void initialize() {
 
 		String searchTerm = AssociationClass.getInstance().getSearchTerm();
-
 		String defaultName = searchTerm + "_audio";
-
 		defaultName = defaultName.replace(' ', '_');
 
 		String fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
-
 		File file = new File(fileName);
 
 		// if a file with the suggested default name already exists then keep generating 
@@ -65,13 +60,10 @@ public class AudioNameController {
 		while(file.exists() && file.isFile()) {
 
 			defaultName = searchTerm + "_audio_" + fileCount;
-
 			defaultName = defaultName.replace(' ', '_');
 
 			fileName = "./creation_files/temporary_files/audio_files/"+ defaultName +".wav";
-
 			file = new File(fileName);
-
 			fileCount++;
 		}
 
@@ -97,19 +89,9 @@ public class AudioNameController {
 		char[] chars = userInput.toCharArray();
 
 		// Check for inavlid chars in the name
-		for(char Char : chars) {
-			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
-				loadingGif.setImage(null);
-
-				Alert invalidName = new Alert(Alert.AlertType.ERROR);
-				invalidName.setTitle("Invalid Audio File Name");
-				invalidName.setHeaderText("You cannot save an audio file with the character '" + Char + "' in its name!");
-				invalidName.setContentText("Kindly enter a different name.");
-				invalidName.showAndWait();
-
-				AppWindow.valueOf("AudioName").setScene(e);
-				return;
-			}
+		if(isFileNameValid(chars) ) {
+			AppWindow.valueOf("AudioName").setScene(e);
+			return;
 		}
 
 
@@ -128,13 +110,14 @@ public class AudioNameController {
 			fileExists.setContentText("Would you like to override the existing file?");
 			fileExists.showAndWait().ifPresent(selection -> {
 
+				// override
 				if(selection == ButtonType.OK) {					
 
 					generateWaveFile(e);
 				}
 
+				// don't override
 				else {
-
 
 					try {
 						AppWindow.valueOf("AudioName").setScene(e);
@@ -148,13 +131,37 @@ public class AudioNameController {
 		}
 
 
-
+		// if file with given name doesn't exist 
 		else {
-
 			generateWaveFile(e);
 
 		}
 	}
+
+	/**
+	 * The method checks if the user input (file name)
+	 * only contains valid characters (alphanumeric, 
+	 * hyphens, and underscores)
+	 */
+	private boolean isFileNameValid(char[] chars) {
+
+		for(char Char : chars) {
+			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
+				loadingGif.setImage(null);
+
+				Alert invalidName = new Alert(Alert.AlertType.ERROR);
+				invalidName.setTitle("Invalid Audio File Name");
+				invalidName.setHeaderText("You cannot save an audio file with the character '" + Char + "' in its name!");
+				invalidName.setContentText("Kindly enter a different name.");
+				invalidName.showAndWait();	
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 
 	/**
 	 * The method used to create the audio file using 

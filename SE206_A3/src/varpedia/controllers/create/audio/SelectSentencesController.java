@@ -34,25 +34,19 @@ public class SelectSentencesController {
 
 	@FXML
 	private RadioButton defaultVoiceButton;
-
 	@FXML
 	private RadioButton maleNZVoiceButton;
-
 	@FXML
 	private RadioButton femaleNZVoiceButton;
 
 	@FXML
 	private Button backButton;
-
 	@FXML
 	private Button testAudioButton;
-
 	@FXML
 	private Button createAudioButton;
-
 	@FXML
 	private Button skipStepButton;
-
 
 	@FXML
 	private TextArea sentenceDisplay;
@@ -73,7 +67,7 @@ public class SelectSentencesController {
 		List<String> lines = new ArrayList<String>();
 		String sentence;
 
-
+		// while there is another line to read in the file
 		while ((sentence = reader.readLine()) != null) {
 			lines.add(sentence);
 		}
@@ -82,12 +76,13 @@ public class SelectSentencesController {
 
 		List<String> searchResult = new ArrayList<String>();
 
+		// break each sentence into a new line
 		for (String line : lines) {
 			sentence  = line + "\n";
 			searchResult.add(sentence);
 		}
 
-
+		// form the string which will be displayed in the text area
 		String result = "";
 		for (String line : searchResult) {
 			result += line;
@@ -95,17 +90,10 @@ public class SelectSentencesController {
 
 		sentenceDisplay.setText(result);
 
+		// automatically select the default voice
 		defaultVoiceButton.setSelected(true);
 
-		// Bind test audio and create audio buttons to the text area so that they are disabled when nothing is selected
-		testAudioButton.disableProperty().bind(
-				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
-				);
-
-		createAudioButton.disableProperty().bind(
-				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
-				);
-
+		bindTestAndCreateButtons();
 	}
 
 	@FXML
@@ -148,7 +136,7 @@ public class SelectSentencesController {
 
 		AssociationClass.getInstance().storeSelectedText(selectedText);
 
-
+		// store the voice selected by the user for audio generation
 		if (defaultVoiceButton.isSelected()) {
 			AssociationClass.getInstance().storeSelectedVoice("kal_diphone");
 		}
@@ -237,11 +225,9 @@ public class SelectSentencesController {
 
 					// play audio corresponding to the selected text and the chosen voice
 					command = "play \"./creation_files/temporary_files/audio_files/test_audio_output.wav\" 2> /dev/null";
-
 					testAudio.runCommand(command);
 
 					audioTestFailed = false;
-
 					return null;
 				}
 			}
@@ -275,20 +261,15 @@ public class SelectSentencesController {
 		};
 
 		Thread thread = new Thread(task);
-
 		thread.setDaemon(true);
-
 		thread.start();		
 
 	}
 
-	private void enableButtons() {
+	@FXML
+	private void bindTestAndCreateButtons() {
 
-		backButton.setDisable(false);
-		skipStepButton.setDisable(false);
-		testAudioButton.setDisable(false);
-		createAudioButton.setDisable(false);
-
+		// Bind test audio and create audio buttons to the text area so that they are disabled when nothing is selected
 		testAudioButton.disableProperty().bind(
 				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
 				);
@@ -296,6 +277,19 @@ public class SelectSentencesController {
 		createAudioButton.disableProperty().bind(
 				Bindings.isEmpty(sentenceDisplay.selectedTextProperty())
 				);
+
+	}
+
+	@FXML
+	private void enableButtons() {
+
+		// enable all the buttons after the audio has finished playing
+		backButton.setDisable(false);
+		skipStepButton.setDisable(false);
+		testAudioButton.setDisable(false);
+		createAudioButton.setDisable(false);
+
+		bindTestAndCreateButtons();
 	}
 
 }
