@@ -150,6 +150,11 @@ public class LearnMenuController {
 	}
 	
 	@FXML
+	private void goToComingSoon(ActionEvent event) throws IOException {
+		AppWindow.valueOf("ComingSoon").setScene(event);
+	}
+	
+	@FXML
 	void exitSettings(ActionEvent event) {
 		settingsPane.setVisible(false);
 	}  

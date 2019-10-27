@@ -65,13 +65,13 @@
                   <Image url="@../images/lock.png" />
                </image>
             </ImageView>
-            <Button fx:id="btn3" alignment="BASELINE_LEFT" layoutX="285.0" layoutY="367.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="326.0" stylesheets="@../CSS/stylesheet.css" text="  FORTNITE" />
+            <Button fx:id="btn3" alignment="BASELINE_LEFT" layoutX="285.0" layoutY="367.0" mnemonicParsing="false" onAction="#goToComingSoon" prefHeight="58.0" prefWidth="326.0" stylesheets="@../CSS/stylesheet.css" text="  FORTNITE" />
             <ImageView fx:id="lock3" fitHeight="64.0" fitWidth="56.0" layoutX="563.0" layoutY="352.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/lock.png" />
                </image>
             </ImageView>
-            <Button fx:id="btn4" alignment="BASELINE_LEFT" layoutX="285.0" layoutY="456.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="326.0" stylesheets="@../CSS/stylesheet.css" text="  MINECRAFT">
+            <Button fx:id="btn4" alignment="BASELINE_LEFT" layoutX="285.0" layoutY="456.0" mnemonicParsing="false" onAction="#goToComingSoon" prefHeight="58.0" prefWidth="326.0" stylesheets="@../CSS/stylesheet.css" text="  MINECRAFT">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
