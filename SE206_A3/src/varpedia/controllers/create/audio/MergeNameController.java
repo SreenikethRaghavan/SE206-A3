@@ -74,6 +74,7 @@ public class MergeNameController {
 		// Get the list of files in the order they wish to merge them
 		mergeList = AssociationClass.getInstance().getFilesToMerge();
 
+		// if the user tries to save the combined audio file with the same name as one of the files being merged
 		if (mergeList.contains(userInput)) {
 
 			Alert sameFile = new Alert(Alert.AlertType.ERROR);
@@ -91,17 +92,9 @@ public class MergeNameController {
 		char[] chars = userInput.toCharArray();
 
 		// Check for invalid chars in the name
-		for(char Char : chars) {
-			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
-				Alert invalidName = new Alert(Alert.AlertType.ERROR);
-				invalidName.setTitle("Invalid Audio File Name");
-				invalidName.setHeaderText("You cannot save an audio file with the character '" + Char + "' in its name!");
-				invalidName.setContentText("Kindly enter a different name.");
-				invalidName.showAndWait();
-
-				AppWindow.valueOf("MergeName").setScene(e);
-				return;
-			}
+		if(checkForInvalidName(chars)) {
+			AppWindow.valueOf("MergeName").setScene(e);
+			return;
 		}
 
 
@@ -109,6 +102,7 @@ public class MergeNameController {
 
 		File file = new File(fileName);
 
+		// if a file with the given name already exists
 		if(file.exists() && file.isFile()) {
 
 			// give the user the option to override the existing audio file
@@ -118,10 +112,9 @@ public class MergeNameController {
 			fileExists.setContentText("Would you like to override the existing file?");
 			fileExists.showAndWait().ifPresent(selection -> {
 
+				// override
 				if(selection == ButtonType.OK) {
-
 					merging();
-
 					try { 
 						AppWindow.valueOf("SelectImages").setScene(e); 
 					} 
@@ -132,9 +125,8 @@ public class MergeNameController {
 
 				}
 
+				// if user doesn't want to override
 				else {
-
-
 					try {
 						AppWindow.valueOf("MergeName").setScene(e);
 					} catch (IOException e1) {
@@ -145,7 +137,7 @@ public class MergeNameController {
 			});
 		}
 
-
+		// if there is no existing file with the same name
 		else {
 
 			merging();
@@ -162,6 +154,23 @@ public class MergeNameController {
 		return;
 	}
 
+
+	private boolean checkForInvalidName(char[] chars) {
+
+		for(char Char : chars) {
+			if (!Character.isDigit(Char) && !Character.isLetter(Char) && Char != '-' && Char != '_') {
+				Alert invalidName = new Alert(Alert.AlertType.ERROR);
+				invalidName.setTitle("Invalid Audio File Name");
+				invalidName.setHeaderText("You cannot save an audio file with the character '" + Char + "' in its name!");
+				invalidName.setContentText("Kindly enter a different name.");
+				invalidName.showAndWait();
+
+				return true;
+			}
+		}
+
+		return false;
+	}
 	/**
 	 *The main merging method called to merge
 	 *multiple audio files together.
