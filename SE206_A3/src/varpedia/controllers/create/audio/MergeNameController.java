@@ -154,7 +154,11 @@ public class MergeNameController {
 		return;
 	}
 
-
+	/**
+	 * The method checks if the user input (file name)
+	 * only contains valid characters (alphanumeric, 
+	 * hyphens, and underscores)
+	 */
 	private boolean checkForInvalidName(char[] chars) {
 
 		for(char Char : chars) {
@@ -171,6 +175,8 @@ public class MergeNameController {
 
 		return false;
 	}
+
+
 	/**
 	 *The main merging method called to merge
 	 *multiple audio files together.
