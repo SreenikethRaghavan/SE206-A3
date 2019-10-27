@@ -53,7 +53,10 @@ public class ViewMenuController {
 
 	private MediaPlayer player;
 	
-	/*
+	// ------------------------------------------------------------------------------------------------------------------------------------
+	// LIST RELATED
+	
+	/**
 	 * Helper function that updates the listview to reflect what is currently stored in the creations folder
 	 */
 	@FXML
@@ -110,49 +113,13 @@ public class ViewMenuController {
 
 	@FXML
 	private void initialize() {
-
 		updateList();
 		// while no video is playing the user shouldnt be able to play or pause
 		stopButton.setDisable(true);
 		pausePlayButton.setDisable(true);
-
-		// when no video is playing the default view will be a video with instructions
-		File fileUrl = new File("src/varpedia/images/defaultView.mp4");
-		Media video = new Media(fileUrl.toURI().toString());
-		player = new MediaPlayer(video);
-		player.setAutoPlay(true);
-		mediaView.setMediaPlayer(player);
-
 	}
-
-
-	@FXML
-	private void togglePausePlay() {
-		if (player.getStatus() == Status.PLAYING) {
-			player.pause();
-		} else {
-			player.play();
-		}
-	}
-
-	/*
-	 * resets the video to default view, ie stops the video.
-	 * useful function to prevent the continuation of audio chunks after a video has 
-	 * been stopped.
-	 */
-	@FXML
-	private void stopVideo() {
-		File fileUrl = new File("src/varpedia/images/defaultView.mp4");
-		Media video = new Media(fileUrl.toURI().toString());
-		player.pause();
-		player = new MediaPlayer(video);
-		player.setAutoPlay(true);
-		mediaView.setMediaPlayer(player);
-		stopButton.setDisable(true);
-		pausePlayButton.setDisable(true);
-	}
-
-	/*
+	
+	/**
 	 * This function will delete a creation, if a creation is selected and the user confirms they wish to delete it.
 	 */
 	@FXML
@@ -180,7 +147,37 @@ public class ViewMenuController {
 	}
 
 
-	/*
+	// ------------------------------------------------------------------------------------------------------------------------------------
+	// VIDEO RELATED
+
+	/**
+	 * Functionality for the play/pause button
+	 */
+	@FXML
+	private void togglePausePlay() {
+		if (player.getStatus() == Status.PLAYING) {
+			player.pause();
+		} else {
+			player.play();
+		}
+	}
+
+	/**
+	 * resets the video to default view, ie stops the video.
+	 * useful function to prevent the continuation of audio chunks after a video has 
+	 * been stopped.
+	 */
+	@FXML
+	private void stopVideo() {
+		player.pause();
+		player = null;
+		mediaView.setMediaPlayer(null);
+		stopButton.setDisable(true);
+		pausePlayButton.setDisable(true);
+	}
+
+
+	/**
 	 * This function allows overriding, if you are already playing a creation you can click play on another creation and that will play instead.
 	 */
 	@FXML
@@ -198,6 +195,12 @@ public class ViewMenuController {
 
 			String selectedCreation = selected.substring(selected.indexOf(".") + 2);
 			
+			//helps to prevent overlap of videos if the user tries to overwrite the video that is currently playing.
+			if(player!=null) {
+				player.pause();
+				player = null;
+			}
+			
 			//gets the selected file and plays it on the media view
 			File fileUrl = new File("creation_files/creations/" + selectedCreation + ".mp4");
 			Media video = new Media(fileUrl.toURI().toString());
@@ -207,23 +210,24 @@ public class ViewMenuController {
 			player.setOnEndOfMedia(new Runnable() {
 				@Override
 				public void run() {
-					//resets it back to default view once the video has finished playing
-					File fileUrl = new File("src/varpedia/images/defaultView.mp4");
-					Media video = new Media(fileUrl.toURI().toString());
-					player = new MediaPlayer(video);
-					player.setAutoPlay(true);
-					mediaView.setMediaPlayer(player);
+					//clear the media player once the old one is done
+					mediaView.setMediaPlayer(null);
 					stopButton.setDisable(true);
 					pausePlayButton.setDisable(true);
 				}
 			});
 		}
 	}
-
+	
+	// ------------------------------------------------------------------------------------------------------------------------------------
+	// NAVIGATION FUNCTIONS
 
 	@FXML
 	private void returnToMainMenu(ActionEvent e) throws IOException {
-		player.pause();
+		if(player != null) {
+			player.pause();
+			player = null;
+		}
 		AppWindow.valueOf("MainMenu").setScene(e);
 		return;
 	}

@@ -21,7 +21,7 @@
                </image>
             </ImageView>
             <Rectangle arcWidth="5.0" fill="WHITE" height="250.0" layoutX="87.0" layoutY="104.0" opacity="0.68" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="350.0" />
-            <Text layoutX="140.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select an creation from&#10;the list to view it." textAlignment="CENTER">
+            <Text layoutX="87.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a creation to play using the right menu." textAlignment="CENTER" wrappingWidth="350">
                <font>
                   <Font size="24.0" />
                </font>
