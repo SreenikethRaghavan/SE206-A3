@@ -55,8 +55,8 @@ public class AssociationClass {
 		BashProcess saving = new BashProcess();
 
 		// save the xp to saveFile
-		String command = "touch ./creation_files/save_files/saveFile.txt; "        
-				+ "echo "+xp+" | tee ./creation_files/save_files/saveFile.txt";
+		String command = "touch ./creation_files/text_files/saveFile.txt; "        
+				+ "echo "+xp+" | tee ./creation_files/text_files/saveFile.txt";
 
 		saving.runCommand(command);
 	}
@@ -66,7 +66,7 @@ public class AssociationClass {
 	 */
 	public void loadProgess() throws IOException {
 		
-		File file = new File("./creation_files/save_files/saveFile.txt"); 
+		File file = new File("./creation_files/text_files/saveFile.txt"); 
 		  
 		if(file.exists()) {
 			BufferedReader br = new BufferedReader(new FileReader(file)); 

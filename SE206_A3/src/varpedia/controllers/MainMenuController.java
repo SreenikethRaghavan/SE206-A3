@@ -39,7 +39,7 @@ public class MainMenuController {
 
 		BashProcess process = new BashProcess();
 		// generate the required directories for storing creations and quiz files
-		String command = "mkdir -p ./creation_files/quiz_files/quiz_images; mkdir -p ./creation_files/memory_files; mkdir -p ./creation_files/save_files;";
+		String command = "mkdir -p ./creation_files/quiz_files/quiz_images; mkdir -p ./creation_files/memory_files; mkdir -p ./creation_files/text_files;";
 		process.runCommand(command);
 	}
 

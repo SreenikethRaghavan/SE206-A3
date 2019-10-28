@@ -28,8 +28,8 @@ public class WikiTask extends Task<Void> {
 
 		// Use the wikit bash command to search for the wikipedia entry corresponding the search term. 
 		// Format the wikit output and store it in a text file
-		String command = "touch ./creation_files/temporary_files/text_files/wikipedia_output.txt; "        
-				+ "wikit " + searchTerm +" | sed 's/\\([.?!]\\) \\([[:upper:]]\\)/\\1\\n\\2/g' | sed 's/  //g' | tee ./creation_files/temporary_files/text_files/wikipedia_output.txt";
+		String command = "touch ./creation_files/text_files/wikipedia_output.txt; "        
+				+ "wikit " + searchTerm +" | sed 's/\\([.?!]\\) \\([[:upper:]]\\)/\\1\\n\\2/g' | sed 's/  //g' | tee ./creation_files/text_files/wikipedia_output.txt";
 
 		wikit.runCommand(command);
 		return null;
@@ -42,7 +42,7 @@ public class WikiTask extends Task<Void> {
 			BufferedReader reader = null;
 
 			try {
-				reader = new BufferedReader(new FileReader("./creation_files/temporary_files/text_files/wikipedia_output.txt"));
+				reader = new BufferedReader(new FileReader("./creation_files/text_files/wikipedia_output.txt"));
 			} catch (FileNotFoundException e1) {
 
 			}

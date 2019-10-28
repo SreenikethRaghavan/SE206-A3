@@ -62,7 +62,7 @@ public class SelectSentencesController {
 	@FXML
 	private void initialize() throws IOException {
 
-		BufferedReader reader = new BufferedReader(new FileReader("./creation_files/temporary_files/text_files/wikipedia_output.txt"));
+		BufferedReader reader = new BufferedReader(new FileReader("./creation_files/text_files/wikipedia_output.txt"));
 
 		List<String> lines = new ArrayList<String>();
 		String sentence;
