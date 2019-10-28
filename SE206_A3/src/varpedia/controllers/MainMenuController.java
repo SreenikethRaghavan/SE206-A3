@@ -56,6 +56,11 @@ public class MainMenuController {
 		return;
 
 	} 
+	
+	@FXML
+	private void getHelp(ActionEvent event) throws IOException {
+		System.out.println("Open up help");
+	}
 
 
 	@FXML

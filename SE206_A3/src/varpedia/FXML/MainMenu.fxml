@@ -25,6 +25,7 @@
             <Button id="createButton" layoutX="46.0" layoutY="184.0" mnemonicParsing="false" onAction="#createCreation" prefHeight="56.0" prefWidth="178.4" stylesheets="@../CSS/stylesheet.css" text="CREATE" />
             <Button id="viewButton" alignment="CENTER" layoutX="46.0" layoutY="273.0" mnemonicParsing="false" onAction="#viewCreations" prefHeight="56.0" prefWidth="178.4" stylesheets="@../CSS/stylesheet.css" text="WATCH" textAlignment="CENTER" />
             <Button id="createButton" layoutX="46.0" layoutY="362.0" mnemonicParsing="false" onAction="#learnStuff" prefHeight="56.0" prefWidth="178.4" stylesheets="@../CSS/stylesheet.css" text="LEARN" />
+            <Button id="createButton" layoutX="850.0" layoutY="10.0" mnemonicParsing="false" onAction="#getHelp"  stylesheets="@../CSS/stylesheet.css" styleClass="iconButton" text="?" />
          </children>
       </AnchorPane>
    </children>
