@@ -44,7 +44,7 @@ public class CreateMenuController {
 		String deleteOldAudioFiles = "rm -rf ./creation_files/temporary_files/audio_files/*";
 		// create a new temporary files folder for each new search term
 		String makeDirectories = "mkdir -p ./creation_files/temporary_files/audio_files; mkdir -p ./creation_files/temporary_files/video_files; "
-				+ "mkdir -p ./creation_files/temporary_files/image_files; mkdir -p ./creation_files/temporary_files/text_files;";
+				+ "mkdir -p ./creation_files/temporary_files/image_files;";
 
 		BashProcess directories = new BashProcess();
 		directories.runCommand(deleteOldAudioFiles);

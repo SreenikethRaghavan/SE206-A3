@@ -38,8 +38,9 @@ public class MainMenuController {
 		}
 
 		BashProcess process = new BashProcess();
-		// generate the required directories for storing creations and quiz files
-		String command = "mkdir -p ./creation_files/creations; mkdir -p ./creation_files/quiz_files/quiz_images; "
+		// delete the temporary files for the last search and generate the required directories for storing creations and quiz files
+		String command = "rm -f ./creation_files/temporary_files/image_files/*; rm -f ./creation_files/temporary_files/video_files/*; "
+				+ "mkdir -p ./creation_files/creations; mkdir -p ./creation_files/quiz_files/quiz_images; "
 				+ "mkdir -p ./creation_files/memory_files; mkdir -p ./creation_files/text_files;";
 		process.runCommand(command);
 	}

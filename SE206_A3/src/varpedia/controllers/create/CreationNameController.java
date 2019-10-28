@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import varpedia.scene.AppWindow;
 import varpedia.controllers.AssociationClass;
-import varpedia.processes.BashProcess;
 import varpedia.tasks.CreateCreationTask;
 
 import varpedia.Varpedia;
@@ -98,11 +97,6 @@ public class CreationNameController {
 			created.setHeaderText("Creation with the name '" + userInput + "' has been successfully created!");
 			created.setContentText("Select the 'View Existing Creations' option from the main menu to manage and play your creations.");
 			created.showAndWait();
-
-			// delete the temporary files folder
-			String command = "rm -rf ./creation_files/temporary_files";
-			BashProcess deleteTempFiles= new BashProcess();
-			deleteTempFiles.runCommand(command);
 
 			//currently the user relies on this message to navigate away from the creation screen, in future we will revamp this so that the user can go and perform other tasks while the creation is being generated.
 			try {
