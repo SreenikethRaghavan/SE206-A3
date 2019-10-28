@@ -92,7 +92,6 @@ public class CreationNameController {
 			// Alert the user about the creation being successfully created
 			Alert created = new Alert(Alert.AlertType.INFORMATION);
 
-			//TODO: make sure Bob doesnt interact with the GUI
 			loadingGif.setImage(null);
 
 			created.setTitle("Creation Created");

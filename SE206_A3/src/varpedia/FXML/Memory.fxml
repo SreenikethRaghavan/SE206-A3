@@ -20,7 +20,7 @@
                </image>
             </ImageView>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="60" layoutX="0.0" layoutY="454.0" opacity="0.69" stroke="WHITE" strokeType="INSIDE" width="900.0" />
-            <Button layoutX="14.0" layoutY="527.0" mnemonicParsing="false" onAction="#returnToMainMenu" prefHeight="58.0" prefWidth="85.0" stylesheets="@../CSS/stylesheet.css" text="EXIT" textAlignment="CENTER" />
+            <Button layoutX="14.0" layoutY="527.0" mnemonicParsing="false" onAction="#returnToLearnMenu" prefHeight="58.0" prefWidth="85.0" stylesheets="@../CSS/stylesheet.css" text="EXIT" textAlignment="CENTER" />
             <Text fill="WHITE" layoutX="4.0" layoutY="81.0" stroke="BLACK" strokeType="OUTSIDE" text="Memory!" textAlignment="CENTER" wrappingWidth="891.7155456542969">
                <font>
                   <Font name="System Bold" size="47.0" />

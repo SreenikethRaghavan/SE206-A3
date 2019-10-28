@@ -8,6 +8,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -62,12 +63,12 @@ public class MemoryController {
 	@FXML
 	private ImageView imageView7;
 	private ImageView[] imageViews;
-	
+
 	// reveal count keeps track of how many cards are currently visible, which determines whether the game should check for equality or not.
 	private int revealcount = 0;
-	
+
 	private String fileLocation = "./creation_files/memory_files";
-	
+
 	// these arrays store information about the cards.
 	private ObservableList<String> mFiles;
 	private String[] cards = {"X","X","X","X","X","X","X","X"};
@@ -135,7 +136,7 @@ public class MemoryController {
 	private boolean isMatch() {
 		int tocheck1 = 34;
 		int tocheck2 = 34;
-		
+
 		// get the indexes of the currently revealed cards.
 		for(int i=0; i<8; i++) {
 			if(revealed[i] && !won[i]) {
@@ -216,10 +217,10 @@ public class MemoryController {
 			completedQuiz.setContentText("Return to the learn menu to choose a new game.");
 			completedQuiz.showAndWait();
 		}
-		//else its already visable
+		//else its already visible
 
 	}
-	
+
 	/**
 	 * This function determines which of the boxes was clicked, and then requests that that box be revealed.
 	 * @param event - contains the information of which element was clicked.
@@ -241,7 +242,7 @@ public class MemoryController {
 		//the actual one we want is before the index was increased.
 		reveal(index-1);
 	}
-	
+
 
 	/**
 	 * This function sets up all the necessary arrays for the game.
@@ -254,7 +255,7 @@ public class MemoryController {
 
 		// we need to get the files from the folder now.
 		mFiles = getURLList();
-		
+
 		ObservableList<Integer> availableIndexs = FXCollections.observableArrayList();
 		for (int i = 0; i<=7; i++) {
 			availableIndexs.add(i);
@@ -326,8 +327,7 @@ public class MemoryController {
 
 
 	@FXML
-	private void returnToMainMenu(javafx.event.ActionEvent e) throws IOException {
-
+	private void returnToLearnMenu(ActionEvent e) throws IOException {
 		AppWindow.valueOf("LearnMenu").setScene(e);
 	}
 
