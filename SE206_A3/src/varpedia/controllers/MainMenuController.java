@@ -56,10 +56,12 @@ public class MainMenuController {
 		return;
 
 	} 
-	
+
 	@FXML
 	private void getHelp(ActionEvent event) throws IOException {
-		System.out.println("Open up help");
+		// open the user manual for help
+		BashProcess pdfViewer = new BashProcess();
+		pdfViewer.runCommand("xdg-open ./User_Manual.pdf");
 	}
 
 
