@@ -40,14 +40,14 @@ public class CreateMenuController {
 	@FXML
 	private void initialize() {
 
-		// delete the temporary files folder every time a new term is searched for
-		String deleteTempFiles = "rm -rf ./creation_files/temporary_files";
-		// create a new temporary files folder for each new search term
+		// delete all the audio files for the previous search term
+		String deleteOldAudioFiles = "rm -f ./creation_files/temporary_files/audio_files/*;";
+		// create a folder for the temporary files
 		String makeDirectories = "mkdir -p ./creation_files/temporary_files/audio_files; mkdir -p ./creation_files/temporary_files/video_files; "
 				+ "mkdir -p ./creation_files/temporary_files/image_files; mkdir -p ./creation_files/temporary_files/text_files;";
 
 		BashProcess directories = new BashProcess();
-		directories.runCommand(deleteTempFiles);
+		directories.runCommand(deleteOldAudioFiles);
 		directories.runCommand(makeDirectories);
 
 		// bind the search button to the text field so that it is disabled when 
