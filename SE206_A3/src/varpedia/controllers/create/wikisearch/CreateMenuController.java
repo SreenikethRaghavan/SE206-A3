@@ -40,9 +40,9 @@ public class CreateMenuController {
 	@FXML
 	private void initialize() {
 
-		// delete all the audio files for the previous search term
-		String deleteOldAudioFiles = "rm -f ./creation_files/temporary_files/audio_files/*;";
-		// create a folder for the temporary files
+		// delete the all the old audio files for the previous search term
+		String deleteOldAudioFiles = "rm -rf ./creation_files/temporary_files/audio_files/*";
+		// create a new temporary files folder for each new search term
 		String makeDirectories = "mkdir -p ./creation_files/temporary_files/audio_files; mkdir -p ./creation_files/temporary_files/video_files; "
 				+ "mkdir -p ./creation_files/temporary_files/image_files; mkdir -p ./creation_files/temporary_files/text_files;";
 
