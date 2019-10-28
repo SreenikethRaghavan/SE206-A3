@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import varpedia.scene.AppWindow;
 import varpedia.controllers.AssociationClass;
+import varpedia.processes.BashProcess;
 import varpedia.tasks.WikiTask;
 import varpedia.Varpedia;
 
@@ -29,7 +30,6 @@ public class CreateMenuController {
 
 	@FXML
 	private Button backButton;
-
 	@FXML
 	private Button searchButton;
 
@@ -39,6 +39,16 @@ public class CreateMenuController {
 
 	@FXML
 	private void initialize() {
+
+		// delete the temporary files folder every time a new term is searched for
+		String deleteTempFiles = "rm -rf ./creation_files/temporary_files";
+		// create a new temporary files folder for each new search term
+		String makeDirectories = "mkdir -p ./creation_files/temporary_files/audio_files; mkdir -p ./creation_files/temporary_files/video_files; "
+				+ "mkdir -p ./creation_files/temporary_files/image_files; mkdir -p ./creation_files/temporary_files/text_files;";
+
+		BashProcess directories = new BashProcess();
+		directories.runCommand(deleteTempFiles);
+		directories.runCommand(makeDirectories);
 
 		// bind the search button to the text field so that it is disabled when 
 		// the text field is empty
@@ -68,6 +78,7 @@ public class CreateMenuController {
 
 		AssociationClass.getInstance().storeSearchTerm(searchTerm);
 
+		// search for the term using wikit
 		WikiTask wikitask = new WikiTask(searchTerm, e);
 		Varpedia.bg.submit(wikitask);
 
